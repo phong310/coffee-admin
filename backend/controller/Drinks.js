@@ -33,6 +33,18 @@ const DrinkController = {
             console.log(e)
             res.status(500).json({ ERR: e })
         }
+    },
+
+    // Xóa 
+    deleteDrinks: async (req, res) => {
+        try {
+            const drinkId = req.parms.id
+            const itemDelete = await productModel.findByIdAndRemove(drinkId);
+            res.status(200).json(itemDelete);
+
+        } catch (e) {
+            res.status(500).json({ Err: e })
+        }
     }
 
 }

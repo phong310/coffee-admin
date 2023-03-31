@@ -5,4 +5,6 @@ router.get("/getAll", DrinkController.getAllDrinks);
 
 router.post("/addNewDrinks", DrinkController.createDrinks)
 
+router.delete("/:id", DrinkController.deleteDrinks)
+
 module.exports = router

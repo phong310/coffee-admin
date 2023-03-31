@@ -1,6 +1,7 @@
 import { PlusOutlined, LoadingOutlined } from '@ant-design/icons';
 import { Button, Col, Drawer, Form, Input, Row, Select, Space, Upload, message } from 'antd';
 import { useState } from 'react';
+import { toast } from 'react-toastify';
 import axios from 'axios';
 const { Option } = Select;
 
@@ -84,6 +85,7 @@ const AddModal = ({ data, setData, getAll }) => {
             const response2 = await axios.post('http://localhost:7000/drinks/addNewDrinks', newDrinks);
             console.log(response2)
             setData(false);
+            toast.success("Thêm mới đồ uống thành công")
             getAll();
         } catch (e) {
             console.log("Lỗi rồi:", e)

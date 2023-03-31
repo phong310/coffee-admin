@@ -1,11 +1,13 @@
 import React, { useState } from 'react'
 import "../../assets/CSS/Drinks.css"
 import AddModal from '../../components/Drinks/addModal'
+import { DeleteDrink } from '../../components/Drinks/deleteModal'
 import { useEffect } from 'react'
 import { Breadcrumb } from 'antd'
 import axios from "axios";
 import { Col, Collapse, Input, Row, Select, Button, Space, Table, Tag, Tooltip, Image } from 'antd';
 import { PlusOutlined, EyeTwoTone, EditTwoTone, DeleteTwoTone } from '@ant-design/icons';
+import Money from '../../components/Money'
 
 
 
@@ -14,6 +16,7 @@ export const Drinks = () => {
     const { Panel } = Collapse;
     const [data, setData] = useState([])
     const [open, setOpen] = useState(false);
+    const [openDelete, setOpenDelete] = useState(false)
 
 
     const getData = async () => {
@@ -29,6 +32,10 @@ export const Drinks = () => {
     useEffect(() => {
         getData()
     }, [])
+
+    const handleDelete = (record) => {
+        setOpenDelete(true)
+    }
 
     const columns = [
         {
@@ -55,6 +62,7 @@ export const Drinks = () => {
             title: 'Giá sản phẩm',
             dataIndex: 'price',
             key: 'price',
+            render: (value) => <Money value={value} />
         },
         {
             title: 'Mô tả',
@@ -85,7 +93,7 @@ export const Drinks = () => {
                         <EditTwoTone />
                     </Tooltip>
                     <Tooltip placement="top" title="Xóa">
-                        <DeleteTwoTone twoToneColor="#f5222d" />
+                        <DeleteTwoTone twoToneColor="#f5222d" onClick={() => { handleDelete(record) }} />
                     </Tooltip>
                 </Space>
             ),
@@ -145,6 +153,8 @@ export const Drinks = () => {
             <Table className='table' columns={columns} dataSource={data} scroll={{ y: 502 }} />
 
             <AddModal data={open} setData={setOpen} getAll={getData} />
+
+            <DeleteDrink open={openDelete} setOpen={setOpenDelete} />
         </>
     )
 }
