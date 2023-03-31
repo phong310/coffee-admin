@@ -1,0 +1,16 @@
+.col_wrapp_title {
+  padding: 20px 0px;
+}
+.input {
+  margin-right: 20px;
+}
+.select {
+  width: 500px;
+}
+.btn {
+  margin-right: 10px;
+}
+
+.ant-table-wrapper::-webkit-scrollbar {
+  width: 8px;
+}
