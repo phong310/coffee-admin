@@ -1,6 +1,6 @@
 import { PlusOutlined, LoadingOutlined } from '@ant-design/icons';
 import { Button, Col, Drawer, Form, Input, Row, Select, Space, Upload, message } from 'antd';
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { toast } from 'react-toastify';
 import axios from 'axios';
 const { Option } = Select;
@@ -29,9 +29,11 @@ const AddModal = ({ data, setData, getAll }) => {
     const [imageUrl, setImageUrl] = useState();
     const [id, setID] = useState();
     const [price, setPrice] = useState();
-    const [title, settitle] = useState("");
+    const [title, setTitle] = useState("");
     const [status, setStatus] = useState("");
     const [description, setDescription] = useState("");
+
+    const formRef = useRef(null)
 
     const handleStatus = (value) => {
         setStatus(value)
@@ -72,24 +74,37 @@ const AddModal = ({ data, setData, getAll }) => {
         setData(false);
     };
 
-    const createNewDrinks = async () => {
-        const newDrinks = {
-            id: id,
-            img: imageUrl,
-            price: price,
-            title: title,
-            description: description,
-            status: status
-        }
-        try {
-            const response2 = await axios.post('http://localhost:7000/drinks/addNewDrinks', newDrinks);
-            console.log(response2)
-            setData(false);
-            toast.success("Thêm mới đồ uống thành công")
-            getAll();
-        } catch (e) {
-            console.log("Lỗi rồi:", e)
-        }
+    const createNewDrinks = () => {
+        formRef.current.validateFields().then(async () => {
+            const newDrinks = {
+                id: id,
+                img: imageUrl,
+                price: price,
+                title: title,
+                description: description,
+                status: status
+            }
+            try {
+                const response2 = await axios.post('http://localhost:7000/drinks/addNewDrinks', newDrinks);
+                console.log(response2)
+                setData(false);
+                toast.success("Thêm mới đồ uống thành công");
+                reset_form()
+                getAll();
+            } catch (e) {
+                console.log("Lỗi rồi:", e)
+            }
+        })
+    }
+
+    const reset_form = () => {
+        formRef.current.resetFields();
+        setID("");
+        setImageUrl("");
+        setPrice("");
+        setTitle("");
+        setDescription("");
+        setStatus("")
     }
 
 
@@ -112,7 +127,7 @@ const AddModal = ({ data, setData, getAll }) => {
                     </Space>
                 }
             >
-                <Form encType="multipart/form-data" layout="vertical" hideRequiredMark>
+                <Form ref={formRef} onFinish={createNewDrinks} layout="vertical">
                     <Row style={{ justifyContent: "center", marginBottom: 20 }}>
                         <Col>
                             <Upload
@@ -129,7 +144,6 @@ const AddModal = ({ data, setData, getAll }) => {
                                     <img
                                         src={imageUrl}
                                         alt="avatar"
-                                        cover
                                         style={{
                                             width: '100%',
                                         }}
@@ -163,11 +177,11 @@ const AddModal = ({ data, setData, getAll }) => {
                                 rules={[
                                     {
                                         required: true,
-                                        message: 'Xin vui lòng nhập',
+                                        message: 'Xin vui lòng nhập tên',
                                     },
                                 ]}
                             >
-                                <Input value={title} onChange={(e) => settitle(e.target.value)} placeholder="Nhập tên đồ uống" />
+                                <Input value={title} onChange={(e) => setTitle(e.target.value)} placeholder="Nhập tên đồ uống" />
                             </Form.Item>
                         </Col>
                         <Col span={8}>
@@ -177,7 +191,7 @@ const AddModal = ({ data, setData, getAll }) => {
                                 rules={[
                                     {
                                         required: true,
-                                        message: 'Xin vui lòng nhập',
+                                        message: 'Xin vui lòng nhập giá',
                                     },
                                 ]}
                             >
@@ -203,7 +217,7 @@ const AddModal = ({ data, setData, getAll }) => {
                                 rules={[
                                     {
                                         required: true,
-                                        message: 'Vui lòng chọn trạng thía',
+                                        message: 'Vui lòng chọn trạng thái',
                                     },
                                 ]}
                             >

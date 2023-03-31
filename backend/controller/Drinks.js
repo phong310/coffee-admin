@@ -38,7 +38,7 @@ const DrinkController = {
     // Xóa 
     deleteDrinks: async (req, res) => {
         try {
-            const drinkId = req.parms.id
+            const drinkId = req.params.id
             const itemDelete = await productModel.findByIdAndRemove(drinkId);
             res.status(200).json(itemDelete);
 

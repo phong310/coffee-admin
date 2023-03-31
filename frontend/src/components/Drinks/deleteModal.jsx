@@ -1,16 +1,22 @@
 import React from 'react'
 import { Modal } from 'antd';
 import { toast } from 'react-toastify';
+import axios from 'axios';
 
 
-export const DeleteDrink = ({ open, setOpen }) => {
+export const DeleteDrink = ({ open, setOpen, item, getAll }) => {
 
-    const ok = () => {
-        // toast.success("Xóa người dùng thành công")
-        setOpen(false)
+    const ok = async () => {
+        try {
+            await axios.delete(`http://localhost:7000/drinks/${item?._id}`)
+            setOpen(false)
+            toast.success("Xóa người dùng thành công")
+            getAll()
+
+        } catch (e) {
+            console.log("ERR:", e)
+        }
     }
-
-
 
     return (
         <>
@@ -21,7 +27,7 @@ export const DeleteDrink = ({ open, setOpen }) => {
                 onOk={ok}
                 onCancel={() => setOpen(false)}
             >
-                <p style={{ textAlign: "center" }}>Bạn có chắc muốn xóa người dùng số  này ?</p>
+                <p style={{ textAlign: "center" }}>Bạn có chắc muốn xóa đồ uống {JSON.stringify(item?.title)} này ?</p>
             </Modal>
         </>
     );

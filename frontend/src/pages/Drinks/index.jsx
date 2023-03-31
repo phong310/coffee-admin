@@ -18,6 +18,8 @@ export const Drinks = () => {
     const [open, setOpen] = useState(false);
     const [openDelete, setOpenDelete] = useState(false)
 
+    const [Item, setItem] = useState()
+
 
     const getData = async () => {
         try {
@@ -35,6 +37,7 @@ export const Drinks = () => {
 
     const handleDelete = (record) => {
         setOpenDelete(true)
+        setItem(record)
     }
 
     const columns = [
@@ -42,6 +45,7 @@ export const Drinks = () => {
             title: 'STT',
             dataIndex: 'id',
             key: 'id',
+            width: 100,
         },
         {
             title: 'Tên sản phẩm',
@@ -68,6 +72,7 @@ export const Drinks = () => {
             title: 'Mô tả',
             dataIndex: 'description',
             key: 'description',
+            width: 300
         },
         {
             title: 'Trạng thái',
@@ -80,6 +85,11 @@ export const Drinks = () => {
                     </Tag>
                 </>
             ),
+        },
+        {
+            title: "Số lượng",
+            key: "quantity",
+            dataIndex: "quantity"
         },
         {
             title: 'Chức năng',
@@ -116,21 +126,21 @@ export const Drinks = () => {
             <Col className='col_wrapp'>
                 <Collapse>
                     <Panel header="Tìm kiếm" key="1">
-                        <Row>
-                            <Col span={6} className="input">
+                        <Row >
+                            <Col span={7} className="input">
                                 <Input placeholder="Tên sản phẩm" />
                             </Col>
-                            {/* <Col span={1}>
+                            <Col span={7}>
                                 <Select
                                     className='select'
-                                    value="Tất cả"
+                                    value=""
 
                                 >
-                                    <Option value="">Tất cả</Option>
-                                    <Option value="active">Kích hoạt</Option>
-                                    <Option value="inactive">Chưa kích hoạt</Option>
+                                    <Select.Option value="">Tất cả</Select.Option>
+                                    <Select.Option value="active">Còn hàng</Select.Option>
+                                    <Select.Option value="inactive">Hết hàng</Select.Option>
                                 </Select>
-                            </Col> */}
+                            </Col>
                         </Row>
                         <Row justify="end">
                             <Button type="primary" ghost className='btn' >Tìm kiếm</Button>
@@ -142,7 +152,7 @@ export const Drinks = () => {
             </Col>
             <Col className='col_wrapp_title' style={{ padding: "30px 0px 10px 0px" }}>
                 <Row justify="space-between">
-                    <h2>Danh sách đồ uống <Tag color="#4096ff">0</Tag></h2>
+                    <h2>Danh sách đồ uống <Tag color="#4096ff">{data.length}</Tag></h2>
                     <Button type="primary" icon={<PlusOutlined />} onClick={() => setOpen(true)}>
                         Thêm mới
                     </Button>
@@ -154,7 +164,7 @@ export const Drinks = () => {
 
             <AddModal data={open} setData={setOpen} getAll={getData} />
 
-            <DeleteDrink open={openDelete} setOpen={setOpenDelete} />
+            <DeleteDrink open={openDelete} setOpen={setOpenDelete} item={Item} getAll={getData} />
         </>
     )
 }
