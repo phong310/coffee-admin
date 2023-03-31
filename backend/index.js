@@ -27,7 +27,7 @@ app.use("/bakery", Bakery)
 // Upload ảnh
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
-        cb(null, './uploads/') // thư mục lưu trữ ảnh được gửi lên
+        cb(null, './public/uploads/') // thư mục lưu trữ ảnh được gửi lên
     },
     filename: function (req, file, cb) {
         cb(null, Date.now() + '-' + file.originalname) // tên tệp tin của ảnh sẽ được lưu trữ trên server
@@ -42,7 +42,7 @@ app.post('/upload', upload.single('file'), function (req, res, next) {
         error.httpStatusCode = 400
         return next(error)
     }
-    res.send({ imageURL: 'http://localhost:7000/' + file.filename })
+    res.send({ imageURL: 'http://localhost:7000/uploads/' + file.filename })
 })
 
 
