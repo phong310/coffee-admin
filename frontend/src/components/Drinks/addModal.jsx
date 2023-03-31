@@ -72,14 +72,6 @@ const AddModal = ({ data, setData, getAll }) => {
     };
 
     const createNewDrinks = async () => {
-        // const formData = new FormData();
-        // formData.append('file', imageUrl.originFileObj);
-
-        // const response = await axios.post('http://localhost:7000/upload', formData);
-        // const imageURL = response.data.imageURL;
-        // console.log(imageURL)
-
-
         const newDrinks = {
             id: id,
             img: imageUrl,
