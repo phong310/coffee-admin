@@ -1,6 +1,6 @@
 import { PlusOutlined, LoadingOutlined } from '@ant-design/icons';
 import { Button, Col, Drawer, Form, Input, Row, Select, Space, Upload, message } from 'antd';
-import { useState, useRef } from 'react';
+import { useEffect, useState, useForm } from 'react';
 import { toast } from 'react-toastify';
 import axios from 'axios';
 const { Option } = Select;
@@ -24,7 +24,8 @@ const beforeUpload = (file) => {
 };
 
 
-const AddModal = ({ data, setData, getAll }) => {
+const UpdateModal = ({ data, setData, getAll, item }) => {
+    const [placement, setPlacement] = useState('left');
     const [loading, setLoading] = useState(false);
     const [imageUrl, setImageUrl] = useState();
     const [id, setID] = useState();
@@ -33,10 +34,55 @@ const AddModal = ({ data, setData, getAll }) => {
     const [status, setStatus] = useState("");
     const [description, setDescription] = useState("");
 
-    const formRef = useRef(null)
+    const [form] = Form.useForm()
+
+    useEffect(() => {
+        form.setFieldsValue({
+            id: item?.id,
+            img: item?.img,
+            price: item?.price,
+            title: item?.title,
+            description: item?.description,
+            status: item?.status
+        })
+        setID(item?.id);
+        setImageUrl(item?.img);
+        setPrice(item?.price);
+        setTitle(item?.title);
+        setDescription(item?.description);
+        setStatus(item?.status)
+
+
+    }, [item, form])
 
     const handleStatus = (value) => {
         setStatus(value)
+    }
+
+    const handleUpdate = () => {
+        form.validateFields().then(async () => {
+            const newUpdate = {
+                id: id,
+                img: imageUrl,
+                price: price,
+                title: title,
+                description: description,
+                status: status
+            }
+
+            try {
+                await axios.put(`http://localhost:7000/drinks/update/${item?._id}`, newUpdate)
+                setData(false);
+                toast.success("Cập nhật đồ uống thành công");
+                reset_form();
+                getAll()
+
+            } catch (e) {
+                console.log("Err:", e);
+                toast.warning("Cập nhật đồ uống thất bại !")
+            }
+        })
+
     }
 
 
@@ -75,32 +121,9 @@ const AddModal = ({ data, setData, getAll }) => {
         reset_form()
     };
 
-    const createNewDrinks = () => {
-        formRef.current.validateFields().then(async () => {
-            const newDrinks = {
-                id: id,
-                img: imageUrl,
-                price: price,
-                title: title,
-                description: description,
-                status: status
-            }
-            try {
-                const response2 = await axios.post('http://localhost:7000/drinks/addNewDrinks', newDrinks);
-                console.log(response2)
-                setData(false);
-                toast.success("Thêm mới đồ uống thành công");
-                reset_form()
-                getAll();
-            } catch (e) {
-                console.log("Lỗi rồi:", e)
-                toast.warning("Thêm mới đồ uống thất bại !");
-            }
-        })
-    }
 
     const reset_form = () => {
-        formRef.current.resetFields();
+        form.resetFields();
         setID("");
         setImageUrl("");
         setPrice("");
@@ -113,8 +136,9 @@ const AddModal = ({ data, setData, getAll }) => {
     return (
         <>
             <Drawer
-                title="Thêm mới đồ uống"
+                title="Cập nhật đồ uống"
                 width={720}
+                placement={placement}
                 onClose={onClose}
                 open={data}
                 bodyStyle={{
@@ -123,13 +147,16 @@ const AddModal = ({ data, setData, getAll }) => {
                 extra={
                     <Space>
                         <Button onClick={onClose}>Hủy</Button>
-                        <Button onClick={createNewDrinks} type="primary">
-                            Thêm
+                        <Button onClick={handleUpdate} type="primary">
+                            Cập nhật
                         </Button>
                     </Space>
                 }
             >
-                <Form ref={formRef} onFinish={createNewDrinks} layout="vertical">
+                <Form form={form} onSubmit={handleUpdate} layout="vertical">
+                    {/* {JSON.stringify(item)} */}
+
+
                     <Row style={{ justifyContent: "center", marginBottom: 20 }}>
                         <Col>
                             <Upload
@@ -174,7 +201,7 @@ const AddModal = ({ data, setData, getAll }) => {
                         </Col>
                         <Col span={8}>
                             <Form.Item
-                                name="name"
+                                name="title"
                                 label="Tên đồ uống"
                                 rules={[
                                     {
@@ -235,4 +262,4 @@ const AddModal = ({ data, setData, getAll }) => {
         </>
     );
 };
-export default AddModal;
+export default UpdateModal;

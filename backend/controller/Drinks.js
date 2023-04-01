@@ -45,6 +45,28 @@ const DrinkController = {
         } catch (e) {
             res.status(500).json({ Err: e })
         }
+    },
+
+
+    // update
+    updateDrinks: async (req, res) => {
+        try {
+            const drinkId = req.params.id;
+            const updatedDrink = {
+                id: req.body.id,
+                img: req.body.img,
+                price: req.body.price,
+                title: req.body.title,
+                description: req.body.description,
+                status: req.body.status
+            };
+            const query = { _id: drinkId };
+            const options = { new: true };
+            const result = await productModel.findOneAndUpdate(query, updatedDrink, options);
+            res.status(200).json(result);
+        } catch (e) {
+            res.status(500).json({ err: e });
+        }
     }
 
 }

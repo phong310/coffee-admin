@@ -15,6 +15,7 @@ export const DeleteDrink = ({ open, setOpen, item, getAll }) => {
 
         } catch (e) {
             console.log("ERR:", e)
+            toast.warning("Xóa đồ uống thất bại !");
         }
     }
 

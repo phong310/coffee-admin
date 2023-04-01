@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import "../../assets/CSS/Drinks.css"
 import AddModal from '../../components/Drinks/addModal'
+import UpdateModal from '../../components/Drinks/updateModal'
 import { DeleteDrink } from '../../components/Drinks/deleteModal'
 import { useEffect } from 'react'
 import { Breadcrumb } from 'antd'
@@ -17,6 +18,7 @@ export const Drinks = () => {
     const [data, setData] = useState([])
     const [open, setOpen] = useState(false);
     const [openDelete, setOpenDelete] = useState(false)
+    const [openUpdate, setOpenUpdate] = useState(false)
 
     const [Item, setItem] = useState()
 
@@ -37,6 +39,11 @@ export const Drinks = () => {
 
     const handleDelete = (record) => {
         setOpenDelete(true)
+        setItem(record)
+    }
+
+    const handleUpdate = (record) => {
+        setOpenUpdate(true)
         setItem(record)
     }
 
@@ -72,7 +79,7 @@ export const Drinks = () => {
             title: 'Mô tả',
             dataIndex: 'description',
             key: 'description',
-            width: 300
+            width: 400
         },
         {
             title: 'Trạng thái',
@@ -87,11 +94,6 @@ export const Drinks = () => {
             ),
         },
         {
-            title: "Số lượng",
-            key: "quantity",
-            dataIndex: "quantity"
-        },
-        {
             title: 'Chức năng',
             key: 'action',
             render: (_, record) => (
@@ -100,7 +102,7 @@ export const Drinks = () => {
                         <EyeTwoTone twoToneColor="#531dab" />
                     </Tooltip>
                     <Tooltip placement="top" title="Sửa" >
-                        <EditTwoTone />
+                        <EditTwoTone onClick={() => { handleUpdate(record) }} />
                     </Tooltip>
                     <Tooltip placement="top" title="Xóa">
                         <DeleteTwoTone twoToneColor="#f5222d" onClick={() => { handleDelete(record) }} />
@@ -165,6 +167,8 @@ export const Drinks = () => {
             <AddModal data={open} setData={setOpen} getAll={getData} />
 
             <DeleteDrink open={openDelete} setOpen={setOpenDelete} item={Item} getAll={getData} />
+
+            <UpdateModal data={openUpdate} setData={setOpenUpdate} getAll={getData} item={Item} />
         </>
     )
 }

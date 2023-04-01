@@ -7,4 +7,6 @@ router.post("/addNewDrinks", DrinkController.createDrinks)
 
 router.delete("/:id", DrinkController.deleteDrinks)
 
+router.put("/update/:id", DrinkController.updateDrinks)
+
 module.exports = router
