@@ -67,6 +67,26 @@ const DrinkController = {
         } catch (e) {
             res.status(500).json({ err: e });
         }
+    },
+
+    // Tìm kiếm
+    searchDrinks: async (req, res) => {
+        try {
+            const title = req.query.title;
+            const status = req.query.status;
+            let query = {};
+            if (title && status) {
+                query = { title: new RegExp(title, "i"), status: status };
+            } else if (title) {
+                query = { title: new RegExp(title, "i") };
+            } else if (status) {
+                query = { status: status };
+            }
+            const Drinks = await productModel.find(query);
+            res.status(200).json(Drinks);
+        } catch (e) {
+            res.status(500).json({ err: e });
+        }
     }
 
 }

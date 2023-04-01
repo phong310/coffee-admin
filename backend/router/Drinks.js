@@ -9,4 +9,6 @@ router.delete("/:id", DrinkController.deleteDrinks)
 
 router.put("/update/:id", DrinkController.updateDrinks)
 
+router.get('/search', DrinkController.searchDrinks);
+
 module.exports = router

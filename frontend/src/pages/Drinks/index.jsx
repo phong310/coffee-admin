@@ -21,8 +21,32 @@ export const Drinks = () => {
     const [openDelete, setOpenDelete] = useState(false)
     const [openUpdate, setOpenUpdate] = useState(false)
     const [openDetail, setOpenDetail] = useState(false)
-
     const [Item, setItem] = useState()
+
+    // Tìm kiếm
+    const [titleSearch, setTitleSearch] = useState("");
+    const [statuSearch, setStatusSearch] = useState("");
+
+
+    const HandleSearch = async () => {
+        try {
+            const res = await axios.get(`http://localhost:7000/drinks/search?title=${titleSearch}&status=${statuSearch}`)
+            setData(res.data)
+        } catch (e) {
+            console.log("Err search: ", e)
+        }
+    }
+
+    const resest_filter = () => {
+        setTitleSearch("");
+        setStatusSearch("")
+        getData()
+    }
+
+    const handleStatusSearch = (value) => {
+        setStatusSearch(value)
+    }
+
 
 
     const getData = async () => {
@@ -137,12 +161,13 @@ export const Drinks = () => {
                     <Panel header="Tìm kiếm" key="1">
                         <Row >
                             <Col span={7} className="input">
-                                <Input placeholder="Tên sản phẩm" />
+                                <Input value={titleSearch} onChange={(e) => setTitleSearch(e.target.value)} placeholder="Tên sản phẩm" />
                             </Col>
                             <Col span={7}>
                                 <Select
                                     className='select'
-                                    value=""
+                                    value={statuSearch}
+                                    onChange={handleStatusSearch}
 
                                 >
                                     <Select.Option value="">Tất cả</Select.Option>
@@ -151,9 +176,11 @@ export const Drinks = () => {
                                 </Select>
                             </Col>
                         </Row>
+
+                        {/* search */}
                         <Row justify="end">
-                            <Button type="primary" ghost className='btn' >Tìm kiếm</Button>
-                            <Button danger>Reset bộ lọc</Button>
+                            <Button type="primary" ghost className='btn' onClick={HandleSearch}>Tìm kiếm</Button>
+                            <Button danger onClick={resest_filter}>Reset bộ lọc</Button>
                         </Row>
 
                     </Panel>
