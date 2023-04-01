@@ -3,6 +3,7 @@ import "../../assets/CSS/Drinks.css"
 import AddModal from '../../components/Drinks/addModal'
 import UpdateModal from '../../components/Drinks/updateModal'
 import { DeleteDrink } from '../../components/Drinks/deleteModal'
+import { DetailDrinks } from '../../components/Drinks/detailModal'
 import { useEffect } from 'react'
 import { Breadcrumb } from 'antd'
 import axios from "axios";
@@ -19,6 +20,7 @@ export const Drinks = () => {
     const [open, setOpen] = useState(false);
     const [openDelete, setOpenDelete] = useState(false)
     const [openUpdate, setOpenUpdate] = useState(false)
+    const [openDetail, setOpenDetail] = useState(false)
 
     const [Item, setItem] = useState()
 
@@ -36,6 +38,11 @@ export const Drinks = () => {
     useEffect(() => {
         getData()
     }, [])
+
+    const handleDetail = (record) => {
+        setOpenDetail(true)
+        setItem(record)
+    }
 
     const handleDelete = (record) => {
         setOpenDelete(true)
@@ -99,7 +106,7 @@ export const Drinks = () => {
             render: (_, record) => (
                 <Space size="middle">
                     <Tooltip placement="top" title="Chi tiết">
-                        <EyeTwoTone twoToneColor="#531dab" />
+                        <EyeTwoTone twoToneColor="#531dab" onClick={() => { handleDetail(record) }} />
                     </Tooltip>
                     <Tooltip placement="top" title="Sửa" >
                         <EditTwoTone onClick={() => { handleUpdate(record) }} />
@@ -169,6 +176,8 @@ export const Drinks = () => {
             <DeleteDrink open={openDelete} setOpen={setOpenDelete} item={Item} getAll={getData} />
 
             <UpdateModal data={openUpdate} setData={setOpenUpdate} getAll={getData} item={Item} />
+
+            <DetailDrinks open={openDetail} setOpen={setOpenDetail} item={Item} />
         </>
     )
 }
