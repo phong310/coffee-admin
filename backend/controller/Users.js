@@ -98,6 +98,8 @@ const UserController = {
             let query = {};
             if (email && status && role) {
                 query = { email: new RegExp(email, "i"), status: status, role: role };
+            } else if (status && role) {
+                query = { status: status, role: role };
             } else if (email) {
                 query = { email: new RegExp(email, "i") };
             } else if (status) {

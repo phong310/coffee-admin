@@ -1,0 +1,75 @@
+/* *,
+*::before,
+*::after {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+} */
+h1 {
+  font-size: 1.5rem;
+  color: #0c713d;
+  font-weight: 700;
+  text-align: center;
+  margin-top: 10px;
+}
+.body_wrapper {
+  font-family: "Sora", sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  scroll-behavior: smooth;
+  text-rendering: optimizeSpeed;
+  background-color: #ffffe0;
+  line-height: 1.5;
+  font-size: 1.15rem;
+}
+.section {
+  margin: 0 auto;
+  background-color: white;
+  padding: 2rem;
+  min-width: 500px;
+  border-radius: 14px;
+  box-shadow: 0px 0px 14px 3px rgb(222, 224, 250);
+}
+.section > img {
+  margin-left: 40%;
+}
+.infoform {
+  display: flex;
+  gap: 0.5rem;
+  flex-direction: column;
+  margin-top: 1.5rem;
+  font-weight: 500;
+  font-size: 1rem;
+}
+label {
+  margin-top: 1rem;
+  font-weight: bold;
+}
+input {
+  border: none;
+  border-bottom: 1px solid black;
+  padding-bottom: 0.25rem;
+  outline: none;
+  font-size: 0.8rem;
+}
+
+.btn_login {
+  cursor: pointer;
+  /* align-self: flex-start; */
+  justify-content: center;
+  padding: 0.5rem;
+  background-color: #0c713d;
+  color: white;
+  border: none;
+  font-size: 1rem;
+  border-radius: 8px;
+  margin-top: 2rem;
+}
+p {
+  text-align: center;
+  margin-top: 15px;
+}
+.link {
+  color: green;
+}
