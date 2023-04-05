@@ -4,9 +4,10 @@ import { HomePage } from '../../pages/Home';
 import { Drinks } from '../../pages/Drinks';
 import { Bakery } from '../../pages/Bakery';
 import { Snacks } from '../../pages/Snacks';
+import { Account } from '../../pages/Account';
 import { Route, Routes, Link } from "react-router-dom";
 import { DollarOutlined, CoffeeOutlined, DashboardOutlined, UserOutlined, AppstoreOutlined, FireOutlined, MenuOutlined, BellOutlined, HeartOutlined, FileSearchOutlined, CarryOutOutlined, UsergroupDeleteOutlined } from '@ant-design/icons';
-import { Breadcrumb, Layout, Menu, theme, Col, Row, Avatar, Dropdown } from 'antd';
+import { Layout, Menu, theme, Col, Row, Avatar, Dropdown } from 'antd';
 import { Typography } from 'antd';
 import SubMenu from 'antd/es/menu/SubMenu';
 
@@ -108,7 +109,7 @@ const MainLayout = () => {
                     </Menu.Item>
                     <SubMenu key="sub2" icon={<UserOutlined />} title="Quản lý tài khoản">
                         <Menu.Item key="7" icon={<UserOutlined />}>
-                            <Link to="/">Tài khoản</Link>
+                            <Link to="/mangerment/account">Tài khoản</Link>
                         </Menu.Item>
                         <Menu.Item key="8" icon={<UsergroupDeleteOutlined />}>
                             <Link to="/">Phân quyền</Link>
@@ -179,6 +180,7 @@ const MainLayout = () => {
                         <Route path="/mangerment/drinks" element={<Drinks />} />
                         <Route path="/mangerment/bakery" element={<Bakery />} />
                         <Route path="/mangerment/snacks" element={<Snacks />} />
+                        <Route path="/mangerment/account" element={<Account />} />
                     </Routes>
 
 

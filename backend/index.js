@@ -6,6 +6,7 @@ const dotenv = require('dotenv')
 const Drinks = require("./router/Drinks")
 const Bakery = require("./router/Bakerys")
 const Snack = require("./router/Snacks")
+const User = require("./router/Users")
 const multer = require('multer');
 
 
@@ -23,6 +24,8 @@ app.use("/drinks", Drinks)
 app.use("/snack", Snack)
 
 app.use("/bakery", Bakery)
+
+app.use("/user", User)
 
 // Upload ảnh
 const storage = multer.diskStorage({
