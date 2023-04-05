@@ -3,7 +3,9 @@ import { Breadcrumb, Button, Col, Collapse, Input, Row, Select, Space, Tag, Tool
 import React, { useEffect, useState } from 'react'
 import "../../assets/CSS/Drinks.css"
 import AddModal from '../../components/Users/addModals'
+import UpdateModal from '../../components/Users/updateModals'
 import { DeleteUser } from '../../components/Users/deleteModal'
+import { ResetUser } from '../../components/Users/resetModals'
 import axios from 'axios'
 
 
@@ -14,6 +16,8 @@ export const Account = () => {
     const [data, setData] = useState([])
     const [open, setOpen] = useState(false);
     const [openDelete, setOpenDelete] = useState(false)
+    const [openUpdate, setOpenUpdate] = useState(false)
+    const [openReset, setOpenReset] = useState(false);
     const [itemUser, setItemUser] = useState()
 
     // Tìm kiếm
@@ -40,9 +44,24 @@ export const Account = () => {
         setItemUser(record)
     }
 
+    const handleUpdate = (rc) => {
+        setOpenUpdate(true);
+        setItemUser(rc)
+    }
+
+    const handleResetPassword = (rc) => {
+        setOpenReset(true);
+        setItemUser(rc)
+    }
+
 
 
     const columns = [
+        {
+            title: 'STT',
+            key: 'stt',
+            render: (text, record, index) => <span>{index + 1}</span>,
+        },
         {
             title: 'Tên tài khoản',
             dataIndex: 'username',
@@ -87,13 +106,13 @@ export const Account = () => {
                     <Tooltip placement="top" title="Chi tiết">
                         <EyeTwoTone twoToneColor="#531dab" />
                     </Tooltip>
-                    <Tooltip placement="top" title="Sửa" >
+                    <Tooltip placement="top" title="Sửa" onClick={() => handleUpdate(record)} >
                         <EditTwoTone />
                     </Tooltip>
                     <Tooltip placement="top" title="Xóa">
                         <DeleteTwoTone twoToneColor="#f5222d" onClick={() => handleDelete(record)} />
                     </Tooltip>
-                    <Tooltip placement="top" title="reset mật khẩu">
+                    <Tooltip placement="top" title="reset mật khẩu" onClick={() => handleResetPassword(record)}>
                         <ReloadOutlined />
                     </Tooltip>
                 </Space>
@@ -157,6 +176,10 @@ export const Account = () => {
             <AddModal data={open} setData={setOpen} getAll={getDataUser} />
 
             <DeleteUser open={openDelete} setOpen={setOpenDelete} item={itemUser} getAll={getDataUser} />
+
+            <UpdateModal data={openUpdate} setData={setOpenUpdate} item={itemUser} getAll={getDataUser} />
+
+            <ResetUser open={openReset} setOpen={setOpenReset} item={itemUser} getAll={getDataUser} />
         </>
     )
 }
