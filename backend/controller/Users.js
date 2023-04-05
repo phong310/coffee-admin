@@ -87,6 +87,29 @@ const UserController = {
         } catch (e) {
             res.status(500).json({ error: e });
         }
+    },
+
+    // search user
+    searchUser: async (req, res) => {
+        try {
+            const email = req.query.email;
+            const role = req.query.role;
+            const status = req.query.status;
+            let query = {};
+            if (email && status && role) {
+                query = { email: new RegExp(email, "i"), status: status, role: role };
+            } else if (email) {
+                query = { email: new RegExp(email, "i") };
+            } else if (status) {
+                query = { status: status };
+            } else if (role) {
+                query = { role: role }
+            }
+            const Users = await UserModel.find(query);
+            res.status(200).json(Users);
+        } catch (e) {
+            res.status(500).json({ err: e });
+        }
     }
 
 }

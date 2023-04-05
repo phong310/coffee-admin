@@ -21,8 +21,9 @@ export const Account = () => {
     const [itemUser, setItemUser] = useState()
 
     // Tìm kiếm
-    const [titleSearch, setTitleSearch] = useState("");
+    const [emailSearch, setEmailSearch] = useState("");
     const [statuSearch, setStatusSearch] = useState("");
+    const [roleSearch, setRoleSearch] = useState("")
 
     const getDataUser = async () => {
         try {
@@ -54,6 +55,30 @@ export const Account = () => {
         setItemUser(rc)
     }
 
+    const handleRoleSearch = (value) => {
+        setRoleSearch(value)
+    }
+
+    const handleStatusSearch = (value) => {
+        setStatusSearch(value)
+    }
+
+    const handleSearch = async () => {
+        try {
+            const result = await axios.get(`http://localhost:7000/user/search?email=${emailSearch}&role=${roleSearch}&status=${statuSearch}`)
+            setData(result.data)
+
+        } catch (e) {
+            console.log("Err search", e)
+        }
+    }
+
+    const resest_filter = () => {
+        getDataUser();
+        setEmailSearch("");
+        setRoleSearch("");
+        setStatusSearch("");
+    }
 
 
     const columns = [
@@ -136,17 +161,30 @@ export const Account = () => {
             <Col className='col_wrapp'>
                 <Collapse>
                     <Panel header="Tìm kiếm" key="1">
-                        <Row >
-                            <Col span={7} className="input">
-                                <Input value={titleSearch} onChange={(e) => setTitleSearch(e.target.value)} placeholder="Tên tài khoản" />
+                        <Row>
+                            <Col span={6} className="input">
+                                <Input value={emailSearch} onChange={(e) => setEmailSearch(e.target.value)} placeholder="Nhập Email" />
                             </Col>
-                            <Col span={7}>
+                            <Col span={5}>
+                                <Select
+                                    className='select'
+                                    value={roleSearch}
+                                    onChange={handleRoleSearch}
+
+                                >
+                                    <Select.Option value="">Nhóm quyền</Select.Option>
+                                    <Select.Option value="ADMIN">ADMIN</Select.Option>
+                                    <Select.Option value="USER">USER</Select.Option>
+                                </Select>
+                            </Col>
+                            <Col span={5} style={{ marginLeft: "180px" }}>
                                 <Select
                                     className='select'
                                     value={statuSearch}
+                                    onChange={handleStatusSearch}
 
                                 >
-                                    <Select.Option value="">Tất cả</Select.Option>
+                                    <Select.Option value="">Trạng thái</Select.Option>
                                     <Select.Option value="active">Kích hoạt</Select.Option>
                                     <Select.Option value="inactive">Chưa kích hoạt</Select.Option>
                                 </Select>
@@ -154,9 +192,9 @@ export const Account = () => {
                         </Row>
 
                         {/* search */}
-                        <Row justify="end">
-                            <Button type="primary" ghost className='btn' >Tìm kiếm</Button>
-                            <Button danger>Reset bộ lọc</Button>
+                        <Row justify="end" style={{ marginTop: "25px" }}>
+                            <Button type="primary" ghost className='btn' onClick={handleSearch} >Tìm kiếm</Button>
+                            <Button danger onClick={resest_filter}>Reset bộ lọc</Button>
                         </Row>
 
                     </Panel>

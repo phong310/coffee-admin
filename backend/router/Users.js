@@ -12,4 +12,6 @@ router.put("/update/:id", UserController.updateUser)
 
 router.post("/reset/:id", UserController.resetPassword)
 
+router.get("/search", UserController.searchUser)
+
 module.exports = router;
