@@ -2,6 +2,8 @@ import { DeleteTwoTone, EditTwoTone, EyeTwoTone, PlusOutlined, ReloadOutlined } 
 import { Breadcrumb, Button, Col, Collapse, Input, Row, Select, Space, Tag, Tooltip, Table } from 'antd'
 import React, { useEffect, useState } from 'react'
 import "../../assets/CSS/Drinks.css"
+import AddModal from '../../components/Users/addModals'
+import { DeleteUser } from '../../components/Users/deleteModal'
 import axios from 'axios'
 
 
@@ -11,6 +13,8 @@ export const Account = () => {
     const { Panel } = Collapse;
     const [data, setData] = useState([])
     const [open, setOpen] = useState(false);
+    const [openDelete, setOpenDelete] = useState(false)
+    const [itemUser, setItemUser] = useState()
 
     // Tìm kiếm
     const [titleSearch, setTitleSearch] = useState("");
@@ -29,6 +33,12 @@ export const Account = () => {
     useEffect(() => {
         getDataUser()
     }, [])
+
+
+    const handleDelete = (record) => {
+        setOpenDelete(true)
+        setItemUser(record)
+    }
 
 
 
@@ -53,6 +63,9 @@ export const Account = () => {
             title: 'Nhóm quyền',
             dataIndex: 'role',
             key: 'role',
+            render: (role) => {
+                return <Tag color={role === 'ADMIN' ? '#d3adf7' : '#87e8de'}>{role}</Tag>
+            }
         },
         {
             title: 'Trạng thái',
@@ -78,7 +91,7 @@ export const Account = () => {
                         <EditTwoTone />
                     </Tooltip>
                     <Tooltip placement="top" title="Xóa">
-                        <DeleteTwoTone twoToneColor="#f5222d" />
+                        <DeleteTwoTone twoToneColor="#f5222d" onClick={() => handleDelete(record)} />
                     </Tooltip>
                     <Tooltip placement="top" title="reset mật khẩu">
                         <ReloadOutlined />
@@ -140,6 +153,10 @@ export const Account = () => {
             </Col>
             {/* Table */}
             <Table className='table' columns={columns} dataSource={data} />
+
+            <AddModal data={open} setData={setOpen} getAll={getDataUser} />
+
+            <DeleteUser open={openDelete} setOpen={setOpenDelete} item={itemUser} getAll={getDataUser} />
         </>
     )
 }
