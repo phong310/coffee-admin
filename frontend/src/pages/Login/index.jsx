@@ -1,48 +1,50 @@
-import React, { useState, useContext, useEffect } from "react";
-import { useNavigate, Link } from "react-router-dom";
-import { Row, Col } from "antd";
-import { ArrowLeftOutlined } from "@ant-design/icons";
-import "../.././assets/CSS/login.css"
+import { Checkbox, Col, Row } from "antd";
 import axios from "axios";
+import React, { useContext, useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { toast } from 'react-toastify';
+import "../.././assets/CSS/login.css";
+import AuthContext from "../../context/Auth";
 
 export default function Login() {
     const [userName, setUserName] = useState("");
     const [password, setPassword] = useState("");
+    const [userData, setUserData] = useState("");
 
-    const [userData, setUserData] = useState("")
+    const checkLogin = useContext(AuthContext);
+    const { user, setUser } = checkLogin
 
-    // const handleUser = async () => {
-    //     try {
-    //         const res = await axios.get("http://localhost:8000/user/getAllUser");
-    //         setUserData(res.data)
-    //     } catch (e) {
-    //         console.log("Err:", e)
-    //     }
-    // }
+    const handleUser = async () => {
+        try {
+            const res = await axios.get("http://localhost:7000/user/getAllUser");
+            setUserData(res.data)
+        } catch (e) {
+            console.log("Err:", e)
+        }
+    }
 
-    // useEffect(() => {
-    //     handleUser()
-    // }, [])
+    useEffect(() => {
+        handleUser()
+    }, [])
 
-    // const authCtx = useContext(AuthContext);
-    // let navigate = useNavigate();
+    let navigate = useNavigate();
 
-    // const handleSubmit = (e) => {
-    //     e.preventDefault();
-    //     const user = userData;
-    //     const ngdung = user.find(
-    //         (u) => u.username === userName && u.password === password
-    //     );
-    //     if (ngdung) {
-    //         authCtx.setUser(ngdung);
-    //         toast.success("Đăng nhập thành công !")
-    //         navigate("/");
-    //     } else {
-    //         toast.warning("Đăng nhập thất bại !")
+    const handleLogin = (e) => {
+        e.preventDefault();
+        const user = userData;
+        const ngdung = user.find(
+            (u) => u.username === userName && u.password === password
+        );
+        if (ngdung) {
+            toast.success("Đăng nhập thành công !")
+            setUser(true)
+            navigate("/main/home");
+        } else {
+            toast.warning("Đăng nhập thất bại !")
+            setUser(false)
 
-    //     }
-    // };
+        }
+    };
 
     return (
         <Row className="body_wrapper">
@@ -60,32 +62,29 @@ export default function Login() {
                         alt=""
                         width={80}
                     />
-                    <h1>Welcome</h1>
+                    <h1 style={{ marginTop: '15px' }}>Hệ thống quản lý Coffee trực tuyến</h1>
                     <form className="infoform" >
-                        <label>Your name:</label>
+                        <label>Tên tài khoản:</label>
                         <input
                             type="text"
-                            placeholder="Enter your name"
+                            placeholder="Nhập tên tài khoản"
                             value={userName}
                             onChange={(e) => {
                                 setUserName(e.target.value)
                             }} />
-                        <label>Password:</label>
+                        <label>Mật khẩu:</label>
                         <input
                             type="password"
-                            placeholder="Enter your password"
+                            placeholder="Nhập mật khẩu"
                             value={password}
                             onChange={(e) => {
                                 setPassword(e.target.value)
                             }} />
-                        <button type="submit" className="btn_login">Login</button>{" "}
-                        {/* <p>
-                            You don't have an account, please sign up{" "}
-                            <Link to="/register" className="link"><b>Here</b></Link>
-                        </p> */}
-                        <p>
-                            <Link to="/main/home" className="link"><b><ArrowLeftOutlined style={{ marginRight: 10 }} />Back to home page</b></Link>
-                        </p>
+                        <Row style={{ alignItems: 'center', justifyContent: 'space-between', marginTop: '20px' }}>
+                            <Checkbox style={{ color: "green", fontSize: 12 }}>Nhớ mật khẩu</Checkbox>
+                            <Link style={{ color: "green", fontSize: 12 }}>Quên mật khẩu ?</Link>
+                        </Row>
+                        <button type="submit" className="btn_login" onClick={handleLogin}>Đăng nhập</button>
                     </form>
                 </Col>
             </Col>
