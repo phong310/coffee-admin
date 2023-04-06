@@ -21,6 +21,7 @@ function App() {
     }
   }, [user]);
 
+
   return (
     <>
       <ToastContainer autoClose={2000} theme="colored" />

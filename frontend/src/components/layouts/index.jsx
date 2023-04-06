@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { useState } from 'react';
 import { Drinks } from '../../pages/Drinks';
 import { Bakery } from '../../pages/Bakery';
@@ -10,6 +10,7 @@ import { Layout, Menu, theme, Col, Row, Avatar, Dropdown } from 'antd';
 import { Typography } from 'antd';
 import SubMenu from 'antd/es/menu/SubMenu';
 import { HomePage } from '../../pages/Home';
+import AuthContext from '../../context/Auth';
 
 
 const { Header, Content, Footer, Sider } = Layout;
@@ -53,6 +54,7 @@ const itemsDropAvatar = [
 
 const MainLayout = () => {
     const [collapsed, setCollapsed] = useState(false);
+    const { user, setUser } = useContext(AuthContext)
     const {
         token: { colorBgContainer },
     } = theme.useToken();
@@ -130,9 +132,7 @@ const MainLayout = () => {
                         <Col>
                             <Row style={{ alignItems: 'center', marginRight: 20 }}>
                                 <Col>
-                                    <Dropdown placement='bottom' arrow overlay={<Menu items={itemsDropAvatar} />}>
-                                        <BellOutlined style={{ fontSize: 18 }} />
-                                    </Dropdown>
+                                    <BellOutlined style={{ fontSize: 18 }} />
                                 </Col>
                                 <Col style={{ marginLeft: 25 }}>
                                     <Col>
@@ -143,10 +143,10 @@ const MainLayout = () => {
                                                 arrow
                                                 trigger={['click']}
                                             >
-                                                <Avatar icon={<UserOutlined />} />
+                                                <Avatar src={user.avatar} />
                                             </Dropdown>
                                             <Col style={{ marginLeft: 10, marginTop: 8 }}>
-                                                <Title level={5}>The Wind</Title>
+                                                <Title level={5}>{user.username}</Title>
                                             </Col>
                                         </Row>
                                     </Col>

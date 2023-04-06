@@ -37,11 +37,11 @@ export default function Login() {
         );
         if (ngdung) {
             toast.success("Đăng nhập thành công !")
-            setUser(true)
+            setUser(ngdung)
             navigate("/main/home");
         } else {
             toast.warning("Đăng nhập thất bại !")
-            setUser(false)
+            setUser(null)
 
         }
     };

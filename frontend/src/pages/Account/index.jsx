@@ -1,5 +1,5 @@
-import { DeleteTwoTone, EditTwoTone, EyeTwoTone, PlusOutlined, ReloadOutlined } from '@ant-design/icons'
-import { Breadcrumb, Button, Col, Collapse, Input, Row, Select, Space, Tag, Tooltip, Table } from 'antd'
+import { DeleteTwoTone, EditTwoTone, EyeTwoTone, PlusOutlined, ReloadOutlined, UserOutlined } from '@ant-design/icons'
+import { Breadcrumb, Button, Col, Collapse, Input, Row, Select, Space, Tag, Tooltip, Table, Avatar } from 'antd'
 import React, { useEffect, useState } from 'react'
 import "../../assets/CSS/Drinks.css"
 import AddModal from '../../components/Users/addModals'
@@ -91,7 +91,13 @@ export const Account = () => {
             title: 'Tên tài khoản',
             dataIndex: 'username',
             key: 'username',
-            render: (text) => <b>{text}</b>,
+            render: (_, value) => <>
+                <Row style={{ alignItems: 'center', justifyContent: 'space-between', width: 110 }}>
+                    <b>{value.username}</b>
+                    <Avatar src={value.avatar} />
+                </Row>
+
+            </>
         },
         {
             title: 'Email',
