@@ -91,10 +91,14 @@ export const Account = () => {
             title: 'Tên tài khoản',
             dataIndex: 'username',
             key: 'username',
+            width: 350,
             render: (_, value) => <>
-                <Row style={{ alignItems: 'center', justifyContent: 'space-between', width: 110 }}>
-                    <b>{value.username}</b>
-                    <Avatar src={value.avatar} />
+                <Row style={{ alignItems: 'center', justifyContent: 'space-between', width: 200 }}>
+                    <Col>
+                        <b>{value.username}</b>
+                        <p>Ngày sinh: 3/10/2001</p>
+                    </Col>
+                    <Avatar src={value.avatar} size={50} />
                 </Row>
 
             </>
@@ -103,6 +107,7 @@ export const Account = () => {
             title: 'Email',
             dataIndex: 'email',
             key: 'email',
+            width: 300
         },
         {
             title: 'Số điện thoại',
