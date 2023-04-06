@@ -1,5 +1,5 @@
-import { MailOutlined, UserOutlined } from '@ant-design/icons';
-import { Button, Col, Drawer, Form, Input, Row, Select, Space } from 'antd';
+import { LoadingOutlined, MailOutlined, PlusOutlined, UserOutlined } from '@ant-design/icons';
+import { Button, Col, Drawer, Form, Input, Row, Select, Space, Upload, message } from 'antd';
 import axios from 'axios';
 import { useState, useEffect } from 'react';
 import { toast } from 'react-toastify';
@@ -7,8 +7,22 @@ const { Option } = Select;
 
 
 
+const beforeUpload = (file) => {
+    const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png';
+    if (!isJpgOrPng) {
+        message.error('You can only upload JPG/PNG file!');
+    }
+    const isLt2M = file.size / 1024 / 1024 < 2;
+    if (!isLt2M) {
+        message.error('Image must smaller than 2MB!');
+    }
+    return isJpgOrPng && isLt2M;
+};
+
 const UpdateModal = ({ data, setData, getAll, item }) => {
     const [placement, setPlacement] = useState('left');
+    const [loading, setLoading] = useState(false);
+    const [avatarUrl, setAvatarUrl] = useState()
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
@@ -36,7 +50,8 @@ const UpdateModal = ({ data, setData, getAll, item }) => {
             email: item?.email,
             phone: item?.phone,
             role: item?.role,
-            status: item?.status
+            status: item?.status,
+            avatar: item?.avatar
         })
         setUsername(item?.username);
         setPassword(item?.password);
@@ -45,8 +60,39 @@ const UpdateModal = ({ data, setData, getAll, item }) => {
         setPhoneNumber(item?.phone);
         setRole(item?.role);
         setStatus(item?.status)
+        setAvatarUrl(item?.avatar)
 
     }, [item, form])
+
+    const handleChange = (info) => {
+        // console.log(info)
+        if (info.file.status === 'uploading') {
+            setLoading(true);
+            return;
+        }
+        if (info.file.status === 'done') {
+            message.success(`${info.file.name} file uploaded successfully`);
+            // Set imageUrl to the uploaded image URL
+            setAvatarUrl(info.file.response.imageURL);
+            console.log(info.file.response.imageURL)
+            setLoading(false);
+        } else if (info.file.status === 'error') {
+            message.error(`${info.file.name} file upload failed.`);
+            setLoading(false);
+        }
+    };
+    const uploadButton = (
+        <div>
+            {loading ? <LoadingOutlined /> : <PlusOutlined />}
+            <div
+                style={{
+                    marginTop: 8,
+                }}
+            >
+                Upload
+            </div>
+        </div>
+    )
 
     const updateUser = async () => {
         form.validateFields().then(async () => {
@@ -57,7 +103,8 @@ const UpdateModal = ({ data, setData, getAll, item }) => {
                 email: email,
                 phone: phoneNumber,
                 role: role,
-                status: status
+                status: status,
+                avatar: avatarUrl,
             }
             try {
                 const response2 = await axios.put(`http://localhost:7000/user/update/${item?._id}`, newUpdate);
@@ -112,6 +159,35 @@ const UpdateModal = ({ data, setData, getAll, item }) => {
                 }
             >
                 <Form form={form} layout="vertical">
+                    <Row style={{ justifyContent: "center", marginBottom: 20 }}>
+                        <Col>
+                            <Upload
+                                name="file"
+                                listType="picture-circle"
+                                className="avatar-uploader"
+                                showUploadList={false}
+                                beforeUpload={beforeUpload}
+                                action="http://localhost:7000/upload"
+                                onChange={handleChange}
+
+                            >
+                                {avatarUrl ? (
+                                    <img
+                                        src={avatarUrl}
+                                        alt="avatar"
+                                        style={{
+                                            width: '100%',
+                                            height: '100%',
+                                            objectFit: 'cover'
+                                        }}
+                                    />
+                                ) : (
+                                    uploadButton
+                                )}
+                            </Upload>
+                        </Col>
+
+                    </Row>
                     <Row gutter={24}>
                         <Col span={12}>
                             <Form.Item

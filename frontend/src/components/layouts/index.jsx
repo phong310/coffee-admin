@@ -11,6 +11,7 @@ import { Typography } from 'antd';
 import SubMenu from 'antd/es/menu/SubMenu';
 import { HomePage } from '../../pages/Home';
 import AuthContext from '../../context/Auth';
+import { toast } from 'react-toastify';
 
 
 const { Header, Content, Footer, Sider } = Layout;
