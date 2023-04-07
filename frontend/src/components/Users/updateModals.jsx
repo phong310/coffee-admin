@@ -31,7 +31,8 @@ const UpdateModal = ({ data, setData, getAll, item }) => {
     const [phoneNumber, setPhoneNumber] = useState("");
     const [role, setRole] = useState("");
     const [status, setStatus] = useState("");
-    const [birthday, setBirthday] = useState("")
+    const [birthday, setBirthday] = useState("");
+    const [sex, setSex] = useState("");
 
 
     const [form] = Form.useForm()
@@ -39,6 +40,10 @@ const UpdateModal = ({ data, setData, getAll, item }) => {
 
     const handleRole = (value) => {
         setRole(value)
+    }
+
+    const handleSex = (value) => {
+        setSex(value)
     }
 
     const handleStatus = (item) => {
@@ -60,7 +65,8 @@ const UpdateModal = ({ data, setData, getAll, item }) => {
             role: item?.role,
             status: item?.status,
             avatar: item?.avatar,
-            birthday: item?.birthday
+            birthday: item?.birthday,
+            sex: item?.sex
         })
         setUsername(item?.username);
         setPassword(item?.password);
@@ -70,7 +76,8 @@ const UpdateModal = ({ data, setData, getAll, item }) => {
         setRole(item?.role);
         setStatus(item?.status)
         setAvatarUrl(item?.avatar)
-        setBirthday(item?.birthday)
+        setBirthday(item?.birthday);
+        setSex(item?.sex)
 
     }, [item, form])
 
@@ -115,7 +122,8 @@ const UpdateModal = ({ data, setData, getAll, item }) => {
                 role: role,
                 status: status,
                 avatar: avatarUrl,
-                birthday: birthday
+                birthday: birthday,
+                sex: sex,
             }
             try {
                 const response2 = await axios.put(`http://localhost:7000/user/update/${item?._id}`, newUpdate);
@@ -262,16 +270,19 @@ const UpdateModal = ({ data, setData, getAll, item }) => {
                     <Row gutter={24}>
                         <Col span={12}>
                             <Form.Item
-                                name="phone"
-                                label="Số điện thoại"
+                                name="sex"
+                                label="Giới tính"
                                 rules={[
                                     {
                                         required: true,
-                                        message: 'Vui lòng nhập số điện thoại',
+                                        message: 'Vui lòng chọn giới tính',
                                     },
                                 ]}
                             >
-                                <Input value={phoneNumber} onChange={(e) => setPhoneNumber(e.target.value)} type='text' placeholder="SĐT" />
+                                <Select placeholder="Giới tính" onChange={handleSex}>
+                                    <Option value="Nam">Nam</Option>
+                                    <Option value="Nữ">Nữ</Option>
+                                </Select>
                             </Form.Item>
                         </Col>
                         <Col span={12}>
@@ -291,7 +302,21 @@ const UpdateModal = ({ data, setData, getAll, item }) => {
                         </Col>
                     </Row>
                     <Row gutter={24}>
-                        <Col span={24}>
+                        <Col span={12}>
+                            <Form.Item
+                                name="phone"
+                                label="Số điện thoại"
+                                rules={[
+                                    {
+                                        required: true,
+                                        message: 'Vui lòng nhập số điện thoại',
+                                    },
+                                ]}
+                            >
+                                <Input value={phoneNumber} onChange={(e) => setPhoneNumber(e.target.value)} type='text' placeholder="SĐT" />
+                            </Form.Item>
+                        </Col>
+                        <Col span={12}>
                             <Form.Item
                                 name="role"
                                 label="Nhóm quyền"

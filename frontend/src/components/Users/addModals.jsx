@@ -32,13 +32,18 @@ const AddModal = ({ data, setData, getAll }) => {
     const [phoneNumber, setPhoneNumber] = useState("");
     const [role, setRole] = useState("");
     const [status, setStatus] = useState("");
-    const [birthday, setBirthday] = useState("")
+    const [birthday, setBirthday] = useState("");
+    const [sex, setSex] = useState("")
 
     const formRef = useRef(null)
 
 
     const handleRole = (value) => {
         setRole(value)
+    }
+
+    const handleSex = (value) => {
+        setSex(value)
     }
 
     const handleStatus = (item) => {
@@ -86,6 +91,7 @@ const AddModal = ({ data, setData, getAll }) => {
                 role: role,
                 status: status,
                 avatar: avatarUrl,
+                sex: sex,
                 birthday: birthday
             }
             try {
@@ -117,7 +123,8 @@ const AddModal = ({ data, setData, getAll }) => {
         setPhoneNumber("");
         setRole("");
         setStatus("");
-        setAvatarUrl("")
+        setAvatarUrl("");
+        setSex("");
     }
 
     const handleBirthday = (date, dateString) => {
@@ -238,16 +245,19 @@ const AddModal = ({ data, setData, getAll }) => {
                     <Row gutter={24}>
                         <Col span={12}>
                             <Form.Item
-                                name="phone"
-                                label="Số điện thoại"
+                                name="sex"
+                                label="Giới tính"
                                 rules={[
                                     {
                                         required: true,
-                                        message: 'Vui lòng nhập số điện thoại',
+                                        message: 'Vui lòng chọn giới tính',
                                     },
                                 ]}
                             >
-                                <Input value={phoneNumber} onChange={(e) => setPhoneNumber(e.target.value)} type='text' placeholder="SĐT" />
+                                <Select placeholder="Giới tính" onChange={handleSex}>
+                                    <Option value="Nam">Nam</Option>
+                                    <Option value="Nữ">Nữ</Option>
+                                </Select>
                             </Form.Item>
                         </Col>
                         <Col span={12}>
@@ -267,7 +277,21 @@ const AddModal = ({ data, setData, getAll }) => {
 
                     </Row>
                     <Row gutter={24}>
-                        <Col span={24}>
+                        <Col span={12}>
+                            <Form.Item
+                                name="phone"
+                                label="Số điện thoại"
+                                rules={[
+                                    {
+                                        required: true,
+                                        message: 'Vui lòng nhập số điện thoại',
+                                    },
+                                ]}
+                            >
+                                <Input value={phoneNumber} onChange={(e) => setPhoneNumber(e.target.value)} type='text' placeholder="SĐT" />
+                            </Form.Item>
+                        </Col>
+                        <Col span={12}>
                             <Form.Item
                                 name="role"
                                 label="Nhóm quyền"

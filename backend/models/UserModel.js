@@ -34,6 +34,10 @@ const userSchema = new mongoose.Schema({
     birthday: {
         type: String,
         required: true
+    },
+    sex: {
+        type: String,
+        require: true
     }
 
 }, { timestamps: true })
