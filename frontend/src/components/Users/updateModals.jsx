@@ -1,7 +1,7 @@
 import { LoadingOutlined, MailOutlined, PlusOutlined, UserOutlined } from '@ant-design/icons';
-import { Button, Col, Drawer, Form, Input, Row, Select, Space, Upload, message } from 'antd';
+import { Button, Col, DatePicker, Drawer, Form, Input, Row, Select, Space, Upload, message } from 'antd';
 import axios from 'axios';
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 const { Option } = Select;
 
@@ -30,6 +30,7 @@ const UpdateModal = ({ data, setData, getAll, item }) => {
     const [phoneNumber, setPhoneNumber] = useState("");
     const [role, setRole] = useState("");
     const [status, setStatus] = useState("");
+    const [birthday, setBirthday] = useState("")
 
     const [form] = Form.useForm()
 
@@ -42,6 +43,11 @@ const UpdateModal = ({ data, setData, getAll, item }) => {
         setStatus(item)
     }
 
+    const handleBirthday = (date, dateString) => {
+        setBirthday(dateString);
+    }
+
+
     useEffect(() => {
         form.setFieldsValue({
             username: item?.username,
@@ -51,7 +57,8 @@ const UpdateModal = ({ data, setData, getAll, item }) => {
             phone: item?.phone,
             role: item?.role,
             status: item?.status,
-            avatar: item?.avatar
+            avatar: item?.avatar,
+            birthday: item?.birthday
         })
         setUsername(item?.username);
         setPassword(item?.password);
@@ -61,6 +68,7 @@ const UpdateModal = ({ data, setData, getAll, item }) => {
         setRole(item?.role);
         setStatus(item?.status)
         setAvatarUrl(item?.avatar)
+        setBirthday(item?.birthday)
 
     }, [item, form])
 
@@ -105,6 +113,7 @@ const UpdateModal = ({ data, setData, getAll, item }) => {
                 role: role,
                 status: status,
                 avatar: avatarUrl,
+                birthday: birthday
             }
             try {
                 const response2 = await axios.put(`http://localhost:7000/user/update/${item?._id}`, newUpdate);
@@ -263,6 +272,23 @@ const UpdateModal = ({ data, setData, getAll, item }) => {
                                 <Input value={phoneNumber} onChange={(e) => setPhoneNumber(e.target.value)} type='text' placeholder="SĐT" />
                             </Form.Item>
                         </Col>
+                        <Col span={12}>
+                            <Form.Item
+                                name="birthday"
+                                label="Ngày sinh"
+                                rules={[
+                                    {
+                                        required: true,
+                                        message: 'Vui lòng nhập số ngày sinh',
+                                    },
+                                ]}
+                            >
+                                {birthday}
+                                <DatePicker onChange={handleBirthday} style={{ width: '100%' }} format="DD/MM/YYYY" />
+                            </Form.Item>
+                        </Col>
+                    </Row>
+                    <Row gutter={24}>
                         <Col span={12}>
                             <Form.Item
                                 name="role"

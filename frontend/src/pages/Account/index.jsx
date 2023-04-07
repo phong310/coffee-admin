@@ -93,10 +93,10 @@ export const Account = () => {
             key: 'username',
             width: 350,
             render: (_, value) => <>
-                <Row style={{ alignItems: 'center', justifyContent: 'space-between', width: 200 }}>
+                <Row style={{ alignItems: 'center', justifyContent: 'space-between', width: 210 }}>
                     <Col>
                         <b>{value.username}</b>
-                        <p>Ngày sinh: 3/10/2001</p>
+                        <p>Ngày sinh: {value.birthday}</p>
                     </Col>
                     <Avatar src={value.avatar} size={50} />
                 </Row>

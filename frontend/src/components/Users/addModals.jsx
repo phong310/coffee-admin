@@ -1,5 +1,5 @@
 import { MailOutlined, UserOutlined, LoadingOutlined, PlusOutlined } from '@ant-design/icons';
-import { Button, Col, Drawer, Form, Input, Row, Select, Space, Upload, message } from 'antd';
+import { Button, Col, DatePicker, Drawer, Form, Input, Row, Select, Space, Upload, message } from 'antd';
 import axios from 'axios';
 import { useState, useRef } from 'react';
 import { toast } from 'react-toastify';
@@ -29,6 +29,7 @@ const AddModal = ({ data, setData, getAll }) => {
     const [phoneNumber, setPhoneNumber] = useState("");
     const [role, setRole] = useState("");
     const [status, setStatus] = useState("");
+    const [birthday, setBirthday] = useState("")
 
     const formRef = useRef(null)
 
@@ -81,7 +82,8 @@ const AddModal = ({ data, setData, getAll }) => {
                 phone: phoneNumber,
                 role: role,
                 status: status,
-                avatar: avatarUrl
+                avatar: avatarUrl,
+                birthday: birthday
             }
             try {
                 const response2 = await axios.post('http://localhost:7000/user/createUser', newAccount);
@@ -113,6 +115,10 @@ const AddModal = ({ data, setData, getAll }) => {
         setRole("");
         setStatus("");
         setAvatarUrl("")
+    }
+
+    const handleBirthday = (date, dateString) => {
+        setBirthday(dateString);
     }
 
 
@@ -242,6 +248,23 @@ const AddModal = ({ data, setData, getAll }) => {
                             </Form.Item>
                         </Col>
                         <Col span={12}>
+                            <Form.Item
+                                name="birthday"
+                                label="Ngày sinh"
+                                rules={[
+                                    {
+                                        required: true,
+                                        message: 'Vui lòng nhập số ngày sinh',
+                                    },
+                                ]}
+                            >
+                                <DatePicker onChange={handleBirthday} style={{ width: '100%' }} format="DD/MM/YYYY" />
+                            </Form.Item>
+                        </Col>
+
+                    </Row>
+                    <Row gutter={24}>
+                        <Col span={24}>
                             <Form.Item
                                 name="role"
                                 label="Nhóm quyền"
