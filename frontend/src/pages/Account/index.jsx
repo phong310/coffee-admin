@@ -85,6 +85,7 @@ export const Account = () => {
         {
             title: 'STT',
             key: 'stt',
+            width: 100,
             render: (text, record, index) => <span>{index + 1}</span>,
         },
         {
@@ -93,12 +94,16 @@ export const Account = () => {
             key: 'username',
             width: 350,
             render: (_, value) => <>
-                <Row style={{ alignItems: 'center', justifyContent: 'space-between', width: 210 }}>
+                <Row style={{ alignItems: 'center', justifyContent: 'space-between', width: 220 }}>
                     <Col>
-                        <b>{value.username}</b>
-                        <p>Ngày sinh: {value.birthday}</p>
+                        <span>Tên: <b> {value.username}</b></span>
+                        <br />
+                        <span>Giới tính: <b>{value.sex}</b></span>
+                        <p>Ngày sinh: <b>{value.birthday}</b></p>
                     </Col>
-                    <Avatar src={value.avatar} size={50} />
+                    <Col style={{ marginBottom: 15 }}>
+                        <Avatar src={value.avatar} size={50} />
+                    </Col>
                 </Row>
 
             </>
@@ -220,7 +225,7 @@ export const Account = () => {
                 </Row>
             </Col>
             {/* Table */}
-            <Table className='table' columns={columns} dataSource={data} />
+            <Table className='table' columns={columns} dataSource={data} scroll={{ y: 502 }} />
 
             <AddModal data={open} setData={setOpen} getAll={getDataUser} />
 

@@ -3,6 +3,7 @@ import { Button, Col, DatePicker, Drawer, Form, Input, Row, Select, Space, Uploa
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
+
 const { Option } = Select;
 
 
@@ -31,6 +32,7 @@ const UpdateModal = ({ data, setData, getAll, item }) => {
     const [role, setRole] = useState("");
     const [status, setStatus] = useState("");
     const [birthday, setBirthday] = useState("")
+
 
     const [form] = Form.useForm()
 
@@ -284,12 +286,12 @@ const UpdateModal = ({ data, setData, getAll, item }) => {
                                 ]}
                             >
                                 {birthday}
-                                <DatePicker onChange={handleBirthday} style={{ width: '100%' }} format="DD/MM/YYYY" />
+                                <DatePicker onChange={handleBirthday} style={{ width: '100%' }} format="DD/MM/YYYY" placeholder="Chọn ngày sinh" />
                             </Form.Item>
                         </Col>
                     </Row>
                     <Row gutter={24}>
-                        <Col span={12}>
+                        <Col span={24}>
                             <Form.Item
                                 name="role"
                                 label="Nhóm quyền"

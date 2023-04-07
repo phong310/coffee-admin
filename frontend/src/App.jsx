@@ -10,6 +10,7 @@ import { Snacks } from './pages/Snacks';
 import { Account } from './pages/Account';
 import AuthContext from './context/Auth';
 import { useState, useEffect } from 'react';
+import { InforUser } from './pages/Infor';
 
 function App() {
   const [user, setUser] = useState(false);
@@ -35,6 +36,7 @@ function App() {
               <Route path="/main/mangerment/bakery" element={<Bakery />} />
               <Route path="/main/mangerment/snacks" element={<Snacks />} />
               <Route path="/main/mangerment/account" element={<Account />} />
+              <Route path="/main/mangerment/infor" element={<InforUser />} />
             </Route>
           ) : null}
 

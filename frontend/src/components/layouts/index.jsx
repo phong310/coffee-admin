@@ -12,6 +12,7 @@ import SubMenu from 'antd/es/menu/SubMenu';
 import { HomePage } from '../../pages/Home';
 import AuthContext from '../../context/Auth';
 import { toast } from 'react-toastify';
+import { InforUser } from '../../pages/Infor';
 
 
 const { Header, Content, Footer, Sider } = Layout;
@@ -42,7 +43,7 @@ const itemsDropAvatar = [
     {
         key: '1',
         label: (
-            <Link to="/" >Thông tin người dùng</Link>
+            <Link to="/main/mangerment/infor" >Thông tin người dùng</Link>
         ),
     },
     {
@@ -171,6 +172,7 @@ const MainLayout = () => {
                         <Route path="/mangerment/bakery" element={<Bakery />} />
                         <Route path="/mangerment/snacks" element={<Snacks />} />
                         <Route path="/mangerment/account" element={<Account />} />
+                        <Route path="/mangerment/infor" element={<InforUser />} />
                     </Routes>
 
 

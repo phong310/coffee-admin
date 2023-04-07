@@ -3,7 +3,10 @@ import { Button, Col, DatePicker, Drawer, Form, Input, Row, Select, Space, Uploa
 import axios from 'axios';
 import { useState, useRef } from 'react';
 import { toast } from 'react-toastify';
+
+
 const { Option } = Select;
+
 
 
 const beforeUpload = (file) => {
@@ -258,7 +261,7 @@ const AddModal = ({ data, setData, getAll }) => {
                                     },
                                 ]}
                             >
-                                <DatePicker onChange={handleBirthday} style={{ width: '100%' }} format="DD/MM/YYYY" />
+                                <DatePicker onChange={handleBirthday} style={{ width: '100%' }} format="DD/MM/YYYY" placeholder='Chọn ngày sinh' />
                             </Form.Item>
                         </Col>
 
