@@ -9,12 +9,12 @@ export const InforUser = () => {
 
 
     return (
-        <Card title="Thông tin người dùng" style={{ width: 700, height: 800, margin: '0 auto', top: '3%', marginBottom: '20px' }}>
+        <Card title="Thông tin người dùng" style={{ width: 700, height: 780, margin: '0 auto', top: '3%', marginBottom: '20px' }}>
             <Row style={{ justifyContent: "center", marginBottom: 20 }}>
                 <Col>
                     <Image
-                        width={130}
-                        height={130}
+                        width={100}
+                        height={100}
                         style={{ objectFit: "cover", borderRadius: '50%' }}
                         src={user.avatar}
 
