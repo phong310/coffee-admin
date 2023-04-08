@@ -1,11 +1,13 @@
-import React, { useContext } from 'react'
+import React, { useContext, useState } from 'react'
 import { Card, Image, Col, Row, Divider, Button, Tag } from 'antd';
 import { EditTwoTone } from '@ant-design/icons';
 import AuthContext from '../../context/Auth';
+import { EditInfor } from '../../components/Infor/editModal';
 
 export const InforUser = () => {
 
-    const { user, setUser } = useContext(AuthContext)
+    const { user, setUser } = useContext(AuthContext);
+    const [openUpdate, setOpenUpdate] = useState(false)
 
 
     return (
@@ -23,7 +25,7 @@ export const InforUser = () => {
                 </Col>
             </Row>
             <Row style={{ justifyContent: "center" }}>
-                <Button type="success" ghost icon={<EditTwoTone />}>
+                <Button type="success" ghost icon={<EditTwoTone />} onClick={() => setOpenUpdate(true)}>
                     Chỉnh sửa
                 </Button>
             </Row>
@@ -66,6 +68,9 @@ export const InforUser = () => {
                     <Divider />
                 </Row>
             </Col>
+
+            {/* Chỉnh sửa */}
+            <EditInfor open={openUpdate} setOpen={setOpenUpdate} />
 
         </Card>
     )
