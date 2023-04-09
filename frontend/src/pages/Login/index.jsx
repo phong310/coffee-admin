@@ -5,6 +5,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { toast } from 'react-toastify';
 import "../.././assets/CSS/login.css";
 import AuthContext from "../../context/Auth";
+import Cookies from 'js-cookie';
 
 export default function Login() {
     const [userName, setUserName] = useState("");
@@ -13,6 +14,8 @@ export default function Login() {
 
     const checkLogin = useContext(AuthContext);
     const { user, setUser } = checkLogin
+    let navigate = useNavigate();
+
 
     const handleUser = async () => {
         try {
@@ -27,7 +30,6 @@ export default function Login() {
         handleUser()
     }, [])
 
-    let navigate = useNavigate();
 
     const handleLogin = (e) => {
         e.preventDefault();
@@ -38,6 +40,7 @@ export default function Login() {
         if (ngdung) {
             toast.success("Đăng nhập thành công !")
             setUser(ngdung)
+            Cookies.set('user', JSON.stringify(ngdung), { expires: 1 });
             navigate("/main/home");
         } else {
             toast.warning("Đăng nhập thất bại !")

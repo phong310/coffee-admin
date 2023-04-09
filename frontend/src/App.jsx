@@ -11,16 +11,21 @@ import { Account } from './pages/Account';
 import AuthContext from './context/Auth';
 import { useState, useEffect } from 'react';
 import { InforUser } from './pages/Infor';
+import Cookies from 'js-cookie';
 
 function App() {
   const [user, setUser] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (!user) {
-      navigate("/");
+    // Kiểm tra xem cookie có chứa thông tin tài khoản không
+    const userCookie = Cookies.get('user');
+    if (userCookie) {
+      setUser(JSON.parse(userCookie));
+    } else {
+      navigate('/');
     }
-  }, [user]);
+  }, []);
 
 
   return (
@@ -29,17 +34,14 @@ function App() {
       <AuthContext.Provider value={{ user, setUser }}>
         <Routes>
           <Route path="/" element={<Login />} />
-          {user ? (
-            <Route path="/main" element={<MainLayout />}>
-              <Route exact path="/main/home" element={<HomePage />} />
-              <Route path="/main/mangerment/drinks" element={<Drinks />} />
-              <Route path="/main/mangerment/bakery" element={<Bakery />} />
-              <Route path="/main/mangerment/snacks" element={<Snacks />} />
-              <Route path="/main/mangerment/account" element={<Account />} />
-              <Route path="/main/mangerment/infor" element={<InforUser />} />
-            </Route>
-          ) : null}
-
+          <Route path="/main" element={<MainLayout />}>
+            <Route exact path="/main/home" element={<HomePage />} />
+            <Route path="/main/mangerment/drinks" element={<Drinks />} />
+            <Route path="/main/mangerment/bakery" element={<Bakery />} />
+            <Route path="/main/mangerment/snacks" element={<Snacks />} />
+            <Route path="/main/mangerment/account" element={<Account />} />
+            <Route path="/main/mangerment/infor" element={<InforUser />} />
+          </Route>
         </Routes>
       </AuthContext.Provider>
 
