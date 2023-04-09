@@ -1,10 +1,8 @@
 import { AppstoreOutlined, BellOutlined, CarryOutOutlined, CoffeeOutlined, DashboardOutlined, DollarOutlined, FileSearchOutlined, FireOutlined, HeartOutlined, MenuOutlined, UserOutlined, UsergroupDeleteOutlined } from '@ant-design/icons';
 import { Avatar, Col, Dropdown, Layout, Menu, Row, Typography, theme } from 'antd';
 import SubMenu from 'antd/es/menu/SubMenu';
-import Cookies from 'js-cookie';
 import React, { useContext, useState } from 'react';
-import { Link, Route, Routes, useNavigate } from "react-router-dom";
-import { toast } from 'react-toastify';
+import { Link, Route, Routes } from "react-router-dom";
 import AuthContext from '../../context/Auth';
 import { Account } from '../../pages/Account';
 import { Bakery } from '../../pages/Bakery';
@@ -12,41 +10,21 @@ import { Drinks } from '../../pages/Drinks';
 import { HomePage } from '../../pages/Home';
 import { InforUser } from '../../pages/Infor';
 import { Snacks } from '../../pages/Snacks';
+import { Logout } from '../Logout';
 
 
 const { Header, Content, Footer, Sider } = Layout;
 const { Title } = Typography;
 
 
-// function getItem(label, key, icon, children) {
-//     return {
-//         key,
-//         icon,
-//         children,
-//         label,
-//     };
-// }
-// const items = [
-//     getItem('Trang chủ', '1', <DashboardOutlined />),
-//     getItem('Option 2', '2', <DesktopOutlined />),
-//     getItem('User', 'sub1', <UserOutlined />, [
-//         getItem('Tom', '3'),
-//         getItem('Bill', '4'),
-//         getItem('Alex', '5'),
-//     ]),
-//     getItem('Team', 'sub2', <TeamOutlined />, [getItem('Team 1', '6'), getItem('Team 2', '8')]),
-//     getItem('Files', '9', <FileOutlined />),
-// ];
-
-
 const MainLayout = () => {
     const [collapsed, setCollapsed] = useState(false);
     const { user, setUser } = useContext(AuthContext)
-    let navigate = useNavigate()
+    const [openLogout, setOpenLogOut] = useState(false)
+
+
     const handleLogout = () => {
-        toast.success("Đăng xuất thành công !")
-        Cookies.remove('user');
-        navigate("/")
+        setOpenLogOut(true)
     }
 
     const itemsDropAvatar = [
@@ -190,7 +168,7 @@ const MainLayout = () => {
                         <Route path="/mangerment/infor" element={<InforUser />} />
                     </Routes>
 
-
+                    <Logout open={openLogout} setOpen={setOpenLogOut} name={user.username} />
                 </Content>
                 <Footer
                     style={{
