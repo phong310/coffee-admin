@@ -11,6 +11,7 @@ export default function Login() {
     const [userName, setUserName] = useState("");
     const [password, setPassword] = useState("");
     const [userData, setUserData] = useState("");
+    const [remember, setRemember] = useState(false)
 
     const checkLogin = useContext(AuthContext);
     const { user, setUser } = checkLogin
@@ -28,6 +29,15 @@ export default function Login() {
 
     useEffect(() => {
         handleUser()
+
+        const storedPassword = localStorage.getItem("password");
+        const storedUsername = localStorage.getItem("username");
+        if (storedPassword) {
+            const decryptedPassword = atob(storedPassword); // Giải mã mật khẩu
+            setPassword(decryptedPassword);
+            setUserName(storedUsername);
+            setRemember(true);
+        }
     }, [])
 
 
@@ -38,6 +48,12 @@ export default function Login() {
             (u) => u.username === userName && u.password === password
         );
         if (ngdung) {
+            if (remember) {
+                // Lưu vào localStorage
+                const encryptedPassword = btoa(password); // Mã hóa mật khẩu
+                localStorage.setItem("password", encryptedPassword);
+                localStorage.setItem("username", userName);
+            }
             toast.success("Đăng nhập thành công !")
             setUser(ngdung)
             Cookies.set('user', JSON.stringify(ngdung), { expires: 1 });
@@ -84,7 +100,7 @@ export default function Login() {
                                 setPassword(e.target.value)
                             }} />
                         <Row style={{ alignItems: 'center', justifyContent: 'space-between', marginTop: '20px' }}>
-                            <Checkbox style={{ color: "green", fontSize: 12 }}>Nhớ mật khẩu</Checkbox>
+                            <Checkbox checked={remember} onChange={(e) => setRemember(e.target.checked)} style={{ color: "green", fontSize: 12 }}>Nhớ mật khẩu</Checkbox>
                             <Link style={{ color: "green", fontSize: 12 }}>Quên mật khẩu ?</Link>
                         </Row>
                         <button type="submit" className="btn_login" onClick={handleLogin}>Đăng nhập</button>
