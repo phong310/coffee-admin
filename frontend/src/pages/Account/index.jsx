@@ -7,6 +7,7 @@ import UpdateModal from '../../components/Users/updateModals'
 import { DeleteUser } from '../../components/Users/deleteModal'
 import { ResetUser } from '../../components/Users/resetModals'
 import axios from 'axios'
+import moment from "moment"
 
 
 
@@ -99,7 +100,9 @@ export const Account = () => {
                         <span>Tên: <b> {value.username}</b></span>
                         <br />
                         <span>Giới tính: <b>{value.sex}</b></span>
-                        <p>Ngày sinh: <b>{value.birthday}</b></p>
+                        <br />
+                        {value.address ? <span>Địa chỉ: <b>{value.address}</b></span> : null}
+                        <p>Ngày sinh: <b>{moment(value.birthday).format('DD/MM/YYYY')}</b></p>
                     </Col>
                     <Col style={{ marginBottom: 15 }}>
                         <Avatar src={value.avatar} size={50} />

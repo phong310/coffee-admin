@@ -33,7 +33,8 @@ const AddModal = ({ data, setData, getAll }) => {
     const [role, setRole] = useState("");
     const [status, setStatus] = useState("");
     const [birthday, setBirthday] = useState("");
-    const [sex, setSex] = useState("")
+    const [sex, setSex] = useState("");
+    const [address, setAddress] = useState("")
 
     const formRef = useRef(null)
 
@@ -92,7 +93,8 @@ const AddModal = ({ data, setData, getAll }) => {
                 status: status,
                 avatar: avatarUrl,
                 sex: sex,
-                birthday: birthday
+                birthday: birthday,
+                address: address
             }
             try {
                 const response2 = await axios.post('http://localhost:7000/user/createUser', newAccount);
@@ -293,6 +295,16 @@ const AddModal = ({ data, setData, getAll }) => {
                         </Col>
                         <Col span={12}>
                             <Form.Item
+                                name="address"
+                                label="Địa chỉ"
+                            >
+                                <Input value={address} onChange={(e) => setAddress(e.target.value)} type='text' placeholder="Địa chỉ" />
+                            </Form.Item>
+                        </Col>
+                    </Row>
+                    <Row gutter={24}>
+                        <Col span={24}>
+                            <Form.Item
                                 name="role"
                                 label="Nhóm quyền"
                                 rules={[
@@ -308,8 +320,6 @@ const AddModal = ({ data, setData, getAll }) => {
                                 </Select>
                             </Form.Item>
                         </Col>
-                    </Row>
-                    <Row gutter={24}>
                         <Col span={24}>
                             <Form.Item
                                 name="status"

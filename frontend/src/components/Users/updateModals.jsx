@@ -3,6 +3,7 @@ import { Button, Col, DatePicker, Drawer, Form, Input, Row, Select, Space, Uploa
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
+import moment from "moment"
 
 const { Option } = Select;
 
@@ -33,6 +34,7 @@ const UpdateModal = ({ data, setData, getAll, item }) => {
     const [status, setStatus] = useState("");
     const [birthday, setBirthday] = useState("");
     const [sex, setSex] = useState("");
+    const [address, setAddress] = useState("")
 
 
     const [form] = Form.useForm()
@@ -65,8 +67,9 @@ const UpdateModal = ({ data, setData, getAll, item }) => {
             role: item?.role,
             status: item?.status,
             avatar: item?.avatar,
-            birthday: item?.birthday,
-            sex: item?.sex
+            birthday: moment(item?.birthday),
+            sex: item?.sex,
+            address: item?.address
         })
         setUsername(item?.username);
         setPassword(item?.password);
@@ -76,8 +79,9 @@ const UpdateModal = ({ data, setData, getAll, item }) => {
         setRole(item?.role);
         setStatus(item?.status)
         setAvatarUrl(item?.avatar)
-        setBirthday(item?.birthday);
+        setBirthday(moment(item?.birthday));
         setSex(item?.sex)
+        setAddress(item?.address)
 
     }, [item, form])
 
@@ -124,6 +128,7 @@ const UpdateModal = ({ data, setData, getAll, item }) => {
                 avatar: avatarUrl,
                 birthday: birthday,
                 sex: sex,
+                address: address,
             }
             try {
                 const response2 = await axios.put(`http://localhost:7000/user/update/${item?._id}`, newUpdate);
@@ -296,7 +301,7 @@ const UpdateModal = ({ data, setData, getAll, item }) => {
                                     },
                                 ]}
                             >
-                                {birthday}
+
                                 <DatePicker onChange={handleBirthday} style={{ width: '100%' }} format="DD/MM/YYYY" placeholder="Chọn ngày sinh" />
                             </Form.Item>
                         </Col>
@@ -318,6 +323,16 @@ const UpdateModal = ({ data, setData, getAll, item }) => {
                         </Col>
                         <Col span={12}>
                             <Form.Item
+                                name="address"
+                                label="Địa chỉ"
+                            >
+                                <Input value={address} onChange={(e) => setAddress(e.target.value)} type='text' placeholder="Địa chỉ" />
+                            </Form.Item>
+                        </Col>
+                    </Row>
+                    <Row gutter={24}>
+                        <Col span={24}>
+                            <Form.Item
                                 name="role"
                                 label="Nhóm quyền"
                                 rules={[
@@ -333,8 +348,6 @@ const UpdateModal = ({ data, setData, getAll, item }) => {
                                 </Select>
                             </Form.Item>
                         </Col>
-                    </Row>
-                    <Row gutter={24}>
                         <Col span={24}>
                             <Form.Item
                                 name="status"

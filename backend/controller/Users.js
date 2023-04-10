@@ -25,7 +25,8 @@ const UserController = {
                 status: req.body.status,
                 avatar: req.body.avatar,
                 birthday: req.body.birthday,
-                sex: req.body.sex
+                sex: req.body.sex,
+                address: req.body.address,
             };
             const user = new UserModel(newUser);
             await user.save();
@@ -62,7 +63,8 @@ const UserController = {
                 status: req.body.status,
                 avatar: req.body.avatar,
                 birthday: req.body.birthday,
-                sex: req.body.sex
+                sex: req.body.sex,
+                address: req.body.address
             };
             const query = { _id: userId };
             const options = { new: true };

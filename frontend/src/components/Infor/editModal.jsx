@@ -4,6 +4,7 @@ import { toast } from 'react-toastify';
 import axios from 'axios';
 import { LoadingOutlined, MailOutlined, PlusOutlined, UserOutlined } from '@ant-design/icons';
 import AuthContext from '../../context/Auth';
+import moment from "moment"
 
 
 const { Option } = Select;
@@ -78,7 +79,7 @@ export const EditInfor = ({ open, setOpen }) => {
             role: user.role,
             status: user.status,
             avatar: user.avatar,
-            birthday: user.birthday,
+            birthday: moment(user.birthday),
             sex: user.sex
         })
         setUsername(user.username);
@@ -87,7 +88,7 @@ export const EditInfor = ({ open, setOpen }) => {
         setRole(user.role);
         setStatus(user.status)
         setAvatarUrl(user.avatar)
-        setBirthday(user.birthday);
+        setBirthday(moment(user.birthday));
         setSex(user.sex)
 
     }, [user, form])
@@ -205,7 +206,6 @@ export const EditInfor = ({ open, setOpen }) => {
                                     },
                                 ]}
                             >
-                                {birthday}
                                 <DatePicker onChange={handleBirthday} style={{ width: '100%' }} format="DD/MM/YYYY" placeholder="Chọn ngày sinh" />
                             </Form.Item>
                         </Col>

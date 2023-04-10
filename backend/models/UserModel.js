@@ -38,6 +38,9 @@ const userSchema = new mongoose.Schema({
     sex: {
         type: String,
         require: true
+    },
+    address: {
+        type: String,
     }
 
 }, { timestamps: true })
