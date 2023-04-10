@@ -1,14 +1,29 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { Card, Image, Col, Row, Divider, Button, Tag } from 'antd';
 import { EditTwoTone } from '@ant-design/icons';
 import AuthContext from '../../context/Auth';
 import { EditInfor } from '../../components/Infor/editModal';
-
+import moment from "moment"
+import axios from 'axios';
 export const InforUser = () => {
 
     const { user, setUser } = useContext(AuthContext);
     const [openUpdate, setOpenUpdate] = useState(false)
 
+    const getAllUser = async () => {
+        try {
+            const res = await axios.get("http://localhost:7000/user/getAllUser");
+            setUser(res.data.find((item) => {
+                if (item._id === user._id) {
+                    return user
+                }
+            }))
+        } catch (e) {
+            console.log("Err:", e)
+        }
+    }
+
+    useEffect(() => { getAllUser() }, [])
 
     return (
         <Card title="Thông tin người dùng" style={{ width: 700, height: 780, margin: '0 auto', top: '3%', marginBottom: '20px' }}>
@@ -52,7 +67,7 @@ export const InforUser = () => {
                 </Row>
                 <Row style={{ justifyContent: "space-between", }}>
                     <span>Ngày sinh: </span>
-                    <b>{user.birthday}</b>
+                    <b>{moment(user.birthday).format('DD/MM/YYYY')}</b>
                     <Divider />
                 </Row>
                 <Row style={{ justifyContent: "space-between", }}>
@@ -70,7 +85,7 @@ export const InforUser = () => {
             </Col>
 
             {/* Chỉnh sửa */}
-            <EditInfor open={openUpdate} setOpen={setOpenUpdate} />
+            <EditInfor open={openUpdate} setOpen={setOpenUpdate} getAll={getAllUser} />
 
         </Card>
     )

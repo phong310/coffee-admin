@@ -48,8 +48,6 @@ const MainLayout = () => {
         },
     ];
 
-
-
     const {
         token: { colorBgContainer },
     } = theme.useToken();

@@ -1,10 +1,11 @@
-import React, { useContext, useEffect, useState } from 'react'
-import { Col, DatePicker, Form, Input, Modal, Row, Select, Upload, message } from 'antd';
-import { toast } from 'react-toastify';
-import axios from 'axios';
 import { LoadingOutlined, MailOutlined, PlusOutlined, UserOutlined } from '@ant-design/icons';
+import { Col, DatePicker, Form, Input, Modal, Row, Select, Upload, message } from 'antd';
+import axios from 'axios';
+import moment from "moment";
+import React, { useContext, useEffect, useState } from 'react';
+import { toast } from 'react-toastify';
 import AuthContext from '../../context/Auth';
-import moment from "moment"
+import Cookies from 'js-cookie';
 
 
 const { Option } = Select;
@@ -24,7 +25,7 @@ const beforeUpload = (file) => {
 };
 
 
-export const EditInfor = ({ open, setOpen }) => {
+export const EditInfor = ({ open, setOpen, getAll }) => {
     const [loading, setLoading] = useState(false);
     const [avatarUrl, setAvatarUrl] = useState()
     const [username, setUsername] = useState("");
@@ -36,6 +37,8 @@ export const EditInfor = ({ open, setOpen }) => {
     const [sex, setSex] = useState("");
 
     const { user, setUser } = useContext(AuthContext)
+
+
 
     const [form] = Form.useForm()
 
@@ -98,12 +101,37 @@ export const EditInfor = ({ open, setOpen }) => {
         setRole(value)
     }
 
+    const handleStatus = (value) => {
+        setStatus(value)
+    }
+
     const handleBirthday = (date, dateString) => {
         setBirthday(dateString);
     }
 
     const handleSex = (value) => {
         setSex(value)
+    }
+
+    const Edit = async () => {
+        try {
+            const newEdit = {
+                avatar: avatarUrl,
+                username: username,
+                email: email,
+                sex: sex,
+                phone: phoneNumber,
+                role: role,
+                birthday: birthday,
+                status: status,
+            }
+            const response2 = await axios.put(`http://localhost:7000/user/update/${user?._id}`, newEdit);
+            setOpen(false);
+            toast.success("Cập nhật tài khoản thành công");
+            getAll()
+        } catch (e) {
+            console.log("Err", e)
+        }
     }
 
     return (
@@ -113,7 +141,7 @@ export const EditInfor = ({ open, setOpen }) => {
                 centered
                 width={900}
                 open={open}
-                onOk={() => setOpen(false)}
+                onOk={Edit}
                 onCancel={() => setOpen(false)}
             >
                 <Form form={form} layout="vertical" >
@@ -255,7 +283,7 @@ export const EditInfor = ({ open, setOpen }) => {
                                     },
                                 ]}
                             >
-                                <Select placeholder="Trạng thái">
+                                <Select placeholder="Trạng thái" onChange={handleStatus}>
                                     <Option key="1" value="active">Kích hoạt</Option>
                                     <Option key="2" value="inactive">Chưa kích hoạt</Option>
                                 </Select>
