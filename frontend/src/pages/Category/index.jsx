@@ -2,6 +2,7 @@ import { DeleteTwoTone, EditTwoTone, EyeTwoTone, PlusOutlined } from '@ant-desig
 import { Breadcrumb, Button, Col, Collapse, Row, Space, Table, Tooltip, Select, Tag } from 'antd'
 import React from 'react'
 import "../../assets/CSS/Drinks.css"
+import { Link } from 'react-router-dom'
 
 
 
@@ -18,8 +19,8 @@ export const Category = () => {
         },
         {
             title: 'Danh mục đang sử dụng',
-            dataIndex: 'title',
-            key: 'title',
+            dataIndex: 'catename',
+            key: 'catename',
             width: 500,
             render: (text) => <b>{text}</b>,
         },
@@ -32,9 +33,11 @@ export const Category = () => {
         },
         {
             title: 'Điều hướng',
-            dataIndex: 'page',
-            key: 'page',
-            render: (text) => <b>{text}</b>,
+            dataIndex: 'direction',
+            key: 'direction',
+            render: (_, record) => {
+                <Link to="/main/mangerment/drinks">Quản lý đồ uống</Link>
+            },
         },
         {
             title: 'Chức năng',

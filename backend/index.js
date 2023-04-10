@@ -7,6 +7,7 @@ const Drinks = require("./router/Drinks")
 const Bakery = require("./router/Bakerys")
 const Snack = require("./router/Snacks")
 const User = require("./router/Users")
+const Category = require("./router/Category")
 const multer = require('multer');
 
 
@@ -26,6 +27,8 @@ app.use("/snack", Snack)
 app.use("/bakery", Bakery)
 
 app.use("/user", User)
+
+app.use("/category", Category)
 
 // Upload ảnh
 const storage = multer.diskStorage({
