@@ -8,6 +8,7 @@ import { DeleteUser } from '../../components/Users/deleteModal'
 import { ResetUser } from '../../components/Users/resetModals'
 import axios from 'axios'
 import moment from "moment"
+import * as XLSX from 'xlsx';
 
 
 
@@ -40,6 +41,14 @@ export const Account = () => {
         getDataUser()
     }, [])
 
+
+    // Xuất file Excel
+    const exportToExcel = (data) => {
+        const worksheet = XLSX.utils.json_to_sheet(data);
+        const workbook = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(workbook, worksheet, 'Data');
+        XLSX.writeFile(workbook, 'data.xlsx');
+    }
 
     const handleDelete = (record) => {
         setOpenDelete(true)
@@ -223,8 +232,8 @@ export const Account = () => {
                 <Row justify="space-between">
                     <h2>Danh sách Tài khoản <Tag color="#4096ff">{data.length}</Tag></h2>
                     <Row>
-                        <Button type="primary" icon={<ExportOutlined />} style={{ marginRight: "10px" }}>
-                            Xuất file
+                        <Button type="primary" icon={<ExportOutlined />} style={{ marginRight: "10px" }} onClick={() => exportToExcel(data)}>
+                            Xuất file Excel
                         </Button>
                         <Button type="primary" icon={<PlusOutlined />} onClick={() => setOpen(true)}>
                             Thêm mới

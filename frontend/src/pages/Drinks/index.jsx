@@ -10,6 +10,7 @@ import axios from "axios";
 import { Col, Collapse, Input, Row, Select, Button, Space, Table, Tag, Tooltip, Image } from 'antd';
 import { PlusOutlined, EyeTwoTone, EditTwoTone, DeleteTwoTone, ExportOutlined } from '@ant-design/icons';
 import Money from '../../components/Money'
+import * as XLSX from 'xlsx';
 
 
 
@@ -61,7 +62,15 @@ export const Drinks = () => {
 
     useEffect(() => {
         getData()
-    }, [])
+    }, []);
+
+    // Xuất file Excel
+    const exportToExcel = (data) => {
+        const worksheet = XLSX.utils.json_to_sheet(data);
+        const workbook = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(workbook, worksheet, 'Data');
+        XLSX.writeFile(workbook, 'Sheet.xlsx');
+    }
 
     const handleDetail = (record) => {
         setOpenDetail(true)
@@ -190,8 +199,8 @@ export const Drinks = () => {
                 <Row justify="space-between">
                     <h2>Danh sách đồ uống <Tag color="#4096ff">{data.length}</Tag></h2>
                     <Row>
-                        <Button type="primary" icon={<ExportOutlined />} style={{ marginRight: "10px" }}>
-                            Xuất file
+                        <Button type="primary" icon={<ExportOutlined />} style={{ marginRight: "10px" }} onClick={() => exportToExcel(data)}>
+                            Xuất file Excel
                         </Button>
                         <Button type="primary" icon={<PlusOutlined />} onClick={() => setOpen(true)}>
                             Thêm mới

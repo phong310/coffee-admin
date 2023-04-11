@@ -28,7 +28,7 @@ export const DeleteCate = ({ open, setOpen, item, getAll }) => {
                 onOk={ok}
                 onCancel={() => setOpen(false)}
             >
-                <p style={{ textAlign: "center" }}>Bạn có chắc muốn xóa danh mục {JSON.stringify(item?.catename)} này ?</p>
+                <p style={{ textAlign: "center" }}>Bạn có chắc muốn xóa danh mục <span style={{ color: 'red' }}>{JSON.stringify(item?.catename)}</span> này ?</p>
             </Modal>
         </>
     );

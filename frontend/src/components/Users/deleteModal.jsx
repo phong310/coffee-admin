@@ -28,7 +28,7 @@ export const DeleteUser = ({ open, setOpen, item, getAll }) => {
                 onOk={ok}
                 onCancel={() => setOpen(false)}
             >
-                <p style={{ textAlign: "center" }}>Bạn có chắc muốn xóa tài khoản {JSON.stringify(item?.username)} này ?</p>
+                <p style={{ textAlign: "center" }}>Bạn có chắc muốn xóa tài khoản <span style={{ color: "red" }}>{JSON.stringify(item?.username)}</span> này ?</p>
             </Modal>
         </>
     );
