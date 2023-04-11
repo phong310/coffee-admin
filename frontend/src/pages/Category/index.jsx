@@ -1,10 +1,12 @@
 import { DeleteTwoTone, EditTwoTone, EyeTwoTone, PlusOutlined } from '@ant-design/icons'
-import { Breadcrumb, Button, Col, Collapse, Row, Space, Table, Tooltip, Select, Tag } from 'antd'
-import React, { useEffect, useState } from 'react'
-import "../../assets/CSS/Drinks.css"
-import { Link } from 'react-router-dom'
-import { AddModals } from '../../components/Category/addModal'
+import { Breadcrumb, Button, Col, Collapse, Input, Row, Space, Table, Tag, Tooltip } from 'antd'
 import axios from "axios"
+import React, { useEffect, useState } from 'react'
+import { Link } from 'react-router-dom'
+import "../../assets/CSS/Drinks.css"
+import { AddModals } from '../../components/Category/addModal'
+import { UpdateModals } from '../../components/Category/updateModal'
+import { DeleteCate } from '../../components/Category/deleteModal'
 
 
 
@@ -13,6 +15,10 @@ export const Category = () => {
     const { Panel } = Collapse;
     const [data, setData] = useState([])
     const [openAddModal, setOpenAddModal] = useState(false)
+    const [openUpdate, setOpenUpdate] = useState(false)
+    const [openDelete, setOpenDelete] = useState(false)
+    const [CateSearch, setCateSearch] = useState("")
+    const [item, setItem] = useState()
 
     const getAll = async () => {
         try {
@@ -23,12 +29,37 @@ export const Category = () => {
         }
     }
 
+    const handleSearch = async () => {
+        try {
+            const result = await axios.get(`http://localhost:7000/category/search?catename=${CateSearch}`)
+            setData(result.data)
+
+        } catch (e) {
+            console.log('ERR:', e)
+        }
+    }
+
+    const resest_filter = () => {
+        getAll();
+        setCateSearch("")
+    }
+
     useEffect(() => {
         getAll()
     }, [])
 
     const handleAdd = () => {
         setOpenAddModal(true)
+    }
+
+    const handleUpdate = (record) => {
+        setOpenUpdate(true)
+        setItem(record)
+    }
+
+    const handleDelete = (rc) => {
+        setOpenDelete(true);
+        setItem(rc)
     }
 
 
@@ -77,10 +108,10 @@ export const Category = () => {
                         <EyeTwoTone twoToneColor="#531dab" />
                     </Tooltip>
                     <Tooltip placement="top" title="Sửa" >
-                        <EditTwoTone />
+                        <EditTwoTone onClick={() => handleUpdate(record)} />
                     </Tooltip>
                     <Tooltip placement="top" title="Xóa">
-                        <DeleteTwoTone twoToneColor="#f5222d" />
+                        <DeleteTwoTone twoToneColor="#f5222d" onClick={() => handleDelete(record)} />
                     </Tooltip>
                 </Space>
             ),
@@ -104,24 +135,16 @@ export const Category = () => {
             <Col className='col_wrapp'>
                 <Collapse>
                     <Panel header="Tìm kiếm" key="1">
-                        <Row>
-                            <Col span={5}>
-                                <Select
-                                    className='select'
-                                >
-                                    <Select.Option value="">Danh mục</Select.Option>
-                                    <Select.Option value="ADMIN">ADMIN</Select.Option>
-                                    <Select.Option value="USER">USER</Select.Option>
-                                </Select>
+                        <Row justify="space-between">
+                            <Col span={6} className="input">
+                                <Input value={CateSearch} onChange={(e) => setCateSearch(e.target.value)} placeholder="Nhập tên danh mục" />
                             </Col>
-                        </Row>
+                            <Col>
+                                <Button type="primary" ghost className='btn' onClick={handleSearch}>Tìm kiếm</Button>
+                                <Button danger onClick={resest_filter}>Reset bộ lọc</Button>
+                            </Col>
 
-                        {/* search */}
-                        <Row justify="end" style={{ marginTop: "25px" }}>
-                            <Button type="primary" ghost className='btn' >Tìm kiếm</Button>
-                            <Button danger >Reset bộ lọc</Button>
                         </Row>
-
                     </Panel>
                 </Collapse>
             </Col>
@@ -138,6 +161,10 @@ export const Category = () => {
             <Table className='table' columns={columns} dataSource={data} />
 
             <AddModals open={openAddModal} setOpen={setOpenAddModal} getAll={getAll} />
+
+            <UpdateModals open={openUpdate} setOpen={setOpenUpdate} getAll={getAll} item={item} />
+
+            <DeleteCate open={openDelete} setOpen={setOpenDelete} getAll={getAll} item={item} />
 
         </>
     )

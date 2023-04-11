@@ -1,10 +1,10 @@
-import React, { useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { Col, Form, Input, Modal, Row, Select } from 'antd';
 import { toast } from 'react-toastify';
 import axios from 'axios';
 
 
-export const AddModals = ({ open, setOpen, getAll }) => {
+export const UpdateModals = ({ open, setOpen, getAll, item }) => {
     const { TextArea } = Input;
     const { Option } = Select;
 
@@ -12,53 +12,63 @@ export const AddModals = ({ open, setOpen, getAll }) => {
     const [title, setTitle] = useState("");
     const [description, setDescription] = useState("");
 
-    const formRef = useRef(null)
+    const [form] = Form.useForm()
+
+    useEffect(() => {
+        form.setFieldsValue({
+            catename: item?.catename,
+            title: item?.title,
+            description: item?.description
+        })
+        setCateName(item?.catename);
+        setTitle(item?.title);
+        setDescription(item?.description)
+    }, [item, form])
+
 
     const ok = () => {
-        formRef.current.validateFields().then(async () => {
+        form.validateFields().then(async () => {
             try {
                 const newCate = {
                     catename: cateName,
                     title: title,
                     description: description
                 }
-                await axios.post(`http://localhost:7000/category/createCate`, newCate)
+                await axios.put(`http://localhost:7000/category/updateCate/${item?._id}`, newCate)
                 setOpen(false)
-                toast.success("Thêm danh mục thành công")
+                toast.success("Cập nhật danh mục thành công")
                 reset_form()
                 getAll()
 
             } catch (e) {
                 console.log("ERR:", e)
-                toast.warning("Xóa đồ uống thất bại !");
+                toast.warning("Cập nhật danh mục thất bại !");
             }
         })
 
     }
+    const handleTitle = (value) => {
+        setTitle(value)
+    }
 
     const reset_form = () => {
-        formRef.current.resetFields();
+        form.resetFields();
         setCateName("");
         setTitle("");
         setDescription("");
     }
 
-    const handleTitle = (value) => {
-        setTitle(value)
-    }
-
     return (
         <>
             <Modal
-                title="Thêm mới"
+                title="Cập nhập"
                 centered
                 width={700}
                 open={open}
                 onOk={ok}
                 onCancel={() => setOpen(false)}
             >
-                <Form ref={formRef} layout="vertical" style={{ margin: '30px 10px' }}>
-
+                <Form form={form} layout="vertical" style={{ margin: '30px 10px' }}>
                     <Row gutter={24}>
                         <Col span={24}>
                             <Form.Item
