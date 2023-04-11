@@ -8,7 +8,7 @@ import { useEffect } from 'react'
 import { Breadcrumb } from 'antd'
 import axios from "axios";
 import { Col, Collapse, Input, Row, Select, Button, Space, Table, Tag, Tooltip, Image } from 'antd';
-import { PlusOutlined, EyeTwoTone, EditTwoTone, DeleteTwoTone } from '@ant-design/icons';
+import { PlusOutlined, EyeTwoTone, EditTwoTone, DeleteTwoTone, ExportOutlined } from '@ant-design/icons';
 import Money from '../../components/Money'
 
 
@@ -189,9 +189,15 @@ export const Drinks = () => {
             <Col className='col_wrapp_title' style={{ padding: "30px 0px 10px 0px" }}>
                 <Row justify="space-between">
                     <h2>Danh sách đồ uống <Tag color="#4096ff">{data.length}</Tag></h2>
-                    <Button type="primary" icon={<PlusOutlined />} onClick={() => setOpen(true)}>
-                        Thêm mới
-                    </Button>
+                    <Row>
+                        <Button type="primary" icon={<ExportOutlined />} style={{ marginRight: "10px" }}>
+                            Xuất file
+                        </Button>
+                        <Button type="primary" icon={<PlusOutlined />} onClick={() => setOpen(true)}>
+                            Thêm mới
+                        </Button>
+                    </Row>
+
                 </Row>
             </Col>
 

@@ -1,4 +1,4 @@
-import { DeleteTwoTone, EditTwoTone, EyeTwoTone, PlusOutlined, ReloadOutlined, UserOutlined } from '@ant-design/icons'
+import { DeleteTwoTone, EditTwoTone, ExportOutlined, EyeTwoTone, PlusOutlined, ReloadOutlined, UserOutlined } from '@ant-design/icons'
 import { Breadcrumb, Button, Col, Collapse, Input, Row, Select, Space, Tag, Tooltip, Table, Avatar } from 'antd'
 import React, { useEffect, useState } from 'react'
 import "../../assets/CSS/Drinks.css"
@@ -222,9 +222,16 @@ export const Account = () => {
             <Col className='col_wrapp_title' style={{ padding: "30px 0px 10px 0px" }}>
                 <Row justify="space-between">
                     <h2>Danh sách Tài khoản <Tag color="#4096ff">{data.length}</Tag></h2>
-                    <Button type="primary" icon={<PlusOutlined />} onClick={() => setOpen(true)}>
-                        Thêm mới
-                    </Button>
+                    <Row>
+                        <Button type="primary" icon={<ExportOutlined />} style={{ marginRight: "10px" }}>
+                            Xuất file
+                        </Button>
+                        <Button type="primary" icon={<PlusOutlined />} onClick={() => setOpen(true)}>
+                            Thêm mới
+                        </Button>
+
+                    </Row>
+
                 </Row>
             </Col>
             {/* Table */}
