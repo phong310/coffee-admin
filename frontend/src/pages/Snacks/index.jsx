@@ -2,12 +2,14 @@ import React, { useEffect, useState } from 'react'
 import { Breadcrumb, Button, Col, Collapse, Image, Input, Row, Select, Space, Table, Tag, Tooltip } from 'antd'
 import { DeleteTwoTone, EditTwoTone, ExportOutlined, EyeTwoTone, PlusOutlined } from '@ant-design/icons';
 import Money from '../../components/Money';
+import AddModal from '../../components/Snacks/addModal';
 import axios from 'axios';
 
 
 export const Snacks = () => {
     const { Panel } = Collapse;
     const [data, setData] = useState([])
+    const [openAdd, setOpenAdd] = useState(false)
 
     const getAllSnack = async () => {
         try {
@@ -137,7 +139,7 @@ export const Snacks = () => {
                         <Button type="primary" icon={<ExportOutlined />} style={{ marginRight: "10px" }} >
                             Xuất file Excel
                         </Button>
-                        <Button type="primary" icon={<PlusOutlined />} >
+                        <Button type="primary" icon={<PlusOutlined />} onClick={() => setOpenAdd(true)}>
                             Thêm mới
                         </Button>
                     </Row>
@@ -147,6 +149,8 @@ export const Snacks = () => {
 
             {/* Table */}
             <Table className='table' columns={columns} dataSource={data} scroll={{ y: 502 }} />
+
+            <AddModal data={openAdd} setData={setOpenAdd} getAll={getAllSnack} />
 
         </>
     )
