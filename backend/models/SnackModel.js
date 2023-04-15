@@ -24,4 +24,4 @@ const snackSchema = new mongoose.Schema({
     }
 }, { timestamps: true })
 
-module.exports = mongoose.model("SnackModel", snackSchema)
+module.exports = mongoose.model("snacksmodels", snackSchema)

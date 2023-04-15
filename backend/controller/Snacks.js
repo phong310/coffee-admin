@@ -1,6 +1,4 @@
-const mongoose = require("mongoose");
-
-const SnackModel = mongoose.model('snacksmodels', {});
+const SnackModel = require("../models/SnackModel")
 
 const SnackController = {
 
@@ -27,8 +25,6 @@ const SnackController = {
             const Snacks = new SnackModel(newSnacks)
             await Snacks.save()
             res.status(200).json(Snacks);
-            // console.log(Drinks)
-
         } catch (e) {
             console.log(e)
             res.status(500).json({ ERR: e })

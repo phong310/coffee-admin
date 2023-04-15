@@ -3,13 +3,23 @@ import { Breadcrumb, Button, Col, Collapse, Image, Input, Row, Select, Space, Ta
 import { DeleteTwoTone, EditTwoTone, ExportOutlined, EyeTwoTone, PlusOutlined } from '@ant-design/icons';
 import Money from '../../components/Money';
 import AddModal from '../../components/Snacks/addModal';
+import { DeleteSnacks } from '../../components/Snacks/deleteModal';
+import UpdateModal from '../../components/Snacks/updateModal';
 import axios from 'axios';
+import * as XLSX from 'xlsx';
 
 
 export const Snacks = () => {
     const { Panel } = Collapse;
     const [data, setData] = useState([])
     const [openAdd, setOpenAdd] = useState(false)
+    const [openDelete, setOpenDelete] = useState(false)
+    const [openUpdate, setOpenUpdate] = useState(false)
+    const [Item, setItem] = useState()
+
+    // Tìm kiếm
+    const [titleSearch, setTitleSearch] = useState("");
+    const [statuSearch, setStatusSearch] = useState("");
 
     const getAllSnack = async () => {
         try {
@@ -24,6 +34,43 @@ export const Snacks = () => {
     useEffect(() => {
         getAllSnack()
     }, [])
+
+    // Xuất file Excel
+    const exportToExcel = (data) => {
+        const worksheet = XLSX.utils.json_to_sheet(data);
+        const workbook = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(workbook, worksheet, 'Data');
+        XLSX.writeFile(workbook, 'Sheet.xlsx');
+    }
+
+    const HandleSearch = async () => {
+        try {
+            const res = await axios.get(`http://localhost:7000/snack/search?title=${titleSearch}&status=${statuSearch}`)
+            setData(res.data)
+        } catch (e) {
+            console.log("Err search: ", e)
+        }
+    }
+
+    const handleDelete = (rc) => {
+        setOpenDelete(true)
+        setItem(rc)
+    }
+
+    const handleUpdate = (rc) => {
+        setOpenUpdate(true);
+        setItem(rc)
+    }
+
+    const resest_filter = () => {
+        setTitleSearch("");
+        setStatusSearch("")
+        getAllSnack()
+    }
+
+    const handleStatusSearch = (value) => {
+        setStatusSearch(value)
+    }
 
 
     const columns = [
@@ -81,10 +128,10 @@ export const Snacks = () => {
                         <EyeTwoTone twoToneColor="#531dab" />
                     </Tooltip>
                     <Tooltip placement="top" title="Sửa" >
-                        <EditTwoTone />
+                        <EditTwoTone onClick={() => { handleUpdate(record) }} />
                     </Tooltip>
                     <Tooltip placement="top" title="Xóa">
-                        <DeleteTwoTone twoToneColor="#f5222d" />
+                        <DeleteTwoTone twoToneColor="#f5222d" onClick={() => { handleDelete(record) }} />
                     </Tooltip>
                 </Space>
             ),
@@ -109,11 +156,13 @@ export const Snacks = () => {
                     <Panel header="Tìm kiếm" key="1">
                         <Row >
                             <Col span={7} className="input">
-                                <Input placeholder="Tên sản phẩm" />
+                                <Input value={titleSearch} onChange={(e) => setTitleSearch(e.target.value)} placeholder="Tên sản phẩm" />
                             </Col>
                             <Col span={7}>
                                 <Select
                                     className='select'
+                                    value={statuSearch}
+                                    onChange={handleStatusSearch}
 
                                 >
                                     <Select.Option value="">Tất cả</Select.Option>
@@ -125,8 +174,8 @@ export const Snacks = () => {
 
                         {/* search */}
                         <Row justify="end">
-                            <Button type="primary" ghost className='btn' >Tìm kiếm</Button>
-                            <Button danger >Reset bộ lọc</Button>
+                            <Button type="primary" ghost className='btn' onClick={HandleSearch}>Tìm kiếm</Button>
+                            <Button danger onClick={resest_filter}>Reset bộ lọc</Button>
                         </Row>
 
                     </Panel>
@@ -136,7 +185,7 @@ export const Snacks = () => {
                 <Row justify="space-between">
                     <h2>Danh sách đồ uống <Tag color="#4096ff">{data.length}</Tag></h2>
                     <Row>
-                        <Button type="primary" icon={<ExportOutlined />} style={{ marginRight: "10px" }} >
+                        <Button type="primary" icon={<ExportOutlined />} style={{ marginRight: "10px" }} onClick={() => exportToExcel(data)}>
                             Xuất file Excel
                         </Button>
                         <Button type="primary" icon={<PlusOutlined />} onClick={() => setOpenAdd(true)}>
@@ -151,6 +200,10 @@ export const Snacks = () => {
             <Table className='table' columns={columns} dataSource={data} scroll={{ y: 502 }} />
 
             <AddModal data={openAdd} setData={setOpenAdd} getAll={getAllSnack} />
+
+            <DeleteSnacks open={openDelete} setOpen={setOpenDelete} getAll={getAllSnack} item={Item} />
+
+            <UpdateModal data={openUpdate} setData={setOpenUpdate} getAll={getAllSnack} item={Item} />
 
         </>
     )
