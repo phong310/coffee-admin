@@ -13,7 +13,15 @@ const bakerySchema = new mongoose.Schema({
     title: {
         type: String,
         required: true
+    },
+    description: {
+        type: String,
+        required: false
+    },
+    status: {
+        type: String,
+        required: true
     }
 }, { timestamps: true })
 
-module.exports = mongoose.model("BakerySchema", bakerySchema)
+module.exports = mongoose.model("bakerymodels", bakerySchema)
