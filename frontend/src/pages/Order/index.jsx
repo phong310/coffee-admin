@@ -162,11 +162,11 @@ export const Order = () => {
                     <Tooltip placement="top" title="Chi tiết">
                         <EyeTwoTone twoToneColor="#531dab" />
                     </Tooltip>
-                    <Tooltip placement="top" title="Sửa" onClick={() => handleUpdate(record)} >
+                    <Tooltip placement="top" title="Sửa"  >
                         <EditTwoTone />
                     </Tooltip>
                     <Tooltip placement="top" title="Xóa">
-                        <DeleteTwoTone twoToneColor="#f5222d" onClick={() => handleDelete(record)} />
+                        <DeleteTwoTone twoToneColor="#f5222d" />
                     </Tooltip>
                 </Space>
             ),
@@ -192,7 +192,7 @@ export const Order = () => {
                     <Panel header="Tìm kiếm" key="1">
                         <Row>
                             <Col span={5} className="input">
-                                <Input placeholder="Nhập cái gì đó đang tính..." />
+                                <Input placeholder="Nhập tên khách hàng" />
                             </Col>
                         </Row>
 
