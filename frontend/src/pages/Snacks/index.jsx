@@ -21,6 +21,20 @@ export const Snacks = () => {
     const [titleSearch, setTitleSearch] = useState("");
     const [statuSearch, setStatusSearch] = useState("");
 
+    // Phân trang
+    const [pagination, setPagination] = useState({
+        current: 1,
+        pageSize: 4, // số mục hiển thị trên mỗi trang
+    });
+
+    const handleChangePagination = (page, pageSize) => {
+        setPagination({
+            ...pagination,
+            current: page,
+            pageSize: pageSize,
+        });
+    };
+
     const getAllSnack = async () => {
         try {
             const res = await axios.get("http://localhost:7000/snack/getAllSnack");
@@ -197,7 +211,12 @@ export const Snacks = () => {
             </Col>
 
             {/* Table */}
-            <Table className='table' columns={columns} dataSource={data} scroll={{ y: 502 }} />
+            <Table className='table' columns={columns} dataSource={data} scroll={{ y: 502 }} pagination={{
+                current: pagination.current,
+                pageSize: pagination.pageSize,
+                total: data.length,
+                onChange: handleChangePagination
+            }} />
 
             <AddModal data={openAdd} setData={setOpenAdd} getAll={getAllSnack} />
 

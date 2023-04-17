@@ -1,16 +1,14 @@
-import React, { useState } from 'react'
+import { DeleteTwoTone, EditTwoTone, ExportOutlined, EyeTwoTone, PlusOutlined } from '@ant-design/icons'
+import { Breadcrumb, Button, Col, Collapse, Image, Input, Row, Select, Space, Table, Tag, Tooltip } from 'antd'
+import axios from "axios"
+import React, { useEffect, useState } from 'react'
+import * as XLSX from 'xlsx'
 import "../../assets/CSS/Drinks.css"
 import AddModal from '../../components/Drinks/addModal'
-import UpdateModal from '../../components/Drinks/updateModal'
 import { DeleteDrink } from '../../components/Drinks/deleteModal'
 import { DetailDrinks } from '../../components/Drinks/detailModal'
-import { useEffect } from 'react'
-import { Breadcrumb } from 'antd'
-import axios from "axios";
-import { Col, Collapse, Input, Row, Select, Button, Space, Table, Tag, Tooltip, Image } from 'antd';
-import { PlusOutlined, EyeTwoTone, EditTwoTone, DeleteTwoTone, ExportOutlined } from '@ant-design/icons';
+import UpdateModal from '../../components/Drinks/updateModal'
 import Money from '../../components/Money'
-import * as XLSX from 'xlsx';
 
 
 
@@ -23,6 +21,21 @@ export const Drinks = () => {
     const [openUpdate, setOpenUpdate] = useState(false)
     const [openDetail, setOpenDetail] = useState(false)
     const [Item, setItem] = useState()
+
+    // Phân trang
+    const [pagination, setPagination] = useState({
+        current: 1,
+        pageSize: 5, // số mục hiển thị trên mỗi trang
+    });
+
+    const handleChangePagination = (page, pageSize) => {
+        setPagination({
+            ...pagination,
+            current: page,
+            pageSize: pageSize,
+        });
+    };
+
 
     // Tìm kiếm
     const [titleSearch, setTitleSearch] = useState("");
@@ -211,7 +224,13 @@ export const Drinks = () => {
             </Col>
 
             {/* Table */}
-            <Table className='table' columns={columns} dataSource={data} scroll={{ y: 502 }} />
+            <Table className='table' columns={columns} dataSource={data} scroll={{ y: 502 }} pagination={{
+                current: pagination.current,
+                pageSize: pagination.pageSize,
+                total: data.length,
+                onChange: handleChangePagination
+            }} />
+
 
             <AddModal data={open} setData={setOpen} getAll={getData} />
 
