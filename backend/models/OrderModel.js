@@ -24,6 +24,10 @@ const orderSchema = new mongoose.Schema({
         price: {
             type: Number,
             required: true,
+        },
+        avatar: {
+            type: String,
+            required: true
         }
     },
     customer_name: {
