@@ -136,7 +136,7 @@ export const Order = () => {
             key: 'order_pay',
             render: (value) => (
                 <>
-                    <Tag color={value === "1" ? 'blue' : 'red'}>
+                    <Tag color={value === "1" ? 'green' : 'blue'}>
                         {value === "1" ? "Tiền mặt" : "Banking"}
                     </Tag>
                 </>
