@@ -12,6 +12,7 @@ import AuthContext from './context/Auth';
 import { useState, useEffect } from 'react';
 import { InforUser } from './pages/Infor';
 import { Category } from './pages/Category';
+import { Order } from './pages/Order';
 import Cookies from 'js-cookie';
 
 function App() {
@@ -43,6 +44,7 @@ function App() {
             <Route path="/main/mangerment/account" element={<Account />} />
             <Route path="/main/mangerment/category" element={<Category />} />
             <Route path="/main/mangerment/infor" element={<InforUser />} />
+            <Route path="/main/order" element={<Order />} />
           </Route>
         </Routes>
       </AuthContext.Provider>

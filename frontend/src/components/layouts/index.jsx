@@ -12,6 +12,7 @@ import { HomePage } from '../../pages/Home';
 import { InforUser } from '../../pages/Infor';
 import { Snacks } from '../../pages/Snacks';
 import { Logout } from '../Logout';
+import { Order } from '../../pages/Order';
 
 
 const { Header, Content, Footer, Sider } = Layout;
@@ -40,6 +41,8 @@ const MainLayout = () => {
                 return "Quản lý danh mục bán hàng";
             case "/main/mangerment/infor":
                 return "Thông tin người dùng";
+            case "/main/order":
+                return "Quản lý đơn hàng"
             default:
                 return "Dashbroad";
         }
@@ -107,7 +110,7 @@ const MainLayout = () => {
                         </Menu.Item>
                     </SubMenu>
                     <Menu.Item key="5" icon={<DollarOutlined />}>
-                        <Link to="/main/home">Quản lý đơn hàng</Link>
+                        <Link to="/main/order">Quản lý đơn hàng</Link>
                     </Menu.Item>
                     <Menu.Item key="6" icon={<ApartmentOutlined />}>
                         <Link to="/main/mangerment/category">Danh mục bán hàng</Link>
@@ -192,6 +195,7 @@ const MainLayout = () => {
                         <Route path="/mangerment/account" element={<Account />} />
                         <Route path="/mangerment/category" element={<Category />} />
                         <Route path="/mangerment/infor" element={<InforUser />} />
+                        <Route path="/order" element={<Order />} />
                     </Routes>
 
                     <Logout open={openLogout} setOpen={setOpenLogOut} name={user.username} />
