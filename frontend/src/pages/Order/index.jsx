@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Breadcrumb, Button, Col, Collapse, Input, Row, Space, Table, Tag, Tooltip, Avatar } from 'antd';
+import { Breadcrumb, Button, Col, Collapse, Input, Row, Space, Table, Tag, Tooltip, Avatar, Select } from 'antd';
 import axios from 'axios';
 import { DeleteTwoTone, EditTwoTone, ExportOutlined, EyeTwoTone, PlusOutlined } from '@ant-design/icons';
 import Money from '../../components/Money'
@@ -190,9 +190,33 @@ export const Order = () => {
             <Col className='col_wrapp'>
                 <Collapse>
                     <Panel header="Tìm kiếm" key="1">
-                        <Row>
+                        <Row >
                             <Col span={5} className="input">
                                 <Input placeholder="Nhập tên khách hàng" />
+                            </Col>
+                            <Col span={5} className="input">
+                                <Input placeholder="Nhập tên sản phẩm" />
+                            </Col>
+                            <Col span={5} className="input">
+                                <Select
+                                    className='select'
+                                    style={{ width: 400 }}
+                                    placeholder="Hình thức thanh toán"
+                                >
+                                    <Select.Option value="active">Tiền mặt</Select.Option>
+                                    <Select.Option value="inactive">Banking</Select.Option>
+                                </Select>
+                            </Col>
+                            <Col span={5} className="input">
+                                <Select
+                                    className='select'
+                                    style={{ width: 400, marginLeft: 60 }}
+                                    placeholder="Trạng thái đơn"
+                                >
+                                    <Select.Option value="active">Đang xử lý</Select.Option>
+                                    <Select.Option value="inactive">Đang vận chuyển</Select.Option>
+                                    <Select.Option value="inactive">Đã giao hàng</Select.Option>
+                                </Select>
                             </Col>
                         </Row>
 
