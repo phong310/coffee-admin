@@ -213,9 +213,9 @@ export const Order = () => {
                                     style={{ width: 400, marginLeft: 60 }}
                                     placeholder="Trạng thái đơn"
                                 >
-                                    <Select.Option value="active">Đang xử lý</Select.Option>
-                                    <Select.Option value="inactive">Đang vận chuyển</Select.Option>
-                                    <Select.Option value="inactive">Đã giao hàng</Select.Option>
+                                    <Select.Option value="order">Đang xử lý</Select.Option>
+                                    <Select.Option value="transport">Đang vận chuyển</Select.Option>
+                                    <Select.Option value="success">Đã giao hàng</Select.Option>
                                 </Select>
                             </Col>
                         </Row>
