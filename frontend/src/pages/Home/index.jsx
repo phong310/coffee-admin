@@ -2,6 +2,7 @@ import { Breadcrumb, Card, Col, Progress, Row, Typography } from 'antd';
 import React, { useEffect, useState } from 'react';
 import { CircleChartComponent } from '../../components/Charts/circle';
 import { LineChartComponent } from '../../components/Charts/line';
+import "../../assets/CSS/Home.css"
 
 
 export const HomePage = () => {
@@ -62,7 +63,7 @@ export const HomePage = () => {
                 }}
             />
             <Row>
-                <Card style={{ width: 400, marginRight: 20 }}>
+                <Card className='wrapp' style={{ width: 400, marginRight: 20 }}>
                     <Row style={{ justifyContent: 'space-between' }}>
                         <Progress
                             size={80}
@@ -75,10 +76,11 @@ export const HomePage = () => {
                         />
                         <Col>
                             <Title level={4} style={{ color: '#1677ff' }}>Doanh thu theo tuần</Title>
+                            <span>345.9</span>
                         </Col>
                     </Row>
                 </Card>
-                <Card style={{ width: 400, marginRight: 20 }}>
+                <Card className='wrapp' style={{ width: 400, marginRight: 20 }}>
                     <Row style={{ justifyContent: 'space-between' }}>
                         <Progress
                             size={80}
@@ -95,7 +97,7 @@ export const HomePage = () => {
                         </Col>
                     </Row>
                 </Card>
-                <Card style={{ width: 400, marginRight: 20 }}>
+                <Card className='wrapp' style={{ width: 400, marginRight: 20 }}>
                     <Row style={{ justifyContent: 'space-between' }}>
                         <Progress
                             size={80}
@@ -112,7 +114,7 @@ export const HomePage = () => {
                         </Col>
                     </Row>
                 </Card>
-                <Card style={{ width: 400 }}>
+                <Card className='wrapp' style={{ width: 400 }}>
                     <Row style={{ justifyContent: 'space-between' }}>
                         <Progress
                             size={80}
@@ -132,10 +134,10 @@ export const HomePage = () => {
             </Row >
 
             <Row style={{ justifyContent: 'space-between' }}>
-                <Card style={{ width: 1170, marginTop: 20 }}>
+                <Card className='wrapp' style={{ width: 1170, marginTop: 20 }}>
                     <LineChartComponent />
                 </Card>
-                <Card style={{ width: 500, marginTop: 20 }}>
+                <Card className='wrapp' style={{ width: 500, marginTop: 20 }}>
                     <CircleChartComponent />
                 </Card>
             </Row>
