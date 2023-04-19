@@ -1,5 +1,5 @@
-import { DollarOutlined, FileDoneOutlined, ScheduleOutlined, UsergroupDeleteOutlined } from '@ant-design/icons';
-import { Breadcrumb, Card, Col, Progress, Row, Steps, Typography } from 'antd';
+import { ArrowUpOutlined, DollarOutlined, FileDoneOutlined, FundOutlined, LoadingOutlined, ScheduleOutlined, StockOutlined, UsergroupDeleteOutlined } from '@ant-design/icons';
+import { Breadcrumb, Card, Col, Progress, Row, Spin, Steps, Typography } from 'antd';
 import React, { useEffect, useState } from 'react';
 import "../../assets/CSS/Home.css";
 import { BarChartComponent } from '../../components/Charts/bar';
@@ -59,6 +59,15 @@ export const HomePage = () => {
         return () => clearInterval(interval); // xoá interval khi component bị xoá
     }, []);
 
+    const antIcon = (
+        <LoadingOutlined
+            style={{
+                fontSize: 24,
+            }}
+            spin
+        />
+    );
+
 
     return (
         <>
@@ -84,7 +93,14 @@ export const HomePage = () => {
                         />
                         <Col>
                             <Title level={4} style={{ color: '#1677ff' }}>Lượng đơn mỗi ngày <FileDoneOutlined /></Title>
-                            <span>345.9</span>
+                            {number === 65 ?
+                                <>
+                                    <span style={{ color: "#bfbfbf" }}>Thống kê: <b>1200</b>/ngày</span> <br />
+                                    <span style={{ color: "#bfbfbf" }}>KPI: <b>60%</b></span>
+                                </>
+
+                                : <Spin indicator={antIcon} />}
+
                         </Col>
                     </Row>
                 </Card>
@@ -101,7 +117,14 @@ export const HomePage = () => {
                             }}
                         />
                         <Col>
-                            <Title level={4} style={{ color: '#9254de' }}> Doanh thu theo tháng <DollarOutlined /></Title>
+                            <Title level={4} style={{ color: '#9254de' }}> Doanh thu theo tháng <FundOutlined /></Title>
+                            {percentMonth === 85 ?
+                                <>
+                                    <span style={{ color: "#bfbfbf" }}>Thống kê: <StockOutlined /> <b>2684 $</b>/tháng</span>  <br />
+                                    <span style={{ color: "#bfbfbf" }}>KPI: <b>70%</b></span>
+                                </>
+
+                                : <Spin indicator={antIcon} />}
                         </Col>
                     </Row>
                 </Card>
@@ -119,6 +142,13 @@ export const HomePage = () => {
                         />
                         <Col>
                             <Title level={4} style={{ color: '#f759ab' }}>Doanh thu theo năm <DollarOutlined /></Title>
+                            {percentYear === 75 ?
+                                <>
+                                    <span style={{ color: "#bfbfbf" }}>Thống kê: <StockOutlined /> <b>25.000 $</b>/năm</span>  <br />
+                                    <span style={{ color: "#bfbfbf" }}>KPI: <b>70%</b></span>
+                                </>
+
+                                : <Spin indicator={antIcon} />}
                         </Col>
                     </Row>
                 </Card>
@@ -136,6 +166,13 @@ export const HomePage = () => {
                         />
                         <Col>
                             <Title level={4} style={{ color: '#0C713D' }}>Số lượng khách hàng <UsergroupDeleteOutlined /></Title>
+                            {percentYear === 75 ?
+                                <>
+                                    <span style={{ color: "#bfbfbf" }}>Thống kê: <b> <ArrowUpOutlined /> 70% so với năm ngoái</b></span>  <br />
+                                    <span style={{ color: "#bfbfbf" }}>KPI: <b>80%</b></span>
+                                </>
+
+                                : <Spin indicator={antIcon} />}
                         </Col>
                     </Row>
                 </Card>
