@@ -1,4 +1,4 @@
-import { DollarOutlined, ScheduleOutlined, UsergroupDeleteOutlined } from '@ant-design/icons';
+import { DollarOutlined, FileDoneOutlined, ScheduleOutlined, UsergroupDeleteOutlined } from '@ant-design/icons';
 import { Breadcrumb, Card, Col, Progress, Row, Steps, Typography } from 'antd';
 import React, { useEffect, useState } from 'react';
 import "../../assets/CSS/Home.css";
@@ -83,7 +83,7 @@ export const HomePage = () => {
                             }}
                         />
                         <Col>
-                            <Title level={4} style={{ color: '#1677ff' }}>Lượng đơn mỗi ngày <DollarOutlined /></Title>
+                            <Title level={4} style={{ color: '#1677ff' }}>Lượng đơn mỗi ngày <FileDoneOutlined /></Title>
                             <span>345.9</span>
                         </Col>
                     </Row>
