@@ -6,8 +6,8 @@ import { Cell, Legend, Pie, PieChart, Tooltip } from 'recharts';
 const dataCircle = [
     { name: 'Tiềm năng', value: 400 },
     { name: 'Thành viên', value: 300 },
-    { name: 'Vip', value: 300 },
-    { name: 'Ủng hộ', value: 200 },
+    { name: 'Lâu năm', value: 300 },
+    { name: 'Thử nghiệm', value: 200 },
 ];
 
 

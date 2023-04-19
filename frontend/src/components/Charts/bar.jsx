@@ -1,4 +1,4 @@
-import { UserOutlined } from '@ant-design/icons';
+import { BarChartOutlined, UserOutlined } from '@ant-design/icons';
 import { Row, Typography } from 'antd';
 import React from 'react';
 import { Bar, BarChart, CartesianGrid, Legend, Tooltip, XAxis, YAxis } from 'recharts';
@@ -46,15 +46,15 @@ export const BarChartComponent = () => {
     const { Title } = Typography;
     return (
         <>
-            <Title level={4} >Biểu đồ cột</Title>
+            <Title level={4} >Biểu đồ cột qua các năm <BarChartOutlined /></Title>
             <Row>
-                <BarChart width={1590} height={500} data={data}>
-                    <XAxis dataKey="name" stroke="#8884d8" />
+                <BarChart width={1090} height={500} data={data}>
+                    <XAxis dataKey="name" stroke="#0C713D" />
                     <YAxis />
                     <Tooltip wrapperStyle={{ width: 100, backgroundColor: '#ccc' }} />
                     <Legend width={100} wrapperStyle={{ top: 40, right: 20, backgroundColor: '#f5f5f5', border: '1px solid #d5d5d5', borderRadius: 3, lineHeight: '40px' }} />
                     <CartesianGrid stroke="#ccc" strokeDasharray="5 5" />
-                    <Bar dataKey="uv" fill="#8884d8" barSize={30} />
+                    <Bar dataKey="uv" fill="#0C713D" barSize={30} />
                 </BarChart>
 
             </Row>
