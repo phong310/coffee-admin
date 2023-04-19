@@ -1,3 +1,4 @@
+import { UserOutlined } from '@ant-design/icons';
 import { Row, Typography } from 'antd';
 import React from 'react';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, BarChart, Bar, PieChart, Pie, Cell } from 'recharts';
@@ -43,7 +44,7 @@ export const CircleChartComponent = () => {
     return (
         <>
             <Row>
-                <Title level={4} >Khách hàng tiêu dùng</Title>
+                <Title level={4} >Khách hàng tiêu dùng <UserOutlined /></Title>
                 {/* <LineChart
                 width={500}
                 height={300}

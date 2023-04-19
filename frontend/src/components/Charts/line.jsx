@@ -1,3 +1,4 @@
+import { LineChartOutlined } from '@ant-design/icons';
 import { Row, Typography } from 'antd';
 import React from 'react';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, BarChart, Bar, PieChart, Pie, Cell } from 'recharts';
@@ -22,7 +23,22 @@ const data = [
         name: 'Jun', uv: 2390, pv: 3800, amt: 2500,
     },
     {
-        name: 'Jul', uv: 3490, pv: 4300, amt: 2100,
+        name: 'Jul', uv: 7490, pv: 4300, amt: 2100,
+    },
+    {
+        name: 'Aug', uv: 6490, pv: 4300, amt: 2100,
+    },
+    {
+        name: 'Sep', uv: 2490, pv: 4300, amt: 2100,
+    },
+    {
+        name: 'Oct', uv: 3490, pv: 6300, amt: 2100,
+    },
+    {
+        name: 'Nov', uv: 3490, pv: 4300, amt: 2100,
+    },
+    {
+        name: 'Dec', uv: 3490, pv: 4300, amt: 2100,
     },
 ];
 
@@ -30,7 +46,7 @@ export const LineChartComponent = () => {
     const { Title } = Typography;
     return (
         <>
-            <Title level={4} >Biểu đồ thống kê các mốc năm 2022</Title>
+            <Title level={4} >Biểu đồ thống kê các mốc năm 2022 <LineChartOutlined /></Title>
             <Row>
                 <br />
                 <LineChart

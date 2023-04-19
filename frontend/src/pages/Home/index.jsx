@@ -1,8 +1,10 @@
+import { DollarOutlined, UsergroupDeleteOutlined } from '@ant-design/icons';
 import { Breadcrumb, Card, Col, Progress, Row, Typography } from 'antd';
 import React, { useEffect, useState } from 'react';
+import "../../assets/CSS/Home.css";
 import { CircleChartComponent } from '../../components/Charts/circle';
 import { LineChartComponent } from '../../components/Charts/line';
-import "../../assets/CSS/Home.css"
+import { BarChartComponent } from '../../components/Charts/bar';
 
 
 export const HomePage = () => {
@@ -75,7 +77,7 @@ export const HomePage = () => {
                             }}
                         />
                         <Col>
-                            <Title level={4} style={{ color: '#1677ff' }}>Doanh thu theo tuần</Title>
+                            <Title level={4} style={{ color: '#1677ff' }}>Lượng đơn mỗi ngày <DollarOutlined /></Title>
                             <span>345.9</span>
                         </Col>
                     </Row>
@@ -93,7 +95,7 @@ export const HomePage = () => {
                             }}
                         />
                         <Col>
-                            <Title level={4} style={{ color: '#9254de' }}>Doanh thu theo tháng</Title>
+                            <Title level={4} style={{ color: '#9254de' }}> Doanh thu theo tháng <DollarOutlined /></Title>
                         </Col>
                     </Row>
                 </Card>
@@ -110,7 +112,7 @@ export const HomePage = () => {
                             }}
                         />
                         <Col>
-                            <Title level={4} style={{ color: '#f759ab' }}>Doanh thu theo năm</Title>
+                            <Title level={4} style={{ color: '#f759ab' }}>Doanh thu theo năm <DollarOutlined /></Title>
                         </Col>
                     </Row>
                 </Card>
@@ -127,20 +129,26 @@ export const HomePage = () => {
                             }}
                         />
                         <Col>
-                            <Title level={4} style={{ color: '#262626' }}>Số lượng khách hàng</Title>
+                            <Title level={4} style={{ color: '#262626' }}>Số lượng khách hàng <UsergroupDeleteOutlined /></Title>
                         </Col>
                     </Row>
                 </Card>
             </Row >
 
             <Row style={{ justifyContent: 'space-between' }}>
-                <Card className='wrapp' style={{ width: 1170, marginTop: 20 }}>
+                <Card className='wrapp' style={{ width: 1150, marginTop: 20 }}>
                     <LineChartComponent />
                 </Card>
                 <Card className='wrapp' style={{ width: 500, marginTop: 20 }}>
                     <CircleChartComponent />
                 </Card>
             </Row>
+            <Col>
+                <Card className='wrapp' style={{ marginTop: 20 }}>
+                    <BarChartComponent />
+                </Card>
+            </Col>
+
 
 
 
