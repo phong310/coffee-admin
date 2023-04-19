@@ -72,20 +72,21 @@ export const Order = () => {
             width: 270,
             render: (value) => (
                 <>
-                    {value.map((orderProduct) => (
-                        <>
-                            {orderProduct.item.map((item) => (
-                                <Col>
-                                    <span>Tên sản phẩm: <b key={item} style={{ color: '#0C713D' }}>{item.name}</b> </span>
+                    {value.map((orderProduct, index) => (
+                        <Col key={index}>
+                            {orderProduct.item.map((item, idx) => (
+
+                                <Col key={idx}>
+                                    <span>Tên sản phẩm: <b style={{ color: '#0C713D' }}>{item.name}</b> </span>
                                     <br />
-                                    <span>Số lượng: <b key={item}>{item.quantity}</b></span>
+                                    <span>Số lượng: <b>{item.quantity}</b></span>
                                 </Col>
                             ))}
                             <br />
                             <b>Tổng số lượng: <b style={{ color: '#cf1322' }}>{orderProduct.quantity}</b></b>
                             <br />
                             <b>Thành tiền:  <Tag color='green'><Money value={orderProduct.price} /></Tag></b>
-                        </>
+                        </Col>
 
                     ))
                     }
@@ -101,8 +102,8 @@ export const Order = () => {
                 <Avatar.Group>
                     {value.map((orderProduct) => (
                         <>
-                            {orderProduct.item.map((item) => (
-                                <Avatar key={item} src={item.avatar} />
+                            {orderProduct.item.map((item, idx) => (
+                                <Avatar key={idx} src={item.avatar} />
                             ))}
                         </>
                     ))}
@@ -147,8 +148,8 @@ export const Order = () => {
             key: 'order_status',
             dataIndex: 'order_status',
             render: (value) => (
-                value.map((item) =>
-                    <Tag key={item} color={item === "order" ? "red" : "blue"}>
+                value.map((item, idx) =>
+                    <Tag key={idx} color={item === "order" ? "red" : "blue"}>
                         {item === "order" ? "Đang xử lý..." : ""}
                     </Tag>
                 )

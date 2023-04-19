@@ -1,7 +1,56 @@
-import React from 'react'
-import { Breadcrumb } from 'antd';
+import { Breadcrumb, Card, Col, Progress, Row, Typography } from 'antd';
+import React, { useEffect, useState } from 'react';
+import { CircleChartComponent } from '../../components/Charts/circle';
+import { LineChartComponent } from '../../components/Charts/line';
+
 
 export const HomePage = () => {
+    const { Title } = Typography;
+
+    const [number, setNumber] = useState(0);
+    const [percentMonth, setPercentMonth] = useState(0);
+    const [percentYear, setPercentYear] = useState(0)
+
+    useEffect(() => {
+        const interval = setInterval(() => {
+            setNumber(prevNumber => {
+                const newNumber = prevNumber + 1;
+                if (newNumber === 65) {
+                    clearInterval(interval);
+                }
+                return newNumber;
+            });
+        }, 1);
+        return () => clearInterval(interval); // xoá interval khi component bị xoá
+    }, []);
+
+    useEffect(() => {
+        const interval = setInterval(() => {
+            setPercentMonth(prevNumber => {
+                const newNumber = prevNumber + 1;
+                if (newNumber === 85) {
+                    clearInterval(interval);
+                }
+                return newNumber;
+            });
+        }, 1);
+        return () => clearInterval(interval); // xoá interval khi component bị xoá
+    }, []);
+
+    useEffect(() => {
+        const interval = setInterval(() => {
+            setPercentYear(prevNumber => {
+                const newNumber = prevNumber + 1;
+                if (newNumber === 75) {
+                    clearInterval(interval);
+                }
+                return newNumber;
+            });
+        }, 1);
+        return () => clearInterval(interval); // xoá interval khi component bị xoá
+    }, []);
+
+
     return (
         <>
             <Breadcrumb
@@ -12,7 +61,88 @@ export const HomePage = () => {
                     margin: '16px 0',
                 }}
             />
-            <h1>Welcom To HomePage</h1>
+            <Row>
+                <Card style={{ width: 400, marginRight: 20 }}>
+                    <Row style={{ justifyContent: 'space-between' }}>
+                        <Progress
+                            size={80}
+                            type="circle"
+                            percent={number}
+                            format={(number) => `${number} %`}
+                            style={{
+                                marginRight: 8,
+                            }}
+                        />
+                        <Col>
+                            <Title level={4} style={{ color: '#1677ff' }}>Doanh thu theo tuần</Title>
+                        </Col>
+                    </Row>
+                </Card>
+                <Card style={{ width: 400, marginRight: 20 }}>
+                    <Row style={{ justifyContent: 'space-between' }}>
+                        <Progress
+                            size={80}
+                            type="circle"
+                            percent={percentMonth}
+                            format={(percentMonth) => <span style={{ color: '#9254de' }}>{percentMonth}%</span>}
+                            strokeColor="#9254de"
+                            style={{
+                                marginRight: 8,
+                            }}
+                        />
+                        <Col>
+                            <Title level={4} style={{ color: '#9254de' }}>Doanh thu theo tháng</Title>
+                        </Col>
+                    </Row>
+                </Card>
+                <Card style={{ width: 400, marginRight: 20 }}>
+                    <Row style={{ justifyContent: 'space-between' }}>
+                        <Progress
+                            size={80}
+                            type="circle"
+                            percent={percentYear}
+                            format={(percentYear) => <span style={{ color: '#f759ab' }}>{percentYear}%</span>}
+                            strokeColor="#f759ab"
+                            style={{
+                                marginRight: 8,
+                            }}
+                        />
+                        <Col>
+                            <Title level={4} style={{ color: '#f759ab' }}>Doanh thu theo năm</Title>
+                        </Col>
+                    </Row>
+                </Card>
+                <Card style={{ width: 400 }}>
+                    <Row style={{ justifyContent: 'space-between' }}>
+                        <Progress
+                            size={80}
+                            type="circle"
+                            percent={percentYear}
+                            format={(percentYear) => <span style={{ color: '#262626' }}>{percentYear}%</span>}
+                            strokeColor="#262626"
+                            style={{
+                                marginRight: 8,
+                            }}
+                        />
+                        <Col>
+                            <Title level={4} style={{ color: '#262626' }}>Số lượng khách hàng</Title>
+                        </Col>
+                    </Row>
+                </Card>
+            </Row >
+
+            <Row style={{ justifyContent: 'space-between' }}>
+                <Card style={{ width: 1170, marginTop: 20 }}>
+                    <LineChartComponent />
+                </Card>
+                <Card style={{ width: 500, marginTop: 20 }}>
+                    <CircleChartComponent />
+                </Card>
+            </Row>
+
+
+
+
         </>
     )
 }
