@@ -1,4 +1,4 @@
-import { ApartmentOutlined, AppstoreOutlined, BellOutlined, CarryOutOutlined, CoffeeOutlined, DashboardOutlined, DollarOutlined, FileSearchOutlined, FireOutlined, HeartOutlined, MenuOutlined, UserOutlined, UsergroupDeleteOutlined } from '@ant-design/icons';
+import { ApartmentOutlined, AppstoreOutlined, BellOutlined, CarryOutOutlined, CoffeeOutlined, DashboardOutlined, DollarOutlined, FileSearchOutlined, FireOutlined, HeartOutlined, MenuOutlined, SettingOutlined, UserOutlined, UsergroupDeleteOutlined } from '@ant-design/icons';
 import { Avatar, Col, Dropdown, Layout, Menu, Row, Typography, theme } from 'antd';
 import SubMenu from 'antd/es/menu/SubMenu';
 import React, { useContext, useState } from 'react';
@@ -13,6 +13,7 @@ import { InforUser } from '../../pages/Infor';
 import { Snacks } from '../../pages/Snacks';
 import { Logout } from '../Logout';
 import { Order } from '../../pages/Order';
+import { Role } from '../../pages/Role';
 
 
 const { Header, Content, Footer, Sider } = Layout;
@@ -37,6 +38,8 @@ const MainLayout = () => {
                 return "Quản lý đồ ăn vặt";
             case "/main/mangerment/account":
                 return "Quản lý tài khoản";
+            case "/main/mangerment/role":
+                return "Quản lý phân quyền";
             case "/main/mangerment/category":
                 return "Quản lý danh mục bán hàng";
             case "/main/mangerment/infor":
@@ -123,11 +126,14 @@ const MainLayout = () => {
                             <Link to="/main/mangerment/account">Tài khoản</Link>
                         </Menu.Item>
                         <Menu.Item key="9" icon={<UsergroupDeleteOutlined />}>
-                            <Link to="/main/home">Phân quyền</Link>
+                            <Link to="/main/mangerment/role">Phân quyền</Link>
+                        </Menu.Item>
+                        <Menu.Item key="10" icon={<SettingOutlined />}>
+                            <Link to="/main/home">Tạo quyền</Link>
                         </Menu.Item>
                     </SubMenu>
 
-                    <Menu.Item key="10" icon={<CarryOutOutlined />}>
+                    <Menu.Item key="11" icon={<CarryOutOutlined />}>
                         <Link to="/main/home">Thống kê</Link>
                     </Menu.Item>
                 </Menu>
@@ -193,6 +199,7 @@ const MainLayout = () => {
                         <Route path="/mangerment/bakery" element={<Bakery />} />
                         <Route path="/mangerment/snacks" element={<Snacks />} />
                         <Route path="/mangerment/account" element={<Account />} />
+                        <Route path="/mangerment/role" element={<Role />} />
                         <Route path="/mangerment/category" element={<Category />} />
                         <Route path="/mangerment/infor" element={<InforUser />} />
                         <Route path="/order" element={<Order />} />

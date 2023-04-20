@@ -13,6 +13,7 @@ import { useState, useEffect } from 'react';
 import { InforUser } from './pages/Infor';
 import { Category } from './pages/Category';
 import { Order } from './pages/Order';
+import { Role } from './pages/Role';
 import Cookies from 'js-cookie';
 
 function App() {
@@ -42,6 +43,7 @@ function App() {
             <Route path="/main/mangerment/bakery" element={<Bakery />} />
             <Route path="/main/mangerment/snacks" element={<Snacks />} />
             <Route path="/main/mangerment/account" element={<Account />} />
+            <Route path="/main/mangerment/role" element={<Role />} />
             <Route path="/main/mangerment/category" element={<Category />} />
             <Route path="/main/mangerment/infor" element={<InforUser />} />
             <Route path="/main/order" element={<Order />} />

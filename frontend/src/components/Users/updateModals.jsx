@@ -343,7 +343,7 @@ const UpdateModal = ({ data, setData, getAll, item, trigger }) => {
                                     },
                                 ]}
                             >
-                                <Select placeholder="Nhóm quyền" onChange={handleRole}>
+                                <Select placeholder="Nhóm quyền" onChange={handleRole} disabled>
                                     <Option value="ADMIN">ADMIN</Option>
                                     <Option value="USER">USER</Option>
                                 </Select>
