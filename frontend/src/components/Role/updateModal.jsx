@@ -47,13 +47,14 @@ export const UpdateRole = ({ open, setOpen, item, getAll }) => {
             <Modal
                 title="Cập nhật quyền"
                 centered
+                width={600}
                 open={open}
                 onOk={ok}
                 onCancel={() => setOpen(false)}
             >
                 <Col span={24} style={{ margin: '30px 0px' }}>
-                    <Select value={role} placeholder="Nhóm quyền" style={{
-                        width: 470,
+                    <Select mode="multiple" value={role} placeholder="Nhóm quyền" style={{
+                        width: 540,
                     }} onChange={handleRole}>
                         <Select.Option value="ADMIN">ADMIN</Select.Option>
                         <Select.Option value="USER">USER</Select.Option>
