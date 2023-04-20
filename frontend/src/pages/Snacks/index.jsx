@@ -17,6 +17,9 @@ export const Snacks = () => {
     const [openUpdate, setOpenUpdate] = useState(false)
     const [Item, setItem] = useState()
 
+    // Kích hoạt effect
+    const [trigger, setTrigger] = useState(false);
+
     // Tìm kiếm
     const [titleSearch, setTitleSearch] = useState("");
     const [statuSearch, setStatusSearch] = useState("");
@@ -73,7 +76,8 @@ export const Snacks = () => {
 
     const handleUpdate = (rc) => {
         setOpenUpdate(true);
-        setItem(rc)
+        setItem(rc);
+        setTrigger(!trigger)
     }
 
     const resest_filter = () => {
@@ -222,7 +226,7 @@ export const Snacks = () => {
 
             <DeleteSnacks open={openDelete} setOpen={setOpenDelete} getAll={getAllSnack} item={Item} />
 
-            <UpdateModal data={openUpdate} setData={setOpenUpdate} getAll={getAllSnack} item={Item} />
+            <UpdateModal data={openUpdate} setData={setOpenUpdate} getAll={getAllSnack} item={Item} trigger={trigger} />
 
         </>
     )

@@ -20,7 +20,10 @@ export const Drinks = () => {
     const [openDelete, setOpenDelete] = useState(false)
     const [openUpdate, setOpenUpdate] = useState(false)
     const [openDetail, setOpenDetail] = useState(false)
-    const [Item, setItem] = useState()
+    const [Item, setItem] = useState();
+
+    // Kích hoạt effect
+    const [trigger, setTrigger] = useState(false)
 
     // Phân trang
     const [pagination, setPagination] = useState({
@@ -98,6 +101,7 @@ export const Drinks = () => {
     const handleUpdate = (record) => {
         setOpenUpdate(true)
         setItem(record)
+        setTrigger(!trigger)
     }
 
     const columns = [
@@ -236,7 +240,7 @@ export const Drinks = () => {
 
             <DeleteDrink open={openDelete} setOpen={setOpenDelete} item={Item} getAll={getData} />
 
-            <UpdateModal data={openUpdate} setData={setOpenUpdate} getAll={getData} item={Item} />
+            <UpdateModal data={openUpdate} setData={setOpenUpdate} getAll={getData} item={Item} trigger={trigger} />
 
             <DetailDrinks open={openDetail} setOpen={setOpenDetail} item={Item} />
         </>

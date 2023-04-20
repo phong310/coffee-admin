@@ -22,6 +22,9 @@ export const Account = () => {
     const [openReset, setOpenReset] = useState(false);
     const [itemUser, setItemUser] = useState()
 
+    // Kích hoạt effect
+    const [trigger, setTrigger] = useState(false);
+
     // Tìm kiếm
     const [emailSearch, setEmailSearch] = useState("");
     const [statuSearch, setStatusSearch] = useState("");
@@ -57,6 +60,7 @@ export const Account = () => {
 
     const handleUpdate = (rc) => {
         setOpenUpdate(true);
+        setTrigger(!trigger)
         setItemUser(rc)
     }
 
@@ -250,7 +254,7 @@ export const Account = () => {
 
             <DeleteUser open={openDelete} setOpen={setOpenDelete} item={itemUser} getAll={getDataUser} />
 
-            <UpdateModal data={openUpdate} setData={setOpenUpdate} item={itemUser} getAll={getDataUser} />
+            <UpdateModal data={openUpdate} setData={setOpenUpdate} item={itemUser} getAll={getDataUser} trigger={trigger} />
 
             <ResetUser open={openReset} setOpen={setOpenReset} item={itemUser} getAll={getDataUser} />
         </>

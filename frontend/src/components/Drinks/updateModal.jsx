@@ -24,7 +24,7 @@ const beforeUpload = (file) => {
 };
 
 
-const UpdateModal = ({ data, setData, getAll, item }) => {
+const UpdateModal = ({ data, setData, getAll, item, trigger }) => {
     const [placement, setPlacement] = useState('left');
     const [loading, setLoading] = useState(false);
     const [imageUrl, setImageUrl] = useState();
@@ -53,7 +53,7 @@ const UpdateModal = ({ data, setData, getAll, item }) => {
         setStatus(item?.status)
 
 
-    }, [item, form])
+    }, [item, form, trigger])
 
     const handleStatus = (value) => {
         setStatus(value)

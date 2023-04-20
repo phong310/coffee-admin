@@ -16,6 +16,8 @@ export const Bakery = () => {
     const [openUpdate, setOpenUpdate] = useState(false)
     const [item, setItem] = useState()
 
+    // Kích hoạt effect 
+    const [trigger, setTrigger] = useState(false)
 
     // Tìm kiếm
     const [titleSearch, setTitleSearch] = useState("");
@@ -76,6 +78,7 @@ export const Bakery = () => {
     const handleUpdate = (record) => {
         setOpenUpdate(true)
         setItem(record)
+        setTrigger(!trigger)
     }
 
     const resest_filter = () => {
@@ -222,7 +225,7 @@ export const Bakery = () => {
 
             <DeleteBakery open={openDelete} setOpen={setOpenDelete} item={item} getAll={getAllBakery} />
 
-            <UpdateModal data={openUpdate} setData={setOpenUpdate} getAll={getAllBakery} item={item} />
+            <UpdateModal data={openUpdate} setData={setOpenUpdate} getAll={getAllBakery} item={item} trigger={trigger} />
 
         </>
     )

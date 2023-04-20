@@ -22,7 +22,8 @@ export const UpdateModals = ({ open, setOpen, getAll, item }) => {
         })
         setCateName(item?.catename);
         setTitle(item?.title);
-        setDescription(item?.description)
+        setDescription(item?.description);
+
     }, [item, form])
 
 

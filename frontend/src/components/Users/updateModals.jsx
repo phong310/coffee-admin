@@ -21,7 +21,7 @@ const beforeUpload = (file) => {
     return isJpgOrPng && isLt2M;
 };
 
-const UpdateModal = ({ data, setData, getAll, item }) => {
+const UpdateModal = ({ data, setData, getAll, item, trigger }) => {
     const [placement, setPlacement] = useState('left');
     const [loading, setLoading] = useState(false);
     const [avatarUrl, setAvatarUrl] = useState()
@@ -83,7 +83,7 @@ const UpdateModal = ({ data, setData, getAll, item }) => {
         setSex(item?.sex)
         setAddress(item?.address)
 
-    }, [item, form])
+    }, [item, form, trigger])
 
     const handleChange = (info) => {
         // console.log(info)
@@ -157,7 +157,8 @@ const UpdateModal = ({ data, setData, getAll, item }) => {
         setEmail("");
         setPhoneNumber("");
         setRole("");
-        setStatus("")
+        setStatus("");
+        setData(false)
     }
 
 
