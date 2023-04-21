@@ -1,4 +1,4 @@
-import { ApartmentOutlined, AppstoreOutlined, BellOutlined, CarryOutOutlined, CoffeeOutlined, DashboardOutlined, DollarOutlined, FileSearchOutlined, FireOutlined, HeartOutlined, MenuOutlined, SettingOutlined, UserOutlined, UsergroupDeleteOutlined } from '@ant-design/icons';
+import { ApartmentOutlined, AppstoreOutlined, BellOutlined, CarryOutOutlined, CoffeeOutlined, DashboardOutlined, DollarOutlined, FileSearchOutlined, FireOutlined, HeartOutlined, MenuOutlined, NodeExpandOutlined, SettingOutlined, UserOutlined, UsergroupDeleteOutlined } from '@ant-design/icons';
 import { Avatar, Col, Dropdown, Layout, Menu, Row, Typography, theme } from 'antd';
 import SubMenu from 'antd/es/menu/SubMenu';
 import React, { useContext, useState } from 'react';
@@ -85,7 +85,7 @@ const MainLayout = () => {
                 minHeight: '100vh',
             }}
         >
-            <Sider trigger={null} collapsible collapsed={collapsed} onCollapse={(value) => setCollapsed(value)}>
+            <Sider trigger={null} collapsible collapsed={collapsed} onCollapse={(value) => setCollapsed(value)} width={210}>
 
                 <Row style={{ padding: "10px 0px", justifyContent: "center" }}>
                     <img
@@ -112,16 +112,19 @@ const MainLayout = () => {
                             <Link to="/main/mangerment/snacks">Quản lý snacks</Link>
                         </Menu.Item>
                     </SubMenu>
-                    <Menu.Item key="5" icon={<DollarOutlined />}>
-                        <Link to="/main/order">Quản lý đơn hàng</Link>
-                    </Menu.Item>
+                    <SubMenu key="sub2" icon={<NodeExpandOutlined />} title="Đơn hàng">
+                        <Menu.Item key="5" icon={<DollarOutlined />}>
+                            <Link to="/main/order">Quản lý đơn hàng</Link>
+                        </Menu.Item>
+                    </SubMenu>
+
                     <Menu.Item key="6" icon={<ApartmentOutlined />}>
                         <Link to="/main/mangerment/category">Danh mục bán hàng</Link>
                     </Menu.Item>
                     <Menu.Item key="7" icon={<FileSearchOutlined />}>
                         <Link to="/main/home">Quản lý tin tức</Link>
                     </Menu.Item>
-                    <SubMenu key="sub2" icon={<UserOutlined />} title="Quản lý tài khoản">
+                    <SubMenu key="sub3" icon={<UserOutlined />} title="Quản lý tài khoản">
                         <Menu.Item key="8" icon={<UserOutlined />}>
                             <Link to="/main/mangerment/account">Tài khoản</Link>
                         </Menu.Item>

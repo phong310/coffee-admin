@@ -79,6 +79,8 @@ export const Order = () => {
                                 <Col key={idx}>
                                     <span>Tên sản phẩm: <b style={{ color: '#0C713D' }}>{item.name}</b> </span>
                                     <br />
+                                    <span>Kích cỡ: <b>{item.size?.join(', ')}</b></span>
+                                    <br />
                                     <span>Số lượng: <b>{item.quantity}</b></span>
                                 </Col>
                             ))}

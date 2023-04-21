@@ -179,18 +179,18 @@ export const HomePage = () => {
             </Row >
 
             <Col>
-                <Row style={{ justifyContent: 'space-evenly' }}>
+                <Row style={{ justifyContent: 'space-evenly', minWidth: 1600 }}>
                     <Card className='wrapp' style={{ width: 1150, marginTop: 20, marginRight: 20 }}>
                         <LineChartComponent />
                     </Card>
-                    <Card className='wrapp' style={{ width: 500, marginTop: 20 }}>
+                    <Card className='wrapp' style={{ width: 490, marginTop: 20 }}>
                         <CircleChartComponent />
                     </Card>
                 </Row>
             </Col>
 
             <Col>
-                <Row style={{ justifyContent: 'space-evenly' }}>
+                <Row style={{ justifyContent: 'space-evenly', minWidth: 1660 }}>
                     <Card className='wrapp' style={{ width: 500, marginTop: 20, marginRight: 20 }}>
                         <Title level={4} >Lịch làm việc & Cách sử dụng <ScheduleOutlined /></Title>
                         <Steps
@@ -214,7 +214,7 @@ export const HomePage = () => {
                             ]}
                         />
                     </Card>
-                    <Card className='wrapp' style={{ width: 1150, marginTop: 20 }}>
+                    <Card className='wrapp' style={{ width: 1140, marginTop: 20 }}>
                         <BarChartComponent />
                     </Card>
                 </Row>

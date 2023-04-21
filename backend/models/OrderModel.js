@@ -13,6 +13,13 @@ const orderSchema = new mongoose.Schema({
             name: {
                 type: String
             },
+            size: {
+                type: Array,
+                items: {
+                    type: String,
+                    enum: ["S", "M", "L"]
+                }
+            },
             quantity: {
                 type: Number
             }
