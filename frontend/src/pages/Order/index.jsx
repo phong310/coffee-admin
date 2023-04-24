@@ -69,20 +69,25 @@ export const Order = () => {
             title: 'Các sản phẩm đã đặt',
             dataIndex: 'order_products',
             key: 'order_products',
-            width: 270,
+            width: 300,
             render: (value) => (
                 <>
                     {value.map((orderProduct, index) => (
                         <Col key={index}>
                             {orderProduct.item.map((item, idx) => (
+                                <>
+                                    <Col key={idx}>
+                                        <span>Tên sản phẩm: <b style={{ color: '#0C713D' }}>{item.name}</b> </span>
+                                        <br />
+                                        <span>Kích cỡ: <b>{item.size?.join(', ')}</b></span>
+                                        <br />
+                                        <span>Số lượng: <b>{item.quantity}</b></span>
+                                        <br />
+                                        <span>Ghi chú sản phẩm: <b>{item.note}</b></span>
+                                    </Col>
+                                    <br />
+                                </>
 
-                                <Col key={idx}>
-                                    <span>Tên sản phẩm: <b style={{ color: '#0C713D' }}>{item.name}</b> </span>
-                                    <br />
-                                    <span>Kích cỡ: <b>{item.size?.join(', ')}</b></span>
-                                    <br />
-                                    <span>Số lượng: <b>{item.quantity}</b></span>
-                                </Col>
                             ))}
                             <br />
                             <b>Tổng số lượng: <b style={{ color: '#cf1322' }}>{orderProduct.quantity}</b></b>
@@ -113,7 +118,7 @@ export const Order = () => {
             )
         },
         {
-            title: 'Mô tả',
+            title: 'Mô tả đơn hàng',
             dataIndex: 'order_description',
             key: 'order_description',
             width: 250

@@ -22,6 +22,9 @@ const orderSchema = new mongoose.Schema({
             },
             quantity: {
                 type: Number
+            },
+            note: {
+                type: String
             }
         },
         quantity: {
