@@ -28,7 +28,7 @@ export const ResetUser = ({ open, setOpen, item, getAll }) => {
                 onOk={ok}
                 onCancel={() => setOpen(false)}
             >
-                <p style={{ textAlign: "center" }}>Bạn có chắc muốn đặt lại mật khẩu thành "123@123a" của tài khoản {JSON.stringify(item?.username)} này ?</p>
+                <p style={{ textAlign: "center" }}>Bạn có chắc muốn đặt lại mật khẩu thành <span style={{ color: "red" }}>"123@123a"</span> của tài khoản {JSON.stringify(item?.username)} này ?</p>
             </Modal>
         </>
     );
