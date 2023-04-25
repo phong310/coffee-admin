@@ -9,6 +9,10 @@ const Snack = require("./router/Snacks")
 const User = require("./router/Users")
 const Category = require("./router/Category")
 const Order = require("./router/Order")
+const Roles = require("./router/Roles")
+
+
+
 const multer = require('multer');
 
 
@@ -32,6 +36,8 @@ app.use("/user", User)
 app.use("/category", Category)
 
 app.use("/order", Order)
+
+app.use("/roles", Roles)
 
 // Upload ảnh
 const storage = multer.diskStorage({

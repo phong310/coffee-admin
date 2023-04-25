@@ -53,7 +53,7 @@ export const UpdateRole = ({ open, setOpen, item, getAll }) => {
                 onCancel={() => setOpen(false)}
             >
                 <Col span={24} style={{ margin: '30px 0px' }}>
-                    <Select mode="multiple" value={role} placeholder="Nhóm quyền" style={{
+                    <Select value={role} placeholder="Nhóm quyền" style={{
                         width: 540,
                     }} onChange={handleRole}>
                         <Select.Option value="ADMIN">ADMIN</Select.Option>

@@ -2,6 +2,7 @@ import { DeleteTwoTone, EditTwoTone, ExportOutlined, EyeTwoTone, PlusOutlined, R
 import { Breadcrumb, Button, Col, Collapse, Input, Row, Select, Space, Table, Tag, Tooltip } from 'antd'
 import axios from 'axios'
 import { UpdateRole } from '../../components/Role/updateModal'
+import { AddRole } from '../../components/Role/addModal'
 import React, { useEffect, useState } from 'react'
 import * as XLSX from 'xlsx'
 import "../../assets/CSS/Drinks.css"
@@ -12,7 +13,7 @@ import "../../assets/CSS/Drinks.css"
 export const Role = () => {
     const { Panel } = Collapse;
     const [data, setData] = useState([])
-    const [open, setOpen] = useState(false);
+    const [openAdd, setOpenAdd] = useState(false);
     const [openUpdate, setOpenUpdate] = useState(false);
     const [itemUser, setItemUser] = useState()
 
@@ -22,9 +23,9 @@ export const Role = () => {
     const [statuSearch, setStatusSearch] = useState("");
     const [roleSearch, setRoleSearch] = useState("")
 
-    const getDataUser = async () => {
+    const getDataRoles = async () => {
         try {
-            const res = await axios.get("http://localhost:7000/user/getAllUser")
+            const res = await axios.get("http://localhost:7000/roles/getAllRole")
             setData(res.data)
 
         } catch (e) {
@@ -33,7 +34,7 @@ export const Role = () => {
     }
 
     useEffect(() => {
-        getDataUser()
+        getDataRoles()
     }, [])
 
 
@@ -79,7 +80,7 @@ export const Role = () => {
     }
 
     const resest_filter = () => {
-        getDataUser();
+        getDataRoles();
         setEmailSearch("");
         setRoleSearch("");
         setStatusSearch("");
@@ -90,30 +91,35 @@ export const Role = () => {
         {
             title: 'STT',
             key: 'stt',
-            width: 100,
+            width: 250,
             render: (text, record, index) => <span>{index + 1}</span>,
         },
         {
-            title: 'Tên tài khoản',
-            dataIndex: 'username',
-            key: 'username',
-            width: 350,
-            render: (_, value) => <span><b>{value.username}</b></span>
+            title: 'Nhóm quyền',
+            dataIndex: 'role_name',
+            key: 'role_name',
+            render: (role) => {
+                return <Tag color={role === 'DIRECTOR' ? '#f5222d' : '#87e8de'}>{role}</Tag>
+            }
+        },
+        {
+            title: 'Mô tả chi tiết',
+            dataIndex: 'role_description',
+            key: 'role_description',
+            width: 400,
 
         },
         {
-            title: 'Email',
-            dataIndex: 'email',
-            key: 'email',
-            width: 400
-        },
-        {
-            title: 'Nhóm quyền',
-            dataIndex: 'role',
-            key: 'role',
-            render: (role) => {
-                return <Tag color={role === 'ADMIN' ? '#d3adf7' : '#87e8de'}>{role}</Tag>
-            }
+            title: 'Trạng thái',
+            key: 'role_status',
+            dataIndex: 'role_status',
+            render: (status) => (
+                <>
+                    <Tag color={status === 'active' ? 'green' : 'red'}>
+                        {status === "active" ? "Kích hoạt" : "Chưa kích hoạt"}
+                    </Tag>
+                </>
+            ),
         },
         {
             title: 'Chức năng',
@@ -126,9 +132,9 @@ export const Role = () => {
                     <Tooltip placement="top" title="Sửa" onClick={() => handleUpdate(record)} >
                         <EditTwoTone />
                     </Tooltip>
-                    {/* <Tooltip placement="top" title="Xóa">
-                        <DeleteTwoTone twoToneColor="#f5222d" onClick={() => handleDelete(record)} />
-                    </Tooltip> */}
+                    <Tooltip placement="top" title="Xóa">
+                        <DeleteTwoTone twoToneColor="#f5222d" />
+                    </Tooltip>
                 </Space>
             ),
         },
@@ -141,7 +147,7 @@ export const Role = () => {
                 routes={[
                     { path: '/', breadcrumbName: "Home" },
                     { path: '/managerment', breadcrumbName: 'Quản lý tài khoản' },
-                    { path: '/mangerment/account', breadcrumbName: 'Phân quyền' }]}
+                    { path: '/mangerment/account', breadcrumbName: 'Nhóm quyền' }]}
                 separator="/"
                 style={{
                     margin: '16px 3px',
@@ -151,9 +157,6 @@ export const Role = () => {
                 <Collapse>
                     <Panel header="Tìm kiếm" key="1">
                         <Row>
-                            <Col span={6} className="input">
-                                <Input value={emailSearch} onChange={(e) => setEmailSearch(e.target.value)} placeholder="Nhập Email" />
-                            </Col>
                             <Col span={5}>
                                 <Select
                                     className='select'
@@ -179,14 +182,14 @@ export const Role = () => {
             </Col>
             <Col className='col_wrapp_title' style={{ padding: "30px 0px 10px 0px" }}>
                 <Row justify="space-between">
-                    <h2>Danh sách Phân quyền <Tag color="#4096ff">{data.length}</Tag></h2>
+                    <h2>Danh sách nhóm quyền <Tag color="#4096ff">{data.length}</Tag></h2>
                     <Row>
                         <Button type="primary" icon={<ExportOutlined />} style={{ marginRight: "10px" }} onClick={() => exportToExcel(data)}>
                             Xuất file Excel
                         </Button>
-                        {/* <Button type="primary" icon={<PlusOutlined />} onClick={() => setOpen(true)}>
-                            Thêm mới
-                        </Button> */}
+                        <Button type="primary" icon={<PlusOutlined />} onClick={() => setOpenAdd(true)}>
+                            Thêm mới nhóm quyền
+                        </Button>
 
                     </Row>
 
@@ -195,7 +198,9 @@ export const Role = () => {
             {/* Table */}
             <Table className='table' columns={columns} dataSource={data} scroll={{ y: 502 }} />
 
-            <UpdateRole open={openUpdate} setOpen={setOpenUpdate} item={itemUser} getAll={getDataUser} />
+            <AddRole open={openAdd} setOpen={setOpenAdd} getAll={getDataRoles} />
+
+            <UpdateRole open={openUpdate} setOpen={setOpenUpdate} item={itemUser} getAll={getDataRoles} />
 
 
         </>

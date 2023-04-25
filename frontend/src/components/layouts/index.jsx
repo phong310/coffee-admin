@@ -39,7 +39,7 @@ const MainLayout = () => {
             case "/main/mangerment/account":
                 return "Quản lý tài khoản";
             case "/main/mangerment/role":
-                return "Quản lý phân quyền";
+                return "Quản lý nhóm quyền";
             case "/main/mangerment/category":
                 return "Quản lý danh mục bán hàng";
             case "/main/mangerment/infor":
@@ -129,10 +129,10 @@ const MainLayout = () => {
                             <Link to="/main/mangerment/account">Tài khoản</Link>
                         </Menu.Item>
                         <Menu.Item key="9" icon={<UsergroupDeleteOutlined />}>
-                            <Link to="/main/mangerment/role">Phân quyền</Link>
+                            <Link to="/main/mangerment/role">Nhóm quyền</Link>
                         </Menu.Item>
                         <Menu.Item key="10" icon={<SettingOutlined />}>
-                            <Link to="/main/home">Tạo quyền</Link>
+                            <Link to="/main/home">Phân quyền</Link>
                         </Menu.Item>
                     </SubMenu>
 
