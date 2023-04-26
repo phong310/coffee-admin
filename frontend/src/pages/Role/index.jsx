@@ -98,7 +98,7 @@ export const Role = () => {
             dataIndex: 'role_name',
             key: 'role_name',
             render: (role) => {
-                return <Tag color={role === 'DIRECTOR' ? '#f5222d' : '#87e8de'}>{role}</Tag>
+                return <Tag color={role === 'DIRECTOR' || role === 'ADMIN' ? '#f5222d' : (role === 'MANAGER' ? '#d3adf7' : '#87e8de')}>{role}</Tag>
             }
         },
         {
@@ -193,9 +193,9 @@ export const Role = () => {
             </Col>
             <Col className='col_wrapp_title' style={{ padding: "30px 0px 10px 0px" }}>
                 <Row justify="space-between">
-                    <h2>Danh sách nhóm quyền <Tag color="#4096ff">{data.length}</Tag></h2>
+                    <h2>Danh sách nhóm quyền <Tag color="#4096ff">{dataFilter.length}</Tag></h2>
                     <Row>
-                        <Button type="primary" icon={<ExportOutlined />} style={{ marginRight: "10px" }} onClick={() => exportToExcel(data)}>
+                        <Button type="primary" icon={<ExportOutlined />} style={{ marginRight: "10px" }} onClick={() => exportToExcel(dataFilter)}>
                             Xuất file Excel
                         </Button>
                         <Button type="primary" icon={<PlusOutlined />} onClick={() => setOpenAdd(true)}>

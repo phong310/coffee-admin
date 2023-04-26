@@ -1,25 +1,39 @@
 import { Col, Form, Input, Modal, Row, Select } from 'antd';
 import axios from 'axios';
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 
 
-export const AddPermission = ({ open, setOpen, getAll }) => {
+export const UpdatePermission = ({ open, setOpen, getAll, item }) => {
     const { TextArea } = Input;
     const [perName, setPerName] = useState("");
     const [nameDisplay, setNameDisplay] = useState("");
     const [perDes, setPerDes] = useState("");
     const [perStatus, setPerStatus] = useState("")
 
-    const formRef = useRef(null)
+    const [form] = Form.useForm()
+
 
 
     const handleChangeStatus = (value) => {
         setPerStatus(value)
     }
 
+    useEffect(() => {
+        form.setFieldsValue({
+            per_name: item?.per_name,
+            per_name_display: item?.per_name_display,
+            per_description: item?.per_description,
+            per_status: item?.per_status
+        })
+        setPerName(item?.per_name);
+        setNameDisplay(item?.per_name_display);
+        setPerDes(item?.per_description);
+        setPerStatus(item?.per_status)
+    }, [item, form])
+
     const OK = () => {
-        formRef.current.validateFields().then(async () => {
+        form.validateFields().then(async () => {
             const newPer = {
                 per_name: perName,
                 per_name_display: nameDisplay,
@@ -27,27 +41,22 @@ export const AddPermission = ({ open, setOpen, getAll }) => {
                 per_status: perStatus
             }
             try {
-                await axios.post("http://localhost:7000/permission/createPermission", newPer);
-                toast.success("Thêm mới quyền thành công")
+                await axios.put(`http://localhost:7000/permission/update/${item?._id}`, newPer);
+                toast.success("Cập nhật quyền thành công")
                 reset_form()
                 setOpen(false);
                 getAll();
 
             } catch (e) {
-                toast.warning("Thêm mới quyền thất bại !")
+                toast.warning("Cập nhật quyền thất bại !")
                 console.log("Err", e)
             }
         })
     }
 
-    const onClose = () => {
-        setOpen(false);
-        reset_form()
-    };
-
 
     const reset_form = () => {
-        formRef.current.resetFields();
+        form.resetFields();
         setPerName("");
         setNameDisplay("");
         setPerDes("");
@@ -57,19 +66,19 @@ export const AddPermission = ({ open, setOpen, getAll }) => {
     return (
         <>
             <Modal
-                title="Thêm mới quyền"
+                title="Cập nhật quyền"
                 centered
                 width={800}
                 open={open}
                 onOk={OK}
-                onCancel={onClose}
+                onCancel={() => setOpen(false)}
             >
                 <Col span={24} style={{ margin: '30px 0px' }}>
-                    <Form ref={formRef} layout="vertical">
+                    <Form form={form} layout="vertical">
                         <Row gutter={24}>
                             <Col span={12}>
                                 <Form.Item
-                                    name="name"
+                                    name="per_name"
                                     label="Tên quyền"
                                     rules={[
                                         {
@@ -83,7 +92,7 @@ export const AddPermission = ({ open, setOpen, getAll }) => {
                             </Col>
                             <Col span={12}>
                                 <Form.Item
-                                    name="nameDisplay"
+                                    name="per_name_display"
                                     label="Tên hiển thị"
                                     rules={[
                                         {
@@ -97,7 +106,7 @@ export const AddPermission = ({ open, setOpen, getAll }) => {
                             </Col>
                             <Col span={24}>
                                 <Form.Item
-                                    name="description"
+                                    name="per_description"
                                     label="Mô tả chi tiết"
                                     rules={[
                                         {
@@ -111,7 +120,7 @@ export const AddPermission = ({ open, setOpen, getAll }) => {
                             </Col>
                             <Col span={24}>
                                 <Form.Item
-                                    name="status"
+                                    name="per_status"
                                     label="Trạng thái"
                                     rules={[
                                         {

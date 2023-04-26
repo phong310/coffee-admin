@@ -8,6 +8,8 @@ router.post("/createPermission", PermissionController.createPermission);
 
 router.delete("/:id", PermissionController.deletePermission);
 
-router.put("/update/:id", PermissionController.updatePermission)
+router.put("/update/:id", PermissionController.updatePermission);
+
+router.get("/search", PermissionController.searchPermission)
 
 module.exports = router;

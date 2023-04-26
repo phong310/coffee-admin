@@ -4,19 +4,44 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react'
 import { AddPermission } from '../../components/Permission/addModal';
 import { DeletePermission } from '../../components/Permission/deleteModal';
+import { UpdatePermission } from '../../components/Permission/updateModal';
+import * as XLSX from 'xlsx'
 
 export default function Permission() {
     const { Panel } = Collapse;
     const [data, setData] = useState([]);
+    const [dataFilter, setDataFilter] = useState([])
     const [itemPer, setItemPer] = useState()
     const [openAdd, setOpenAdd] = useState(false)
     const [openDelete, setOpenDelete] = useState(false)
+    const [openUpdate, setOpenUpdate] = useState(false);
 
+    // Tìm kiếm
+    const [nameDisplaySearch, setNameDisplaySearch] = useState();
+    const [statuSearch, setStatuSearch] = useState()
+
+    const handleNameDisplaySearch = (value) => {
+        setNameDisplaySearch(value)
+    }
+
+    const handleStatusSearch = (value) => {
+        setStatuSearch(value)
+    }
+
+    const handleSearch = async () => {
+        try {
+            const res = await axios.get(`http://localhost:7000/permission/search?per_name_display=${nameDisplaySearch || ""}&per_status=${statuSearch || ""}`)
+            setDataFilter(res.data)
+        } catch (e) {
+            console.log("Err: ", e)
+        }
+    }
 
     const getDataPermission = async () => {
         try {
             const res = await axios.get("http://localhost:7000/permission/getAllPermission");
             setData(res.data);
+            setDataFilter(res.data)
 
         } catch (e) {
             console.log("Err:", e)
@@ -27,8 +52,27 @@ export default function Permission() {
         getDataPermission()
     }, [])
 
+    // Xuất file Excel
+    const exportToExcel = (data) => {
+        const worksheet = XLSX.utils.json_to_sheet(data);
+        const workbook = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(workbook, worksheet, 'Data');
+        XLSX.writeFile(workbook, 'data.xlsx');
+    }
+
+    const resest_filter = () => {
+        getDataPermission();
+        setNameDisplaySearch();
+        setStatuSearch();
+    }
+
     const handleDelete = (record) => {
         setOpenDelete(true)
+        setItemPer(record)
+    }
+
+    const handleUpdate = (record) => {
+        setOpenUpdate(true);
         setItemPer(record)
     }
 
@@ -109,35 +153,35 @@ export default function Permission() {
                     <Panel header="Tìm kiếm" key="1">
                         <Row>
                             <Col span={3}>
-                                {/* <Select
+                                <Select
                                     className='select'
-                                    placeholder="Nhóm quyền"
-                                    value={roleSearch}
-                                    onChange={handleRoleSearch}
+                                    placeholder="Tên quyền hiển thị"
+                                    value={nameDisplaySearch}
+                                    onChange={handleNameDisplaySearch}
                                 >
                                     {data.map((item) =>
-                                        <Select.Option key={item._id} value={item.role_name}>{item.role_name}</Select.Option>
+                                        <Select.Option key={item._id} value={item.per_name_display}>{item.per_name_display}</Select.Option>
                                     )}
-                                </Select> */}
+                                </Select>
                             </Col>
-                            <Col span={5} style={{ marginLeft: '320px' }}>
-                                {/* <Select
+                            <Col span={5} style={{ marginLeft: '310px' }}>
+                                <Select
                                     className='select'
                                     placeholder="Trạng thái"
-                                    value={roleStatuSearch}
+                                    value={statuSearch}
                                     onChange={handleStatusSearch}
 
                                 >
                                     <Select.Option value="active">Kích hoạt</Select.Option>
                                     <Select.Option value="inactive">Chưa kích hoạt</Select.Option>
-                                </Select> */}
+                                </Select>
                             </Col>
                         </Row>
 
                         {/* search */}
                         <Row justify="end" style={{ marginTop: "25px" }}>
-                            <Button type="primary" ghost className='btn' >Tìm kiếm</Button>
-                            <Button danger >Reset bộ lọc</Button>
+                            <Button type="primary" ghost className='btn' onClick={handleSearch}>Tìm kiếm</Button>
+                            <Button danger onClick={resest_filter}>Reset bộ lọc</Button>
                         </Row>
 
                     </Panel>
@@ -145,9 +189,9 @@ export default function Permission() {
             </Col>
             <Col className='col_wrapp_title' style={{ padding: "30px 0px 10px 0px" }}>
                 <Row justify="space-between">
-                    <h2>Danh sách các quyền <Tag color="#4096ff">{data.length}</Tag></h2>
+                    <h2>Danh sách các quyền <Tag color="#4096ff">{dataFilter.length}</Tag></h2>
                     <Row>
-                        <Button type="primary" icon={<ExportOutlined />} style={{ marginRight: "10px" }} >
+                        <Button type="primary" icon={<ExportOutlined />} style={{ marginRight: "10px" }} onClick={() => exportToExcel(dataFilter)}>
                             Xuất file Excel
                         </Button>
                         <Button type="primary" icon={<PlusOutlined />} onClick={() => setOpenAdd(true)}>
@@ -159,11 +203,13 @@ export default function Permission() {
                 </Row>
             </Col>
 
-            <Table className='table' columns={columns} dataSource={data} scroll={{ y: 502 }} />
+            <Table className='table' columns={columns} dataSource={dataFilter} scroll={{ y: 502 }} />
 
             <AddPermission open={openAdd} setOpen={setOpenAdd} getAll={getDataPermission} />
 
             <DeletePermission open={openDelete} setOpen={setOpenDelete} item={itemPer} getAll={getDataPermission} />
+
+            <UpdatePermission open={openUpdate} setOpen={setOpenUpdate} item={itemPer} getAll={getDataPermission} />
         </>
     )
 }

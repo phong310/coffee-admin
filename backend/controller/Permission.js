@@ -63,6 +63,26 @@ const PermissionController = {
         }
     },
 
+    // search
+    searchPermission: async (req, res) => {
+        try {
+            const perName = req.query.per_name_display;
+            const perStatus = req.query.per_status
+            let query = {};
+            if (perName && perStatus) {
+                query = { per_name_display: perName, per_status: perStatus };
+            } else if (perName) {
+                query = { per_name_display: perName }
+            } else if (perStatus) {
+                query = { per_status: perStatus }
+            }
+            const Permission = await PermissionModel.find(query);
+            res.status(200).json(Permission);
+        } catch (e) {
+            res.status(500).json({ err: e });
+        }
+    }
+
 
 }
 

@@ -141,7 +141,7 @@ export const Account = () => {
             dataIndex: 'role',
             key: 'role',
             render: (role) => {
-                return <Tag color={role === 'ADMIN' ? '#d3adf7' : '#87e8de'}>{role}</Tag>
+                return <Tag color={role === 'ADMIN' ? '#f5222d' : '#87e8de'}>{role}</Tag>
             }
         },
         {
