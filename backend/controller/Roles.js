@@ -59,6 +59,22 @@ const RoleController = {
             res.status(500).json({ err: e });
         }
     },
+
+    // search 
+    searchRole: async (req, res) => {
+        try {
+            const roleName = req.query.role_name;
+            let query = {};
+            if (roleName) {
+                query = { role_name: roleName, };
+            }
+            const Roles = await RoleModel.find(query);
+            res.status(200).json(Roles);
+        } catch (e) {
+            res.status(500).json({ err: e });
+        }
+    }
+
 }
 
 module.exports = RoleController

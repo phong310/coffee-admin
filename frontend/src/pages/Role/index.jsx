@@ -13,7 +13,8 @@ import { DeleteRole } from '../../components/Role/deleteModal'
 
 export const Role = () => {
     const { Panel } = Collapse;
-    const [data, setData] = useState([])
+    const [data, setData] = useState([]);
+    const [dataFilter, setDataFilter] = useState([])
     const [openAdd, setOpenAdd] = useState(false);
     const [openUpdate, setOpenUpdate] = useState(false);
     const [openDelete, setOpenDelete] = useState(false)
@@ -21,12 +22,23 @@ export const Role = () => {
 
 
     // Tìm kiếm
-    const [roleSearch, setRoleSearch] = useState("")
+    const [roleSearch, setRoleSearch] = useState()
+
+    const handleSearch = async () => {
+        try {
+            const res = await axios.get(`http://localhost:7000/roles/search?role_name=${roleSearch}`)
+            setDataFilter(res.data)
+
+        } catch (e) {
+            console.log("Err search: ", e)
+        }
+    }
 
     const getDataRoles = async () => {
         try {
             const res = await axios.get("http://localhost:7000/roles/getAllRole")
             setData(res.data)
+            setDataFilter(res.data)
 
         } catch (e) {
             console.log("Err:", e)
@@ -66,7 +78,7 @@ export const Role = () => {
 
     const resest_filter = () => {
         getDataRoles();
-        setRoleSearch("");
+        setRoleSearch();
     }
 
 
@@ -143,20 +155,20 @@ export const Role = () => {
                             <Col span={5}>
                                 <Select
                                     className='select'
+                                    placeholder="Nhóm quyền"
                                     value={roleSearch}
                                     onChange={handleRoleSearch}
-
                                 >
-                                    <Select.Option value="">Nhóm quyền</Select.Option>
-                                    <Select.Option value="ADMIN">ADMIN</Select.Option>
-                                    <Select.Option value="USER">USER</Select.Option>
+                                    {data.map((item) =>
+                                        <Select.Option key={item._id} value={item.role_name}>{item.role_name}</Select.Option>
+                                    )}
                                 </Select>
                             </Col>
                         </Row>
 
                         {/* search */}
                         <Row justify="end" style={{ marginTop: "25px" }}>
-                            <Button type="primary" ghost className='btn' >Tìm kiếm</Button>
+                            <Button type="primary" ghost className='btn' onClick={handleSearch}>Tìm kiếm</Button>
                             <Button danger onClick={resest_filter}>Reset bộ lọc</Button>
                         </Row>
 
@@ -179,7 +191,7 @@ export const Role = () => {
                 </Row>
             </Col>
             {/* Table */}
-            <Table className='table' columns={columns} dataSource={data} scroll={{ y: 502 }} />
+            <Table className='table' columns={columns} dataSource={dataFilter} scroll={{ y: 502 }} />
 
             <AddRole open={openAdd} setOpen={setOpenAdd} getAll={getDataRoles} />
 
