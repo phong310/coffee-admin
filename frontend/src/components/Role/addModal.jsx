@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { Col, Form, Input, Modal, Row, Select } from 'antd';
 import { toast } from 'react-toastify';
 import axios from 'axios';
@@ -6,34 +6,50 @@ import axios from 'axios';
 
 export const AddRole = ({ open, setOpen, getAll }) => {
     const { TextArea } = Input;
+    const [roleName, setRoleName] = useState("");
+    const [roleDes, setRoleDes] = useState("");
+    const [roleStatus, setRoleStatus] = useState("");
+
+    const formRef = useRef(null)
+
+
+    const handleChangeStatus = (value) => {
+        setRoleStatus(value)
+    }
+
+    const OK = () => {
+        formRef.current.validateFields().then(async () => {
+            const newRole = {
+                role_name: roleName,
+                role_description: roleDes,
+                role_status: roleStatus
+            }
+            try {
+                await axios.post("http://localhost:7000/roles/createOrder", newRole);
+                toast.success("Thêm mới nhóm quyền thành công")
+                reset_form()
+                setOpen(false);
+                getAll();
+
+            } catch (e) {
+                toast.warning("Thêm mới nhóm quyền thất bại !")
+                console.log("Err", e)
+            }
+        })
+    }
+
+
+    const reset_form = () => {
+        formRef.current.resetFields();
+        setRoleName("");
+        setRoleDes("");
+        setRoleStatus("");
+    }
 
 
 
-    // const ok = async () => {
-    //     const newRole = {
-    //         username: item.username,
-    //         password: item.password,
-    //         confirm: item.confirm,
-    //         email: item.email,
-    //         phone: item.phone,
-    //         role: role,
-    //         status: item.status,
-    //         avatar: item.avatar,
-    //         birthday: item.birthday,
-    //         sex: item.sex,
-    //         address: item.address,
-    //     };
-    //     try {
-    //         await axios.put(`http://localhost:7000/user/update/${item?._id}`, newRole)
-    //         setOpen(false)
-    //         toast.success("Cập nhật quyền thành công")
-    //         getAll()
 
-    //     } catch (e) {
-    //         console.log("ERR:", e)
-    //         toast.warning("Cập nhật quyền thất bại !");
-    //     }
-    // }
+
 
     return (
         <>
@@ -42,11 +58,11 @@ export const AddRole = ({ open, setOpen, getAll }) => {
                 centered
                 width={800}
                 open={open}
-                onOk={() => setOpen(false)}
+                onOk={OK}
                 onCancel={() => setOpen(false)}
             >
                 <Col span={24} style={{ margin: '30px 0px' }}>
-                    <Form layout="vertical">
+                    <Form ref={formRef} layout="vertical">
                         <Row gutter={24}>
                             <Col span={12}>
                                 <Form.Item
@@ -59,7 +75,7 @@ export const AddRole = ({ open, setOpen, getAll }) => {
                                         },
                                     ]}
                                 >
-                                    <Input placeholder="Tên nhóm quyền" />
+                                    <Input value={roleName} onChange={(e) => setRoleName(e.target.value)} placeholder="Tên nhóm quyền" />
                                 </Form.Item>
                             </Col>
                             <Col span={12}>
@@ -73,7 +89,7 @@ export const AddRole = ({ open, setOpen, getAll }) => {
                                         },
                                     ]}
                                 >
-                                    <Select placeholder="Trạng thái">
+                                    <Select placeholder="Trạng thái" onChange={handleChangeStatus}>
                                         <Select.Option value="active">Kích hoạt</Select.Option>
                                         <Select.Option value="inactive">Chưa kích hoạt</Select.Option>
                                     </Select>
@@ -90,7 +106,7 @@ export const AddRole = ({ open, setOpen, getAll }) => {
                                         },
                                     ]}
                                 >
-                                    <TextArea rows={4} placeholder="Nhập mô tả . . ." maxLength={50} showCount />
+                                    <TextArea value={roleDes} onChange={(e) => setRoleDes(e.target.value)} rows={4} placeholder="Nhập mô tả . . ." maxLength={50} showCount />
                                 </Form.Item>
                             </Col>
 

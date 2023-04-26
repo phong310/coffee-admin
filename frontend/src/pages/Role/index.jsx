@@ -1,11 +1,12 @@
-import { DeleteTwoTone, EditTwoTone, ExportOutlined, EyeTwoTone, PlusOutlined, ReloadOutlined } from '@ant-design/icons'
-import { Breadcrumb, Button, Col, Collapse, Input, Row, Select, Space, Table, Tag, Tooltip } from 'antd'
+import { DeleteTwoTone, EditTwoTone, ExportOutlined, PlusOutlined } from '@ant-design/icons'
+import { Breadcrumb, Button, Col, Collapse, Row, Select, Space, Table, Tag, Tooltip } from 'antd'
 import axios from 'axios'
-import { UpdateRole } from '../../components/Role/updateModal'
-import { AddRole } from '../../components/Role/addModal'
 import React, { useEffect, useState } from 'react'
 import * as XLSX from 'xlsx'
 import "../../assets/CSS/Drinks.css"
+import { AddRole } from '../../components/Role/addModal'
+import { UpdateRole } from '../../components/Role/updateModal'
+import { DeleteRole } from '../../components/Role/deleteModal'
 
 
 
@@ -15,12 +16,11 @@ export const Role = () => {
     const [data, setData] = useState([])
     const [openAdd, setOpenAdd] = useState(false);
     const [openUpdate, setOpenUpdate] = useState(false);
-    const [itemUser, setItemUser] = useState()
+    const [openDelete, setOpenDelete] = useState(false)
+    const [itemRole, setItemRole] = useState()
 
 
     // Tìm kiếm
-    const [emailSearch, setEmailSearch] = useState("");
-    const [statuSearch, setStatusSearch] = useState("");
     const [roleSearch, setRoleSearch] = useState("")
 
     const getDataRoles = async () => {
@@ -46,44 +46,27 @@ export const Role = () => {
         XLSX.writeFile(workbook, 'data.xlsx');
     }
 
-    // const handleDelete = (record) => {
-    //     setOpenDelete(true)
-    //     setItemUser(record)
-    // }
+    const handleDelete = (record) => {
+        setOpenDelete(true)
+        setItemRole(record)
+    }
 
     const handleUpdate = (rc) => {
         setOpenUpdate(true);
-        setItemUser(rc)
+        setItemRole(rc)
     }
 
-    // const handleResetPassword = (rc) => {
-    //     setOpenReset(true);
-    //     setItemUser(rc)
-    // }
+
 
     const handleRoleSearch = (value) => {
         setRoleSearch(value)
     }
 
-    const handleStatusSearch = (value) => {
-        setStatusSearch(value)
-    }
 
-    const handleSearch = async () => {
-        try {
-            const result = await axios.get(`http://localhost:7000/user/search?email=${emailSearch}&role=${roleSearch}&status=${statuSearch}`)
-            setData(result.data)
-
-        } catch (e) {
-            console.log("Err search", e)
-        }
-    }
 
     const resest_filter = () => {
         getDataRoles();
-        setEmailSearch("");
         setRoleSearch("");
-        setStatusSearch("");
     }
 
 
@@ -133,7 +116,7 @@ export const Role = () => {
                         <EditTwoTone />
                     </Tooltip>
                     <Tooltip placement="top" title="Xóa">
-                        <DeleteTwoTone twoToneColor="#f5222d" />
+                        <DeleteTwoTone twoToneColor="#f5222d" onClick={() => handleDelete(record)} />
                     </Tooltip>
                 </Space>
             ),
@@ -173,7 +156,7 @@ export const Role = () => {
 
                         {/* search */}
                         <Row justify="end" style={{ marginTop: "25px" }}>
-                            <Button type="primary" ghost className='btn' onClick={handleSearch} >Tìm kiếm</Button>
+                            <Button type="primary" ghost className='btn' >Tìm kiếm</Button>
                             <Button danger onClick={resest_filter}>Reset bộ lọc</Button>
                         </Row>
 
@@ -200,7 +183,9 @@ export const Role = () => {
 
             <AddRole open={openAdd} setOpen={setOpenAdd} getAll={getDataRoles} />
 
-            <UpdateRole open={openUpdate} setOpen={setOpenUpdate} item={itemUser} getAll={getDataRoles} />
+            <UpdateRole open={openUpdate} setOpen={setOpenUpdate} item={itemRole} getAll={getDataRoles} />
+
+            <DeleteRole open={openDelete} setOpen={setOpenDelete} item={itemRole} getAll={getDataRoles} />
 
 
         </>
