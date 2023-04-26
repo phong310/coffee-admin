@@ -2,10 +2,15 @@ import { DeleteTwoTone, EditTwoTone, ExportOutlined, PlusOutlined } from '@ant-d
 import { Breadcrumb, Button, Col, Collapse, Row, Select, Space, Table, Tag, Tooltip } from 'antd'
 import axios from 'axios';
 import React, { useEffect, useState } from 'react'
+import { AddPermission } from '../../components/Permission/addModal';
+import { DeletePermission } from '../../components/Permission/deleteModal';
 
 export default function Permission() {
     const { Panel } = Collapse;
     const [data, setData] = useState([]);
+    const [itemPer, setItemPer] = useState()
+    const [openAdd, setOpenAdd] = useState(false)
+    const [openDelete, setOpenDelete] = useState(false)
 
 
     const getDataPermission = async () => {
@@ -21,6 +26,11 @@ export default function Permission() {
     useEffect(() => {
         getDataPermission()
     }, [])
+
+    const handleDelete = (record) => {
+        setOpenDelete(true)
+        setItemPer(record)
+    }
 
     const columns = [
         {
@@ -140,7 +150,7 @@ export default function Permission() {
                         <Button type="primary" icon={<ExportOutlined />} style={{ marginRight: "10px" }} >
                             Xuất file Excel
                         </Button>
-                        <Button type="primary" icon={<PlusOutlined />}>
+                        <Button type="primary" icon={<PlusOutlined />} onClick={() => setOpenAdd(true)}>
                             Thêm mới các quyền
                         </Button>
 
@@ -150,6 +160,10 @@ export default function Permission() {
             </Col>
 
             <Table className='table' columns={columns} dataSource={data} scroll={{ y: 502 }} />
+
+            <AddPermission open={openAdd} setOpen={setOpenAdd} getAll={getDataPermission} />
+
+            <DeletePermission open={openDelete} setOpen={setOpenDelete} item={itemPer} getAll={getDataPermission} />
         </>
     )
 }

@@ -1,38 +1,40 @@
-import React, { useEffect, useRef, useState } from 'react'
 import { Col, Form, Input, Modal, Row, Select } from 'antd';
-import { toast } from 'react-toastify';
 import axios from 'axios';
+import React, { useRef, useState } from 'react';
+import { toast } from 'react-toastify';
 
 
-export const AddRole = ({ open, setOpen, getAll }) => {
+export const AddPermission = ({ open, setOpen, getAll }) => {
     const { TextArea } = Input;
-    const [roleName, setRoleName] = useState("");
-    const [roleDes, setRoleDes] = useState("");
-    const [roleStatus, setRoleStatus] = useState("");
+    const [perName, setPerName] = useState("");
+    const [nameDisplay, setNameDisplay] = useState("");
+    const [perDes, setPerDes] = useState("");
+    const [perStatus, setPerStatus] = useState("")
 
     const formRef = useRef(null)
 
 
     const handleChangeStatus = (value) => {
-        setRoleStatus(value)
+        setPerStatus(value)
     }
 
     const OK = () => {
         formRef.current.validateFields().then(async () => {
-            const newRole = {
-                role_name: roleName,
-                role_description: roleDes,
-                role_status: roleStatus
+            const newPer = {
+                per_name: perName,
+                per_name_display: nameDisplay,
+                per_description: perDes,
+                per_status: perStatus
             }
             try {
-                await axios.post("http://localhost:7000/roles/createOrder", newRole);
-                toast.success("Thêm mới nhóm quyền thành công")
+                await axios.post("http://localhost:7000/permission/createPermission", newPer);
+                toast.success("Thêm mới quyền thành công")
                 reset_form()
                 setOpen(false);
                 getAll();
 
             } catch (e) {
-                toast.warning("Thêm mới nhóm quyền thất bại !")
+                toast.warning("Thêm mới quyền thất bại !")
                 console.log("Err", e)
             }
         })
@@ -46,16 +48,16 @@ export const AddRole = ({ open, setOpen, getAll }) => {
 
     const reset_form = () => {
         formRef.current.resetFields();
-        setRoleName("");
-        setRoleDes("");
-        setRoleStatus("");
+        setPerName("");
+        setNameDisplay("");
+        setPerDes("");
+        setPerStatus("");
     }
-
 
     return (
         <>
             <Modal
-                title="Thêm mới nhóm quyền"
+                title="Thêm mới quyền"
                 centered
                 width={800}
                 open={open}
@@ -68,7 +70,7 @@ export const AddRole = ({ open, setOpen, getAll }) => {
                             <Col span={12}>
                                 <Form.Item
                                     name="name"
-                                    label="Tên nhóm quyền"
+                                    label="Tên quyền"
                                     rules={[
                                         {
                                             required: true,
@@ -76,10 +78,38 @@ export const AddRole = ({ open, setOpen, getAll }) => {
                                         },
                                     ]}
                                 >
-                                    <Input value={roleName} onChange={(e) => setRoleName(e.target.value)} placeholder="Tên nhóm quyền" />
+                                    <Input value={perName} onChange={(e) => setPerName(e.target.value)} placeholder="Tên quyền" />
                                 </Form.Item>
                             </Col>
                             <Col span={12}>
+                                <Form.Item
+                                    name="nameDisplay"
+                                    label="Tên hiển thị"
+                                    rules={[
+                                        {
+                                            required: true,
+                                            message: 'Xin vui lòng nhập tên hiển thị',
+                                        },
+                                    ]}
+                                >
+                                    <Input value={nameDisplay} onChange={(e) => setNameDisplay(e.target.value)} placeholder="Tên quyền hiển thị" />
+                                </Form.Item>
+                            </Col>
+                            <Col span={24}>
+                                <Form.Item
+                                    name="description"
+                                    label="Mô tả chi tiết"
+                                    rules={[
+                                        {
+                                            required: true,
+                                            message: 'Xin vui lòng nhập mô tả',
+                                        },
+                                    ]}
+                                >
+                                    <TextArea value={perDes} onChange={(e) => setPerDes(e.target.value)} rows={4} placeholder="Nhập mô tả . . ." maxLength={50} showCount />
+                                </Form.Item>
+                            </Col>
+                            <Col span={24}>
                                 <Form.Item
                                     name="status"
                                     label="Trạng thái"
@@ -96,21 +126,6 @@ export const AddRole = ({ open, setOpen, getAll }) => {
                                     </Select>
                                 </Form.Item>
                             </Col>
-                            <Col span={24}>
-                                <Form.Item
-                                    name="description"
-                                    label="Mô tả chi tiết"
-                                    rules={[
-                                        {
-                                            required: true,
-                                            message: 'Xin vui lòng nhập mô tả',
-                                        },
-                                    ]}
-                                >
-                                    <TextArea value={roleDes} onChange={(e) => setRoleDes(e.target.value)} rows={4} placeholder="Nhập mô tả . . ." maxLength={50} showCount />
-                                </Form.Item>
-                            </Col>
-
                         </Row>
                     </Form>
                 </Col>
