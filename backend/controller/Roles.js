@@ -64,9 +64,14 @@ const RoleController = {
     searchRole: async (req, res) => {
         try {
             const roleName = req.query.role_name;
+            const roleStatus = req.query.role_status
             let query = {};
-            if (roleName) {
-                query = { role_name: roleName, };
+            if (roleName && roleStatus) {
+                query = { role_name: roleName, role_status: roleStatus };
+            } else if (roleName) {
+                query = { role_name: roleName }
+            } else if (roleStatus) {
+                query = { role_status: roleStatus }
             }
             const Roles = await RoleModel.find(query);
             res.status(200).json(Roles);

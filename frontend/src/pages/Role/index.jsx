@@ -23,10 +23,11 @@ export const Role = () => {
 
     // Tìm kiếm
     const [roleSearch, setRoleSearch] = useState()
+    const [roleStatuSearch, setRoleStatuSearch] = useState()
 
     const handleSearch = async () => {
         try {
-            const res = await axios.get(`http://localhost:7000/roles/search?role_name=${roleSearch}`)
+            const res = await axios.get(`http://localhost:7000/roles/search?role_name=${roleSearch || ""}&role_status=${roleStatuSearch || ""}`)
             setDataFilter(res.data)
 
         } catch (e) {
@@ -68,10 +69,12 @@ export const Role = () => {
         setItemRole(rc)
     }
 
-
-
     const handleRoleSearch = (value) => {
         setRoleSearch(value)
+    }
+
+    const handleStatusSearch = (value) => {
+        setRoleStatuSearch(value)
     }
 
 
@@ -79,6 +82,7 @@ export const Role = () => {
     const resest_filter = () => {
         getDataRoles();
         setRoleSearch();
+        setRoleStatuSearch();
     }
 
 
@@ -152,7 +156,7 @@ export const Role = () => {
                 <Collapse>
                     <Panel header="Tìm kiếm" key="1">
                         <Row>
-                            <Col span={5}>
+                            <Col span={3}>
                                 <Select
                                     className='select'
                                     placeholder="Nhóm quyền"
@@ -162,6 +166,18 @@ export const Role = () => {
                                     {data.map((item) =>
                                         <Select.Option key={item._id} value={item.role_name}>{item.role_name}</Select.Option>
                                     )}
+                                </Select>
+                            </Col>
+                            <Col span={5} style={{ marginLeft: '320px' }}>
+                                <Select
+                                    className='select'
+                                    placeholder="Trạng thái"
+                                    value={roleStatuSearch}
+                                    onChange={handleStatusSearch}
+
+                                >
+                                    <Select.Option value="active">Kích hoạt</Select.Option>
+                                    <Select.Option value="inactive">Chưa kích hoạt</Select.Option>
                                 </Select>
                             </Col>
                         </Row>
