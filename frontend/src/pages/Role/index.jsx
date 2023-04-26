@@ -146,7 +146,7 @@ export const Role = () => {
                 routes={[
                     { path: '/', breadcrumbName: "Home" },
                     { path: '/managerment', breadcrumbName: 'Quản lý tài khoản' },
-                    { path: '/mangerment/account', breadcrumbName: 'Nhóm quyền' }]}
+                    { path: '/mangerment/role', breadcrumbName: 'Nhóm quyền' }]}
                 separator="/"
                 style={{
                     margin: '16px 3px',

@@ -14,6 +14,7 @@ import { Snacks } from '../../pages/Snacks';
 import { Logout } from '../Logout';
 import { Order } from '../../pages/Order';
 import { Role } from '../../pages/Role';
+import Permission from '../../pages/Create_Permission';
 
 
 const { Header, Content, Footer, Sider } = Layout;
@@ -40,6 +41,8 @@ const MainLayout = () => {
                 return "Quản lý tài khoản";
             case "/main/mangerment/role":
                 return "Quản lý nhóm quyền";
+            case "/main/mangerment/permission":
+                return "Tạo các quyền";
             case "/main/mangerment/category":
                 return "Quản lý danh mục bán hàng";
             case "/main/mangerment/infor":
@@ -132,7 +135,7 @@ const MainLayout = () => {
                             <Link to="/main/mangerment/role">Nhóm quyền</Link>
                         </Menu.Item>
                         <Menu.Item key="10" icon={<SettingOutlined />}>
-                            <Link to="/main/home">Phân quyền</Link>
+                            <Link to="/main/mangerment/permission">Tạo quyền</Link>
                         </Menu.Item>
                     </SubMenu>
 
@@ -203,6 +206,7 @@ const MainLayout = () => {
                         <Route path="/mangerment/snacks" element={<Snacks />} />
                         <Route path="/mangerment/account" element={<Account />} />
                         <Route path="/mangerment/role" element={<Role />} />
+                        <Route path="/mangerment/permission" element={<Permission />} />
                         <Route path="/mangerment/category" element={<Category />} />
                         <Route path="/mangerment/infor" element={<InforUser />} />
                         <Route path="/order" element={<Order />} />
