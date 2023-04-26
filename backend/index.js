@@ -10,6 +10,7 @@ const User = require("./router/Users")
 const Category = require("./router/Category")
 const Order = require("./router/Order")
 const Roles = require("./router/Roles")
+const Permission = require("./router/Permission")
 
 
 
@@ -38,6 +39,8 @@ app.use("/category", Category)
 app.use("/order", Order)
 
 app.use("/roles", Roles)
+
+app.use("/permission", Permission)
 
 // Upload ảnh
 const storage = multer.diskStorage({

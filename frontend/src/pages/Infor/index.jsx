@@ -52,7 +52,7 @@ export const InforUser = () => {
                 </Row>
                 <Row style={{ justifyContent: "space-between", }}>
                     <span>Email: </span>
-                    <b>{user.email}</b>
+                    <b><i>{user.email}</i></b>
                     <Divider />
                 </Row>
                 <Row style={{ justifyContent: "space-between", }}>

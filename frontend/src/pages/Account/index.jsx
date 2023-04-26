@@ -128,7 +128,8 @@ export const Account = () => {
             title: 'Email',
             dataIndex: 'email',
             key: 'email',
-            width: 300
+            width: 300,
+            render: (email) => <b><i>{email}</i></b>
         },
         {
             title: 'Số điện thoại',

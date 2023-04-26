@@ -1,9 +1,87 @@
-import { ExportOutlined, PlusOutlined } from '@ant-design/icons';
-import { Breadcrumb, Button, Col, Collapse, Row, Select, Tag } from 'antd'
-import React from 'react'
+import { DeleteTwoTone, EditTwoTone, ExportOutlined, PlusOutlined } from '@ant-design/icons';
+import { Breadcrumb, Button, Col, Collapse, Row, Select, Space, Table, Tag, Tooltip } from 'antd'
+import axios from 'axios';
+import React, { useEffect, useState } from 'react'
 
 export default function Permission() {
     const { Panel } = Collapse;
+    const [data, setData] = useState([]);
+
+
+    const getDataPermission = async () => {
+        try {
+            const res = await axios.get("http://localhost:7000/permission/getAllPermission");
+            setData(res.data);
+
+        } catch (e) {
+            console.log("Err:", e)
+        }
+    };
+
+    useEffect(() => {
+        getDataPermission()
+    }, [])
+
+    const columns = [
+        {
+            title: 'STT',
+            key: 'stt',
+            width: 130,
+            render: (text, record, index) => <span>{index + 1}</span>,
+        },
+        {
+            title: 'Tên quyền',
+            dataIndex: 'per_name',
+            key: 'per_name',
+            render: (name) => <b><i>{name}</i></b>
+
+        },
+        {
+            title: 'Tên quyền hiển thị',
+            dataIndex: 'per_name_display',
+            key: 'per_name_display',
+            render: (role) => {
+                return <Tag color='purple'>{role}</Tag>
+            }
+        },
+        {
+            title: 'Mô tả chi tiết',
+            dataIndex: 'per_description',
+            key: 'per_description',
+            width: 500,
+
+        },
+        {
+            title: 'Trạng thái',
+            key: 'per_status',
+            dataIndex: 'per_status',
+            render: (status) => (
+                <>
+                    <Tag color={status === 'active' ? 'green' : 'red'}>
+                        {status === "active" ? "Kích hoạt" : "Chưa kích hoạt"}
+                    </Tag>
+                </>
+            ),
+        },
+        {
+            title: 'Chức năng',
+            key: 'action',
+            render: (_, record) => (
+                <Space size="middle">
+                    {/* <Tooltip placement="top" title="Chi tiết">
+                        <EyeTwoTone twoToneColor="#531dab" />
+                    </Tooltip> */}
+                    <Tooltip placement="top" title="Sửa" onClick={() => handleUpdate(record)} >
+                        <EditTwoTone />
+                    </Tooltip>
+                    <Tooltip placement="top" title="Xóa">
+                        <DeleteTwoTone twoToneColor="#f5222d" onClick={() => handleDelete(record)} />
+                    </Tooltip>
+                </Space>
+            ),
+        },
+    ];
+
     return (
         <>
             <Breadcrumb
@@ -57,12 +135,12 @@ export default function Permission() {
             </Col>
             <Col className='col_wrapp_title' style={{ padding: "30px 0px 10px 0px" }}>
                 <Row justify="space-between">
-                    <h2>Danh sách các quyền <Tag color="#4096ff">0</Tag></h2>
+                    <h2>Danh sách các quyền <Tag color="#4096ff">{data.length}</Tag></h2>
                     <Row>
                         <Button type="primary" icon={<ExportOutlined />} style={{ marginRight: "10px" }} >
                             Xuất file Excel
                         </Button>
-                        <Button type="primary" icon={<PlusOutlined />} onClick={() => setOpenAdd(true)}>
+                        <Button type="primary" icon={<PlusOutlined />}>
                             Thêm mới các quyền
                         </Button>
 
@@ -70,6 +148,8 @@ export default function Permission() {
 
                 </Row>
             </Col>
+
+            <Table className='table' columns={columns} dataSource={data} scroll={{ y: 502 }} />
         </>
     )
 }
