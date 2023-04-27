@@ -1,7 +1,7 @@
 import { MailOutlined, UserOutlined, LoadingOutlined, PlusOutlined } from '@ant-design/icons';
 import { Button, Col, DatePicker, Drawer, Form, Input, Row, Select, Space, Upload, message } from 'antd';
 import axios from 'axios';
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { toast } from 'react-toastify';
 
 
@@ -22,7 +22,7 @@ const beforeUpload = (file) => {
 };
 
 
-const AddModal = ({ data, setData, getAll }) => {
+const AddModal = ({ data, setData, getAll, roleFilter, permission }) => {
     const [loading, setLoading] = useState(false);
     const [avatarUrl, setAvatarUrl] = useState()
     const [username, setUsername] = useState("");
@@ -34,7 +34,7 @@ const AddModal = ({ data, setData, getAll }) => {
     const [status, setStatus] = useState("");
     const [birthday, setBirthday] = useState("");
     const [sex, setSex] = useState("");
-    const [address, setAddress] = useState("")
+    const [address, setAddress] = useState("");
 
     const formRef = useRef(null)
 
@@ -109,6 +109,7 @@ const AddModal = ({ data, setData, getAll }) => {
             }
         })
     }
+
 
 
     const close_form = () => {
@@ -303,7 +304,7 @@ const AddModal = ({ data, setData, getAll }) => {
                         </Col>
                     </Row>
                     <Row gutter={24}>
-                        <Col span={24}>
+                        <Col span={12}>
                             <Form.Item
                                 name="role"
                                 label="Nhóm quyền"
@@ -315,12 +316,13 @@ const AddModal = ({ data, setData, getAll }) => {
                                 ]}
                             >
                                 <Select placeholder="Nhóm quyền" onChange={handleRole}>
-                                    <Option value="ADMIN">ADMIN</Option>
-                                    <Option value="USER">USER</Option>
+                                    {roleFilter.map((item) =>
+                                        <Select.Option key={item._id} value={item.role_name}>{item.role_name}</Select.Option>
+                                    )}
                                 </Select>
                             </Form.Item>
                         </Col>
-                        <Col span={24}>
+                        <Col span={12}>
                             <Form.Item
                                 name="status"
                                 label="Trạng thái"
@@ -334,6 +336,24 @@ const AddModal = ({ data, setData, getAll }) => {
                                 <Select placeholder="Trạng thái" onChange={handleStatus}>
                                     <Option value="active">Kích hoạt</Option>
                                     <Option value="inactive">Chưa kích hoạt</Option>
+                                </Select>
+                            </Form.Item>
+                        </Col>
+                        <Col span={24}>
+                            <Form.Item
+                                name="permission"
+                                label="Quyền"
+                                rules={[
+                                    {
+                                        required: true,
+                                        message: 'Vui lòng chọn quyền',
+                                    },
+                                ]}
+                            >
+                                <Select mode="multiple" placeholder="Quyền">
+                                    {permission.map((item) =>
+                                        <Select.Option key={item._id} value={item.per_name}>{item.per_name_display}</Select.Option>
+                                    )}
                                 </Select>
                             </Form.Item>
                         </Col>

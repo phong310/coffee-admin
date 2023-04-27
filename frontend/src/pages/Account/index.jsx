@@ -27,8 +27,10 @@ export const Account = () => {
 
     // Tìm kiếm
     const [emailSearch, setEmailSearch] = useState("");
-    const [statuSearch, setStatusSearch] = useState("");
-    const [roleSearch, setRoleSearch] = useState("")
+    const [statuSearch, setStatusSearch] = useState();
+    const [roleSearch, setRoleSearch] = useState();
+    const [roleFilter, setRoleFilter] = useState([])
+    const [permission, setPermission] = useState([])
 
     const getDataUser = async () => {
         try {
@@ -40,8 +42,30 @@ export const Account = () => {
         }
     }
 
+    const getDataRole = async () => {
+        try {
+            const res = await axios.get("http://localhost:7000/roles/getAllRole")
+            setRoleFilter(res.data)
+
+        } catch (e) {
+            console.log("Err:", e)
+        }
+    }
+
+
+    const getPermission = async () => {
+        try {
+            const res = await axios.get("http://localhost:7000/permission/getAllPermission");
+            setPermission(res.data)
+        } catch (e) {
+            console.log("Err:", e)
+        }
+    }
+
     useEffect(() => {
         getDataUser()
+        getDataRole()
+        getPermission()
     }, [])
 
 
@@ -79,7 +103,7 @@ export const Account = () => {
 
     const handleSearch = async () => {
         try {
-            const result = await axios.get(`http://localhost:7000/user/search?email=${emailSearch}&role=${roleSearch}&status=${statuSearch}`)
+            const result = await axios.get(`http://localhost:7000/user/search?email=${emailSearch || ""}&role=${roleSearch || ""}&status=${statuSearch || ""}`)
             setData(result.data)
 
         } catch (e) {
@@ -90,8 +114,8 @@ export const Account = () => {
     const resest_filter = () => {
         getDataUser();
         setEmailSearch("");
-        setRoleSearch("");
-        setStatusSearch("");
+        setRoleSearch();
+        setStatusSearch();
     }
 
 
@@ -140,9 +164,11 @@ export const Account = () => {
             title: 'Nhóm quyền',
             dataIndex: 'role',
             key: 'role',
-            render: (role) => {
-                return <Tag color={role === 'ADMIN' ? '#f5222d' : '#87e8de'}>{role}</Tag>
-            }
+            render: (role) => (
+                <>
+                    {role.map((item) => <Tag key={item} color={item === 'ADMIN' ? '#f5222d' : '#87e8de'}>{item}</Tag>)}
+                </>
+            )
         },
         {
             title: 'Trạng thái',
@@ -201,23 +227,23 @@ export const Account = () => {
                             <Col span={5}>
                                 <Select
                                     className='select'
+                                    placeholder="Nhóm quyền"
                                     value={roleSearch}
                                     onChange={handleRoleSearch}
-
                                 >
-                                    <Select.Option value="">Nhóm quyền</Select.Option>
-                                    <Select.Option value="ADMIN">ADMIN</Select.Option>
-                                    <Select.Option value="USER">USER</Select.Option>
+                                    {roleFilter.map((item) =>
+                                        <Select.Option key={item._id} value={item.role_name}>{item.role_name}</Select.Option>
+                                    )}
                                 </Select>
                             </Col>
                             <Col span={5} style={{ marginLeft: "180px" }}>
                                 <Select
                                     className='select'
+                                    placeholder="Trạng thái"
                                     value={statuSearch}
                                     onChange={handleStatusSearch}
 
                                 >
-                                    <Select.Option value="">Trạng thái</Select.Option>
                                     <Select.Option value="active">Kích hoạt</Select.Option>
                                     <Select.Option value="inactive">Chưa kích hoạt</Select.Option>
                                 </Select>
@@ -251,7 +277,7 @@ export const Account = () => {
             {/* Table */}
             <Table className='table' columns={columns} dataSource={data} scroll={{ y: 502 }} />
 
-            <AddModal data={open} setData={setOpen} getAll={getDataUser} />
+            <AddModal data={open} setData={setOpen} getAll={getDataUser} roleFilter={roleFilter} permission={permission} />
 
             <DeleteUser open={openDelete} setOpen={setOpenDelete} item={itemUser} getAll={getDataUser} />
 

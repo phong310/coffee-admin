@@ -20,7 +20,11 @@ const userSchema = new mongoose.Schema({
         required: true,
     },
     role: {
-        type: String,
+        type: Array,
+        require: true
+    },
+    permission: {
+        type: Array,
         require: true
     },
     status: {
