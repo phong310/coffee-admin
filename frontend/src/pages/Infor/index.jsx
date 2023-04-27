@@ -72,7 +72,7 @@ export const InforUser = () => {
                 </Row>
                 <Row style={{ justifyContent: "space-between", }}>
                     <span>Nhóm quyền: </span>
-                    <Tag color={user.role === 'ADMIN' ? '#d3adf7' : '#87e8de'}>{user.role}</Tag>
+                    {user.role.map((item) => <Tag key={item._id} color={item === 'DIRECTOR' || item === 'ADMIN' ? '#f5222d' : (item === 'MANAGER' ? '#d3adf7' : '#87e8de')}>{item}</Tag>)}
                     <Divider />
                 </Row>
                 <Row style={{ justifyContent: "space-between", }}>

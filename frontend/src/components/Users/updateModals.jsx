@@ -21,7 +21,7 @@ const beforeUpload = (file) => {
     return isJpgOrPng && isLt2M;
 };
 
-const UpdateModal = ({ data, setData, getAll, item, trigger }) => {
+const UpdateModal = ({ data, setData, getAll, item, trigger, permission, roleFilter }) => {
     const [placement, setPlacement] = useState('left');
     const [loading, setLoading] = useState(false);
     const [avatarUrl, setAvatarUrl] = useState()
@@ -34,7 +34,8 @@ const UpdateModal = ({ data, setData, getAll, item, trigger }) => {
     const [status, setStatus] = useState("");
     const [birthday, setBirthday] = useState("");
     const [sex, setSex] = useState("");
-    const [address, setAddress] = useState("")
+    const [address, setAddress] = useState("");
+    const [per, setPer] = useState("")
 
 
     const [form] = Form.useForm()
@@ -56,6 +57,10 @@ const UpdateModal = ({ data, setData, getAll, item, trigger }) => {
         setBirthday(dateString);
     }
 
+    const handlePermission = (value) => {
+        setPer(value)
+    }
+
 
     useEffect(() => {
         form.setFieldsValue({
@@ -65,6 +70,7 @@ const UpdateModal = ({ data, setData, getAll, item, trigger }) => {
             email: item?.email,
             phone: item?.phone,
             role: item?.role,
+            permission: item?.permission,
             status: item?.status,
             avatar: item?.avatar,
             birthday: moment(item?.birthday),
@@ -77,6 +83,7 @@ const UpdateModal = ({ data, setData, getAll, item, trigger }) => {
         setEmail(item?.email);
         setPhoneNumber(item?.phone);
         setRole(item?.role);
+        setPer(item?.permission)
         setStatus(item?.status)
         setAvatarUrl(item?.avatar)
         setBirthday(moment(item?.birthday));
@@ -124,6 +131,7 @@ const UpdateModal = ({ data, setData, getAll, item, trigger }) => {
                 email: email,
                 phone: phoneNumber,
                 role: role,
+                permission: per,
                 status: status,
                 avatar: avatarUrl,
                 birthday: birthday,
@@ -332,7 +340,7 @@ const UpdateModal = ({ data, setData, getAll, item, trigger }) => {
                         </Col>
                     </Row>
                     <Row gutter={24}>
-                        <Col span={24}>
+                        <Col span={12}>
                             <Form.Item
                                 name="role"
                                 label="Nhóm quyền"
@@ -343,13 +351,14 @@ const UpdateModal = ({ data, setData, getAll, item, trigger }) => {
                                     },
                                 ]}
                             >
-                                <Select placeholder="Nhóm quyền" onChange={handleRole} disabled>
-                                    <Option value="ADMIN">ADMIN</Option>
-                                    <Option value="USER">USER</Option>
+                                <Select placeholder="Nhóm quyền" onChange={handleRole}>
+                                    {roleFilter.map((item) =>
+                                        <Select.Option key={item._id} value={item.role_name}>{item.role_name}</Select.Option>
+                                    )}
                                 </Select>
                             </Form.Item>
                         </Col>
-                        <Col span={24}>
+                        <Col span={12}>
                             <Form.Item
                                 name="status"
                                 label="Trạng thái"
@@ -363,6 +372,24 @@ const UpdateModal = ({ data, setData, getAll, item, trigger }) => {
                                 <Select placeholder="Trạng thái" onChange={handleStatus}>
                                     <Option value="active">Kích hoạt</Option>
                                     <Option value="inactive">Chưa kích hoạt</Option>
+                                </Select>
+                            </Form.Item>
+                        </Col>
+                        <Col span={24}>
+                            <Form.Item
+                                name="permission"
+                                label="Quyền"
+                                rules={[
+                                    {
+                                        required: true,
+                                        message: 'Vui lòng chọn quyền',
+                                    },
+                                ]}
+                            >
+                                <Select mode="multiple" placeholder="Quyền" onChange={handlePermission}>
+                                    {permission.map((item) =>
+                                        <Select.Option key={item._id} value={item.per_name}>{item.per_name_display}</Select.Option>
+                                    )}
                                 </Select>
                             </Form.Item>
                         </Col>

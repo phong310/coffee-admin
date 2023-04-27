@@ -35,6 +35,7 @@ const AddModal = ({ data, setData, getAll, roleFilter, permission }) => {
     const [birthday, setBirthday] = useState("");
     const [sex, setSex] = useState("");
     const [address, setAddress] = useState("");
+    const [per, setPer] = useState("")
 
     const formRef = useRef(null)
 
@@ -49,6 +50,10 @@ const AddModal = ({ data, setData, getAll, roleFilter, permission }) => {
 
     const handleStatus = (item) => {
         setStatus(item)
+    }
+
+    const handlePermission = (value) => {
+        setPer(value)
     }
 
     const handleChange = (info) => {
@@ -90,6 +95,7 @@ const AddModal = ({ data, setData, getAll, roleFilter, permission }) => {
                 email: email,
                 phone: phoneNumber,
                 role: role,
+                permission: per,
                 status: status,
                 avatar: avatarUrl,
                 sex: sex,
@@ -350,7 +356,7 @@ const AddModal = ({ data, setData, getAll, roleFilter, permission }) => {
                                     },
                                 ]}
                             >
-                                <Select mode="multiple" placeholder="Quyền">
+                                <Select mode="multiple" placeholder="Quyền" onChange={handlePermission}>
                                     {permission.map((item) =>
                                         <Select.Option key={item._id} value={item.per_name}>{item.per_name_display}</Select.Option>
                                     )}

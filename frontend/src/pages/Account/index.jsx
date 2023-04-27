@@ -142,7 +142,7 @@ export const Account = () => {
                         <p>Ngày sinh: <b>{moment(value.birthday).format('DD/MM/YYYY')}</b></p>
                     </Col>
                     <Col style={{ marginBottom: 15 }}>
-                        <Avatar src={value.avatar} size={50} />
+                        {value.avatar ? <Avatar src={value.avatar} size={50} /> : <Avatar icon={<UserOutlined />} size={50} />}
                     </Col>
                 </Row>
 
@@ -166,7 +166,7 @@ export const Account = () => {
             key: 'role',
             render: (role) => (
                 <>
-                    {role.map((item) => <Tag key={item} color={item === 'ADMIN' ? '#f5222d' : '#87e8de'}>{item}</Tag>)}
+                    {role.map((item) => <Tag key={item._id} color={item === 'DIRECTOR' || item === 'ADMIN' ? '#f5222d' : (item === 'MANAGER' ? '#d3adf7' : '#87e8de')}>{item}</Tag>)}
                 </>
             )
         },
@@ -281,7 +281,7 @@ export const Account = () => {
 
             <DeleteUser open={openDelete} setOpen={setOpenDelete} item={itemUser} getAll={getDataUser} />
 
-            <UpdateModal data={openUpdate} setData={setOpenUpdate} item={itemUser} getAll={getDataUser} trigger={trigger} />
+            <UpdateModal data={openUpdate} setData={setOpenUpdate} item={itemUser} getAll={getDataUser} trigger={trigger} roleFilter={roleFilter} permission={permission} />
 
             <ResetUser open={openReset} setOpen={setOpenReset} item={itemUser} getAll={getDataUser} />
         </>
