@@ -245,9 +245,9 @@ export const Order = () => {
                         <Button type="primary" icon={<ExportOutlined />} style={{ marginRight: "10px" }} >
                             Xuất file Excel
                         </Button>
-                        <Button type="primary" icon={<PlusOutlined />} >
+                        {/* <Button type="primary" icon={<PlusOutlined />} >
                             Thêm mới
-                        </Button>
+                        </Button> */}
 
                     </Row>
 
