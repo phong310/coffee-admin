@@ -45,7 +45,7 @@ export const Order = () => {
             title: 'STT',
             key: 'stt',
             width: 70,
-            render: (text, record, index) => <span>{index + 1}</span>,
+            render: (text, record, index) => <span>{(pagination.current - 1) * pagination.pageSize + index + 1}</span>,
         },
         {
             title: 'Thông tin người đặt',
@@ -156,8 +156,8 @@ export const Order = () => {
             dataIndex: 'order_status',
             render: (value) => (
                 value.map((item, idx) =>
-                    <Tag key={idx} color={item === "order" ? "red" : "blue"}>
-                        {item === "order" ? "Đang xử lý..." : ""}
+                    <Tag key={idx} color={item === "order" ? "red" : "purple"}>
+                        {item === "order" ? "Đang xử lý..." : "Thành công"}
                     </Tag>
                 )
             )
