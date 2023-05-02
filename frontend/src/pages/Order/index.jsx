@@ -1,13 +1,28 @@
-import React, { useEffect, useState } from 'react'
-import { Breadcrumb, Button, Col, Collapse, Input, Row, Space, Table, Tag, Tooltip, Avatar, Select } from 'antd';
+import { DeleteTwoTone, EditTwoTone, ExportOutlined, EyeTwoTone } from '@ant-design/icons';
+import { Avatar, Breadcrumb, Button, Col, Collapse, Input, Row, Select, Space, Table, Tag, Tooltip } from 'antd';
 import axios from 'axios';
-import { DeleteTwoTone, EditTwoTone, ExportOutlined, EyeTwoTone, PlusOutlined } from '@ant-design/icons';
-import Money from '../../components/Money'
 import moment from 'moment';
+import React, { useEffect, useState } from 'react';
+import Money from '../../components/Money';
+import { DeleteOrder } from '../../components/Order/deleteModal';
+import { DetailOrder } from '../../components/Order/detailModal';
 
 export const Order = () => {
     const { Panel } = Collapse;
     const [data, setData] = useState([])
+    const [openDelete, setOpenDelete] = useState(false);
+    const [openDetail, setOpenDetail] = useState(false);
+    const [itemOrder, setItemOrder] = useState()
+
+    const handleDeleteOrder = (value) => {
+        setItemOrder(value)
+        setOpenDelete(true)
+    }
+
+    const handleDetailOrder = (value) => {
+        setItemOrder(value)
+        setOpenDetail(true)
+    }
 
     // Phân trang
     const [pagination, setPagination] = useState({
@@ -51,7 +66,7 @@ export const Order = () => {
             title: 'Thông tin người đặt',
             dataIndex: 'customer_name',
             key: 'customer_name',
-            width: 200,
+            width: 250,
             render: (_, value) => <>
                 <Row style={{ alignItems: 'center', justifyContent: 'space-between', width: 220 }}>
                     <Col>
@@ -118,16 +133,10 @@ export const Order = () => {
             )
         },
         {
-            title: 'Mô tả đơn hàng',
-            dataIndex: 'order_description',
-            key: 'order_description',
-            width: 250
-        },
-        {
             title: 'Thời gian',
             dataIndex: 'createdAt',
             key: 'createdAt',
-            width: 200,
+            width: 180,
             render: (value) => (
                 <Row style={{ alignItems: 'center', justifyContent: 'space-between', width: 220 }}>
                     <Col>
@@ -168,13 +177,13 @@ export const Order = () => {
             render: (_, record) => (
                 <Space size="middle">
                     <Tooltip placement="top" title="Chi tiết">
-                        <EyeTwoTone twoToneColor="#531dab" />
+                        <EyeTwoTone twoToneColor="#531dab" onClick={() => handleDetailOrder(record)} />
                     </Tooltip>
                     <Tooltip placement="top" title="Sửa"  >
                         <EditTwoTone />
                     </Tooltip>
                     <Tooltip placement="top" title="Xóa">
-                        <DeleteTwoTone twoToneColor="#f5222d" />
+                        <DeleteTwoTone twoToneColor="#f5222d" onClick={() => handleDeleteOrder(record)} />
                     </Tooltip>
                 </Space>
             ),
@@ -260,6 +269,10 @@ export const Order = () => {
                 total: data.length,
                 onChange: handleChangePagination
             }} />
+
+            <DeleteOrder open={openDelete} setOpen={setOpenDelete} item={itemOrder} getAll={getAllOrder} />
+
+            <DetailOrder open={openDetail} setOpen={setOpenDetail} item={itemOrder} />
 
         </>
     )
