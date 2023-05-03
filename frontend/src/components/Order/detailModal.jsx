@@ -1,7 +1,7 @@
 import { Col, Divider, Modal, Row, Tag } from 'antd';
-import React from 'react';
-import Money from "../Money"
 import moment from 'moment';
+import React from 'react';
+import Money from "../Money";
 
 
 export const DetailOrder = ({ open, setOpen, item }) => {
@@ -80,18 +80,18 @@ export const DetailOrder = ({ open, setOpen, item }) => {
 
                             <Divider type="vertical" style={{ height: 500 }} />
 
-                            <Col style={{ width: '600px' }}>
+                            <Col style={{ width: '500px' }}>
                                 <Row style={{ alignItems: 'center', justifyContent: 'space-between' }}>
                                     <Col>Tổng số lượng: </Col>
-                                    {item?.order_products.map((value) => (
-                                        <Col><b style={{ color: 'red' }}>{value.quantity}</b></Col>
+                                    {item?.order_products.map((value, idx) => (
+                                        <Col key={idx}><b style={{ color: 'red' }}>{value.quantity}</b></Col>
                                     ))}
                                 </Row>
                                 <Divider />
                                 <Row style={{ alignItems: 'center', justifyContent: 'space-between' }}>
                                     <Col>Tổng tiền: </Col>
-                                    {item?.order_products.map((value) => (
-                                        <Col>
+                                    {item?.order_products.map((value, i) => (
+                                        <Col key={i}>
                                             <Tag color='green'><Money value={value.price} /></Tag>
                                         </Col>
                                     ))}

@@ -6,12 +6,14 @@ import React, { useEffect, useState } from 'react';
 import Money from '../../components/Money';
 import { DeleteOrder } from '../../components/Order/deleteModal';
 import { DetailOrder } from '../../components/Order/detailModal';
+import { UpdateOrder } from '../../components/Order/updateModal';
 
 export const Order = () => {
     const { Panel } = Collapse;
     const [data, setData] = useState([])
     const [openDelete, setOpenDelete] = useState(false);
     const [openDetail, setOpenDetail] = useState(false);
+    const [openUpdate, setOpenUpdate] = useState(false);
     const [itemOrder, setItemOrder] = useState()
 
     const handleDeleteOrder = (value) => {
@@ -22,6 +24,11 @@ export const Order = () => {
     const handleDetailOrder = (value) => {
         setItemOrder(value)
         setOpenDetail(true)
+    }
+
+    const handleUpdateOrder = (value) => {
+        setItemOrder(value)
+        setOpenUpdate(true)
     }
 
     // Phân trang
@@ -179,7 +186,7 @@ export const Order = () => {
                     <Tooltip placement="top" title="Chi tiết">
                         <EyeTwoTone twoToneColor="#531dab" onClick={() => handleDetailOrder(record)} />
                     </Tooltip>
-                    <Tooltip placement="top" title="Sửa"  >
+                    <Tooltip placement="top" title="Sửa" onClick={() => handleUpdateOrder(record)} >
                         <EditTwoTone />
                     </Tooltip>
                     <Tooltip placement="top" title="Xóa">
@@ -273,6 +280,8 @@ export const Order = () => {
             <DeleteOrder open={openDelete} setOpen={setOpenDelete} item={itemOrder} getAll={getAllOrder} />
 
             <DetailOrder open={openDetail} setOpen={setOpenDetail} item={itemOrder} />
+
+            <UpdateOrder open={openUpdate} setOpen={setOpenUpdate} getAll={getAllOrder} item={itemOrder} />
 
         </>
     )
