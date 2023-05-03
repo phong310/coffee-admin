@@ -7,6 +7,7 @@ import Money from '../../components/Money';
 import { DeleteOrder } from '../../components/Order/deleteModal';
 import { DetailOrder } from '../../components/Order/detailModal';
 import { UpdateOrder } from '../../components/Order/updateModal';
+import * as XLSX from 'xlsx';
 
 export const Order = () => {
     const { Panel } = Collapse;
@@ -15,6 +16,20 @@ export const Order = () => {
     const [openDetail, setOpenDetail] = useState(false);
     const [openUpdate, setOpenUpdate] = useState(false);
     const [itemOrder, setItemOrder] = useState()
+
+    // search
+    const [nameSearch, setNameSearch] = useState("");
+    const [orderPaySearch, setOrderPaySearch] = useState();
+    const [orderStatusSearch, setOrderStatusSearch] = useState();
+
+    const handleSearchPay = (value) => {
+        setOrderPaySearch(value)
+    }
+
+    const handleSearchStatus = (value) => {
+        setOrderStatusSearch(value)
+
+    }
 
     const handleDeleteOrder = (value) => {
         setItemOrder(value)
@@ -44,6 +59,51 @@ export const Order = () => {
             pageSize: pageSize,
         });
     };
+
+    const handleSearch = async () => {
+        try {
+            const res = await axios.get(`http://localhost:7000/order/search?customer_name=${nameSearch || ""}&order_pay=${orderPaySearch || ""}&order_status=${orderStatusSearch || ''}`)
+            setData(res.data)
+
+        } catch (e) {
+            console.log("Err search: ", e)
+        }
+    }
+
+    const resest_filter = () => {
+        getAllOrder();
+        setNameSearch("");
+        setOrderPaySearch();
+        setOrderStatusSearch();
+    }
+
+    const transformedData = data.map((order) => {
+        const orderProducts = order.order_products.map((product) => {
+            const productItems = product.item.map((item) => item.name).join(", ");
+            return {
+                product_items: productItems,
+                product_quantity: product.quantity,
+                product_price: product.price,
+                customer_name: order.customer_name,
+                customer_phone: order.customer_phone,
+                customer_address: order.customer_address,
+                order_pay: order.order_pay,
+                order_description: order.order_description,
+                order_status: order.order_status.join(", "),
+                created_at: order.createdAt,
+                updated_at: order.updatedAt,
+            };
+        });
+        return orderProducts;
+    }).flat();
+
+    // Xuất file Excel
+    const exportToExcel = (data) => {
+        const worksheet = XLSX.utils.json_to_sheet(data);
+        const workbook = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(workbook, worksheet, 'Order');
+        XLSX.writeFile(workbook, 'Order.xlsx');
+    }
 
 
     const getAllOrder = async () => {
@@ -216,19 +276,18 @@ export const Order = () => {
                     <Panel header="Tìm kiếm" key="1">
                         <Row >
                             <Col span={5} className="input">
-                                <Input placeholder="Nhập tên khách hàng" />
-                            </Col>
-                            <Col span={5} className="input">
-                                <Input placeholder="Nhập tên sản phẩm" />
+                                <Input value={nameSearch} onChange={(e) => setNameSearch(e.target.value)} placeholder="Nhập tên khách hàng" />
                             </Col>
                             <Col span={5} className="input">
                                 <Select
                                     className='select'
                                     style={{ width: 400 }}
                                     placeholder="Hình thức thanh toán"
+                                    value={orderPaySearch}
+                                    onChange={handleSearchPay}
                                 >
-                                    <Select.Option value="active">Tiền mặt</Select.Option>
-                                    <Select.Option value="inactive">Banking</Select.Option>
+                                    <Select.Option value="1">Tiền mặt</Select.Option>
+                                    <Select.Option value="2">Banking</Select.Option>
                                 </Select>
                             </Col>
                             <Col span={5} className="input">
@@ -236,9 +295,10 @@ export const Order = () => {
                                     className='select'
                                     style={{ width: 400, marginLeft: 60 }}
                                     placeholder="Trạng thái đơn"
+                                    value={orderStatusSearch}
+                                    onChange={handleSearchStatus}
                                 >
                                     <Select.Option value="order">Đang xử lý</Select.Option>
-                                    <Select.Option value="transport">Đang vận chuyển</Select.Option>
                                     <Select.Option value="success">Đã giao hàng</Select.Option>
                                 </Select>
                             </Col>
@@ -246,8 +306,8 @@ export const Order = () => {
 
                         {/* search */}
                         <Row justify="end" style={{ marginTop: "25px" }}>
-                            <Button type="primary" ghost className='btn'>Tìm kiếm</Button>
-                            <Button danger >Reset bộ lọc</Button>
+                            <Button type="primary" ghost className='btn' onClick={handleSearch}>Tìm kiếm</Button>
+                            <Button danger onClick={resest_filter}>Reset bộ lọc</Button>
                         </Row>
 
                     </Panel>
@@ -258,7 +318,7 @@ export const Order = () => {
                 <Row justify="space-between">
                     <h2>Danh sách đơn đặt hàng <Tag color="#4096ff">{data.length}</Tag></h2>
                     <Row>
-                        <Button type="primary" icon={<ExportOutlined />} style={{ marginRight: "10px" }} >
+                        <Button type="primary" icon={<ExportOutlined />} style={{ marginRight: "10px" }} onClick={() => exportToExcel(transformedData)} >
                             Xuất file Excel
                         </Button>
                         {/* <Button type="primary" icon={<PlusOutlined />} >

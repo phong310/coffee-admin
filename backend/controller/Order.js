@@ -70,6 +70,31 @@ const OrderController = {
             res.status(500).json({ err: e });
         }
     },
+
+    // search
+    searchOrder: async (req, res) => {
+        try {
+            const customer_name = req.query.customer_name;
+            const order_pay = req.query.order_pay;
+            const order_status = req.query.order_status;
+            let query = {};
+            if (customer_name && order_status && order_pay) {
+                query = { customer_name: new RegExp(customer_name, "i"), order_status: order_status, order_pay: order_pay };
+            } else if (order_status && order_pay) {
+                query = { order_status: order_status, order_pay: order_pay };
+            } else if (customer_name) {
+                query = { customer_name: new RegExp(customer_name, "i") };
+            } else if (order_status) {
+                query = { order_status: order_status };
+            } else if (order_pay) {
+                query = { order_pay: order_pay }
+            }
+            const Orders = await OrderModel.find(query);
+            res.status(200).json(Orders);
+        } catch (e) {
+            res.status(500).json({ err: e });
+        }
+    }
 }
 
 module.exports = OrderController
