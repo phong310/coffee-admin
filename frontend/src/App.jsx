@@ -1,35 +1,90 @@
+import { message } from 'antd';
+import Cookies from 'js-cookie';
+import { useEffect, useState } from 'react';
 import { Route, Routes, useNavigate } from 'react-router-dom';
-import MainLayout from './components/layouts'
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import Login from './pages/Login';
-import { HomePage } from './pages/Home';
-import { Drinks } from './pages/Drinks';
-import { Bakery } from './pages/Bakery';
-import { Snacks } from './pages/Snacks';
-import { Account } from './pages/Account';
+import MainLayout from './components/layouts';
 import AuthContext from './context/Auth';
-import { useState, useEffect } from 'react';
-import { InforUser } from './pages/Infor';
+import { Account } from './pages/Account';
+import { Bakery } from './pages/Bakery';
 import { Category } from './pages/Category';
+import Permission from './pages/Create_Permission';
+import { Drinks } from './pages/Drinks';
+import { HomePage } from './pages/Home';
+import { InforUser } from './pages/Infor';
+import Login from './pages/Login';
 import { Order } from './pages/Order';
 import { Role } from './pages/Role';
-import Permission from './pages/Create_Permission';
-import Cookies from 'js-cookie';
+import { Snacks } from './pages/Snacks';
 
 function App() {
   const [user, setUser] = useState(false);
   const navigate = useNavigate();
+  const pathName = window.location.pathname;
+  const userCookie = Cookies.get('user');
 
   useEffect(() => {
     // Kiểm tra xem cookie có chứa thông tin tài khoản không
-    const userCookie = Cookies.get('user');
     if (userCookie) {
       setUser(JSON.parse(userCookie));
     } else {
       navigate('/');
     }
   }, []);
+
+  useEffect(() => {
+    // Kiểm tra quyền
+    if (userCookie) {
+      const userInfo = JSON.parse(userCookie);
+      switch (pathName) {
+        case "/main/mangerment/drinks":
+          if (!userInfo.permission.includes("permission_allProduct") && !userInfo.permission.includes("Full_permission")) {
+            message.warning("Không có quyền truy cập !")
+            return navigate(-1)
+          }
+          break;
+        case "/main/mangerment/bakery":
+          if (!userInfo.permission.includes("permission_allProduct") && !userInfo.permission.includes("Full_permission")) {
+            message.warning("Không có quyền truy cập !")
+            return navigate(-1)
+          }
+          break;
+        case "/main/mangerment/snacks":
+          if (!userInfo.permission.includes("permission_allProduct") && !userInfo.permission.includes("Full_permission")) {
+            message.warning("Không có quyền truy cập !")
+            return navigate(-1)
+          }
+          break;
+        case "/main/mangerment/account":
+          if (!userInfo.permission.includes("Full_permission")) {
+            message.warning("Chỉ ADMIN có quyền truy cập !")
+            return navigate(-1)
+          }
+        case "/main/mangerment/role":
+          if (!userInfo.permission.includes("Full_permission")) {
+            message.warning("Chỉ ADMIN có quyền truy cập !")
+            return navigate(-1)
+          }
+        case "/main/mangerment/permission":
+          if (!userInfo.permission.includes("Full_permission")) {
+            message.warning("Chỉ ADMIN có quyền truy cập !")
+            return navigate(-1)
+          }
+        case "/main/order":
+          if (!userInfo.permission.includes("Full_permission") && !userInfo.permission.includes("permission_acountant")) {
+            if (!userInfo.permission.includes("Full_permission")) {
+              message.warning("Không có quyền truy cập !")
+              return navigate(-1)
+            }
+          }
+        default:
+        // code block
+      }
+    }
+  }, [pathName])
+
+
 
 
   return (
