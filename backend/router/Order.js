@@ -1,8 +1,9 @@
 const router = require("express").Router();
 
 const OrderController = require("../controller/Order");
+const middlewareController = require("../middleware/middlewareController")
 
-router.get("/getAllOrder", OrderController.getAllOrder);
+router.get("/getAllOrder", middlewareController.verifyAdmin, OrderController.getAllOrder);
 
 router.post("/createOrder", OrderController.createOrder);
 

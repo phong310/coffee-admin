@@ -2,6 +2,7 @@ const express = require("express")
 const cors = require("cors");
 const mongoose = require("mongoose")
 const bodyParser = require('body-parser')
+const cookieParser = require("cookie-parser")
 const dotenv = require('dotenv')
 const Drinks = require("./router/Drinks")
 const Bakery = require("./router/Bakerys")
@@ -11,6 +12,7 @@ const Category = require("./router/Category")
 const Order = require("./router/Order")
 const Roles = require("./router/Roles")
 const Permission = require("./router/Permission")
+const Auth = require("./router/Auth")
 
 
 
@@ -19,6 +21,8 @@ const multer = require('multer');
 
 dotenv.config()
 const app = express()
+
+app.use(cookieParser())
 app.use(express.static('public'));
 app.use(bodyParser.json())
 app.use(cors())
@@ -26,6 +30,7 @@ app.use(cors())
 
 const PORT = process.env.PORT || 5000;
 
+// ROUTER
 app.use("/drinks", Drinks)
 
 app.use("/snack", Snack)
@@ -41,6 +46,9 @@ app.use("/order", Order)
 app.use("/roles", Roles)
 
 app.use("/permission", Permission)
+
+app.use("/auth", Auth)
+
 
 // Upload ảnh
 const storage = multer.diskStorage({
