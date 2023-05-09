@@ -9,12 +9,18 @@ import { ResetUser } from '../../components/Users/resetModals'
 import axios from 'axios'
 import moment from "moment"
 import * as XLSX from 'xlsx';
+import { useDispatch, useSelector } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
+import { getAllUser, getAllRole, getAllPermission } from '../../API/apiRequest'
 
 
 
 
 export const Account = () => {
     const { Panel } = Collapse;
+    const navigate = useNavigate();
+    const dispatch = useDispatch()
+
     const [data, setData] = useState([])
     const [open, setOpen] = useState(false);
     const [openDelete, setOpenDelete] = useState(false)
@@ -32,42 +38,43 @@ export const Account = () => {
     const [roleFilter, setRoleFilter] = useState([])
     const [permission, setPermission] = useState([])
 
-    const getDataUser = async () => {
-        try {
-            const res = await axios.get("http://localhost:7000/user/getAllUser")
-            setData(res.data)
+    // lấy thông tin store redux
+    const user = useSelector((state) => state.auth.login?.currentUser)
+    const listUser = useSelector((state) => state.userList.users?.allUsers)
+    const listRole = useSelector((state) => state.userList.roles?.allRoles)
+    const listPermission = useSelector((state) => state.userList.permissions?.allPermission)
+    // console.log("ROLE:", listRole)
+    // console.log("PER:", listPermission)
 
-        } catch (e) {
-            console.log("Err:", e)
-        }
+    const getDataUser = () => {
+        getAllUser(user?.accessToken, dispatch, navigate)
     }
 
-    const getDataRole = async () => {
-        try {
-            const res = await axios.get("http://localhost:7000/roles/getAllRole")
-            setRoleFilter(res.data)
-
-        } catch (e) {
-            console.log("Err:", e)
-        }
+    const getDataRole = () => {
+        getAllRole(user?.accessToken, dispatch, navigate)
     }
 
 
-    const getPermission = async () => {
-        try {
-            const res = await axios.get("http://localhost:7000/permission/getAllPermission");
-            setPermission(res.data)
-        } catch (e) {
-            console.log("Err:", e)
-        }
+    const getPermission = () => {
+        getAllPermission(user?.accessToken, dispatch, navigate)
     }
 
     useEffect(() => {
-        getDataUser()
-        getDataRole()
-        getPermission()
+        if (!user) {
+            navigate("/");
+        }
+        if (user?.accessToken) {
+            getDataUser()
+            getDataRole()
+            getPermission()
+        }
     }, [])
 
+    useEffect(() => {
+        setData(listUser)
+        setRoleFilter(listRole)
+        setPermission(listPermission)
+    }, [listUser, listRole, listPermission])
 
     // Xuất file Excel
     const exportToExcel = (data) => {
@@ -231,7 +238,7 @@ export const Account = () => {
                                     value={roleSearch}
                                     onChange={handleRoleSearch}
                                 >
-                                    {roleFilter.map((item) =>
+                                    {roleFilter?.map((item) =>
                                         <Select.Option key={item._id} value={item.role_name}>{item.role_name}</Select.Option>
                                     )}
                                 </Select>
@@ -261,7 +268,7 @@ export const Account = () => {
             </Col>
             <Col className='col_wrapp_title' style={{ padding: "30px 0px 10px 0px" }}>
                 <Row justify="space-between">
-                    <h2>Danh sách Tài khoản <Tag color="#4096ff">{data.length}</Tag></h2>
+                    <h2>Danh sách Tài khoản <Tag color="#4096ff">{data?.length}</Tag></h2>
                     <Row>
                         <Button type="primary" icon={<ExportOutlined />} style={{ marginRight: "10px" }} onClick={() => exportToExcel(data)}>
                             Xuất file Excel

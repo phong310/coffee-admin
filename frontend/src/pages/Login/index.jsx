@@ -1,11 +1,13 @@
 import { Checkbox, Col, Row } from "antd";
 import axios from "axios";
 import React, { useContext, useEffect, useState } from "react";
+import { useDispatch } from "react-redux"
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from 'react-toastify';
 import "../.././assets/CSS/login.css";
 import AuthContext from "../../context/Auth";
 import Cookies from 'js-cookie';
+import { loginUser } from "../../API/apiRequest";
 
 export default function Login() {
     const [userName, setUserName] = useState("");
@@ -14,22 +16,21 @@ export default function Login() {
     const [remember, setRemember] = useState(false)
 
     const checkLogin = useContext(AuthContext);
-    const { user, setUser } = checkLogin
-    let navigate = useNavigate();
+    const { users, setUser } = checkLogin
+    const navigate = useNavigate();
+    const dispatch = useDispatch()
 
 
-    const handleUser = async () => {
-        try {
-            const res = await axios.get("http://localhost:7000/user/getAllUser");
-            setUserData(res.data)
-        } catch (e) {
-            console.log("Err:", e)
-        }
-    }
+    // const handleUser = async () => {
+    //     try {
+    //         const res = await axios.get("http://localhost:7000/user/getAllUser");
+    //         setUserData(res.data)
+    //     } catch (e) {
+    //         console.log("Err:", e)
+    //     }
+    // }
 
     useEffect(() => {
-        handleUser()
-
         const storedPassword = localStorage.getItem("password");
         const storedUsername = localStorage.getItem("username");
         if (storedPassword) {
@@ -41,29 +42,46 @@ export default function Login() {
     }, [])
 
 
+    // const handleLogin = (e) => {
+    //     e.preventDefault();
+    //     const user = userData;
+    //     const ngdung = user.find(
+    //         (u) => u.username === userName && u.password === password
+    //     );
+    //     if (ngdung) {
+    //         if (remember) {
+    //             // Lưu vào localStorage
+    //             const encryptedPassword = btoa(password); // Mã hóa mật khẩu
+    //             localStorage.setItem("password", encryptedPassword);
+    //             localStorage.setItem("username", userName);
+    //         }
+    //         toast.success("Đăng nhập thành công !")
+    //         setUser(ngdung)
+    //         Cookies.set('user', JSON.stringify(ngdung), { expires: 1 });
+    //         navigate("/main/home");
+    //     } else {
+    //         toast.warning("Đăng nhập thất bại !")
+    //         setUser(null)
+
+    //     }
+    // };
+
     const handleLogin = (e) => {
         e.preventDefault();
-        const user = userData;
-        const ngdung = user.find(
-            (u) => u.username === userName && u.password === password
-        );
-        if (ngdung) {
-            if (remember) {
-                // Lưu vào localStorage
-                const encryptedPassword = btoa(password); // Mã hóa mật khẩu
-                localStorage.setItem("password", encryptedPassword);
-                localStorage.setItem("username", userName);
-            }
-            toast.success("Đăng nhập thành công !")
-            setUser(ngdung)
-            Cookies.set('user', JSON.stringify(ngdung), { expires: 1 });
-            navigate("/main/home");
-        } else {
-            toast.warning("Đăng nhập thất bại !")
-            setUser(null)
-
+        const user = {
+            username: userName,
+            password: password
         }
-    };
+        loginUser(user, dispatch, navigate)
+        if (remember) {
+            // Lưu vào localStorage
+            const encryptedPassword = btoa(password); // Mã hóa mật khẩu
+            localStorage.setItem("password", encryptedPassword);
+            localStorage.setItem("username", userName);
+        }
+        // Cookies.set('user', JSON.stringify(user), { expires: 1 });
+
+    }
 
     return (
         <Row className="body_wrapper">

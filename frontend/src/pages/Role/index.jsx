@@ -7,6 +7,9 @@ import "../../assets/CSS/Drinks.css"
 import { AddRole } from '../../components/Role/addModal'
 import { UpdateRole } from '../../components/Role/updateModal'
 import { DeleteRole } from '../../components/Role/deleteModal'
+import { getAllRole } from '../../API/apiRequest'
+import { useNavigate } from 'react-router-dom'
+import { useDispatch, useSelector } from 'react-redux'
 
 
 
@@ -19,11 +22,36 @@ export const Role = () => {
     const [openUpdate, setOpenUpdate] = useState(false);
     const [openDelete, setOpenDelete] = useState(false)
     const [itemRole, setItemRole] = useState()
+    const navigate = useNavigate();
+    const dispatch = useDispatch()
+
+    // lấy thông tin store redux
+    const user = useSelector((state) => state.auth.login?.currentUser)
+    const listRole = useSelector((state) => state.userList.roles?.allRoles)
 
 
     // Tìm kiếm
     const [roleSearch, setRoleSearch] = useState()
     const [roleStatuSearch, setRoleStatuSearch] = useState()
+
+    const getRoles = () => {
+        getAllRole(user?.accessToken, dispatch, navigate)
+    }
+
+
+    useEffect(() => {
+        if (!user) {
+            navigate("/")
+        }
+        if (user?.accessToken) {
+            getRoles()
+        }
+    }, [])
+
+    useEffect(() => {
+        setData(listRole)
+        setDataFilter(listRole)
+    }, [listRole])
 
     const handleSearch = async () => {
         try {
@@ -35,20 +63,6 @@ export const Role = () => {
         }
     }
 
-    const getDataRoles = async () => {
-        try {
-            const res = await axios.get("http://localhost:7000/roles/getAllRole")
-            setData(res.data)
-            setDataFilter(res.data)
-
-        } catch (e) {
-            console.log("Err:", e)
-        }
-    }
-
-    useEffect(() => {
-        getDataRoles()
-    }, [])
 
 
     // Xuất file Excel
@@ -80,7 +94,7 @@ export const Role = () => {
 
 
     const resest_filter = () => {
-        getDataRoles();
+        getRoles()
         setRoleSearch();
         setRoleStatuSearch();
     }
@@ -163,7 +177,7 @@ export const Role = () => {
                                     value={roleSearch}
                                     onChange={handleRoleSearch}
                                 >
-                                    {data.map((item) =>
+                                    {data?.map((item) =>
                                         <Select.Option key={item._id} value={item.role_name}>{item.role_name}</Select.Option>
                                     )}
                                 </Select>
@@ -193,7 +207,7 @@ export const Role = () => {
             </Col>
             <Col className='col_wrapp_title' style={{ padding: "30px 0px 10px 0px" }}>
                 <Row justify="space-between">
-                    <h2>Danh sách nhóm quyền <Tag color="#4096ff">{dataFilter.length}</Tag></h2>
+                    <h2>Danh sách nhóm quyền <Tag color="#4096ff">{dataFilter?.length}</Tag></h2>
                     <Row>
                         <Button type="primary" icon={<ExportOutlined />} style={{ marginRight: "10px" }} onClick={() => exportToExcel(dataFilter)}>
                             Xuất file Excel
@@ -209,11 +223,11 @@ export const Role = () => {
             {/* Table */}
             <Table className='table' columns={columns} dataSource={dataFilter} scroll={{ y: 502 }} />
 
-            <AddRole open={openAdd} setOpen={setOpenAdd} getAll={getDataRoles} />
+            <AddRole open={openAdd} setOpen={setOpenAdd} getAll={getRoles} />
 
-            <UpdateRole open={openUpdate} setOpen={setOpenUpdate} item={itemRole} getAll={getDataRoles} />
+            <UpdateRole open={openUpdate} setOpen={setOpenUpdate} item={itemRole} getAll={getRoles} />
 
-            <DeleteRole open={openDelete} setOpen={setOpenDelete} item={itemRole} getAll={getDataRoles} />
+            <DeleteRole open={openDelete} setOpen={setOpenDelete} item={itemRole} getAll={getRoles} />
 
 
         </>

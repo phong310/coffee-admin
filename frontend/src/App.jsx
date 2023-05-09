@@ -17,72 +17,73 @@ import Login from './pages/Login';
 import { Order } from './pages/Order';
 import { Role } from './pages/Role';
 import { Snacks } from './pages/Snacks';
+import { Forbidden } from './pages/Forbidden';
 
 function App() {
   const [user, setUser] = useState(false);
   const navigate = useNavigate();
-  const pathName = window.location.pathname;
-  const userCookie = Cookies.get('user');
+  // const pathName = window.location.pathname;
+  // const userCookie = Cookies.get('user');
 
-  useEffect(() => {
-    // Kiểm tra xem cookie có chứa thông tin tài khoản không
-    if (userCookie) {
-      setUser(JSON.parse(userCookie));
-    } else {
-      navigate('/');
-    }
-  }, []);
+  // useEffect(() => {
+  //   // Kiểm tra xem cookie có chứa thông tin tài khoản không
+  //   if (userCookie) {
+  //     setUser(JSON.parse(userCookie));
+  //   } else {
+  //     navigate('/');
+  //   }
+  // }, []);
 
-  useEffect(() => {
-    // Kiểm tra quyền
-    if (userCookie) {
-      const userInfo = JSON.parse(userCookie);
-      switch (pathName) {
-        case "/main/mangerment/drinks":
-          if (!userInfo.permission.includes("permission_allProduct") && !userInfo.permission.includes("Full_permission")) {
-            message.warning("Không có quyền truy cập !")
-            return navigate(-1)
-          }
-          break;
-        case "/main/mangerment/bakery":
-          if (!userInfo.permission.includes("permission_allProduct") && !userInfo.permission.includes("Full_permission")) {
-            message.warning("Không có quyền truy cập !")
-            return navigate(-1)
-          }
-          break;
-        case "/main/mangerment/snacks":
-          if (!userInfo.permission.includes("permission_allProduct") && !userInfo.permission.includes("Full_permission")) {
-            message.warning("Không có quyền truy cập !")
-            return navigate(-1)
-          }
-          break;
-        case "/main/mangerment/account":
-          if (!userInfo.permission.includes("Full_permission")) {
-            message.warning("Chỉ ADMIN có quyền truy cập !")
-            return navigate(-1)
-          }
-        case "/main/mangerment/role":
-          if (!userInfo.permission.includes("Full_permission")) {
-            message.warning("Chỉ ADMIN có quyền truy cập !")
-            return navigate(-1)
-          }
-        case "/main/mangerment/permission":
-          if (!userInfo.permission.includes("Full_permission")) {
-            message.warning("Chỉ ADMIN có quyền truy cập !")
-            return navigate(-1)
-          }
-        case "/main/order":
-          if (!userInfo.permission.includes("Full_permission") && !userInfo.permission.includes("permission_acountant")) {
-            if (!userInfo.permission.includes("Full_permission")) {
-              message.warning("Không có quyền truy cập !")
-              return navigate(-1)
-            }
-          }
-        default:
-        // code block
-      }
-    }
-  }, [pathName])
+  // useEffect(() => {
+  //   // Kiểm tra quyền
+  //   if (userCookie) {
+  //     const userInfo = JSON.parse(userCookie);
+  //     switch (pathName) {
+  //       case "/main/mangerment/drinks":
+  //         if (!userInfo.permission.includes("permission_allProduct") && !userInfo.permission.includes("Full_permission")) {
+  //           message.warning("Không có quyền truy cập !")
+  //           return navigate(-1)
+  //         }
+  //         break;
+  //       case "/main/mangerment/bakery":
+  //         if (!userInfo.permission.includes("permission_allProduct") && !userInfo.permission.includes("Full_permission")) {
+  //           message.warning("Không có quyền truy cập !")
+  //           return navigate(-1)
+  //         }
+  //         break;
+  //       case "/main/mangerment/snacks":
+  //         if (!userInfo.permission.includes("permission_allProduct") && !userInfo.permission.includes("Full_permission")) {
+  //           message.warning("Không có quyền truy cập !")
+  //           return navigate(-1)
+  //         }
+  //         break;
+  //       case "/main/mangerment/account":
+  //         if (!userInfo.permission.includes("Full_permission")) {
+  //           message.warning("Chỉ ADMIN có quyền truy cập !")
+  //           return navigate(-1)
+  //         }
+  //       case "/main/mangerment/role":
+  //         if (!userInfo.permission.includes("Full_permission")) {
+  //           message.warning("Chỉ ADMIN có quyền truy cập !")
+  //           return navigate(-1)
+  //         }
+  //       case "/main/mangerment/permission":
+  //         if (!userInfo.permission.includes("Full_permission")) {
+  //           message.warning("Chỉ ADMIN có quyền truy cập !")
+  //           return navigate(-1)
+  //         }
+  //       case "/main/order":
+  //         if (!userInfo.permission.includes("Full_permission") && !userInfo.permission.includes("permission_acountant")) {
+  //           if (!userInfo.permission.includes("Full_permission")) {
+  //             message.warning("Không có quyền truy cập !")
+  //             return navigate(-1)
+  //           }
+  //         }
+  //       default:
+  //       // code block
+  //     }
+  //   }
+  // }, [pathName])
 
 
 
@@ -104,6 +105,7 @@ function App() {
             <Route path="/main/mangerment/category" element={<Category />} />
             <Route path="/main/mangerment/infor" element={<InforUser />} />
             <Route path="/main/order" element={<Order />} />
+            <Route path="/main/forbidden" element={<Forbidden />} />
           </Route>
         </Routes>
       </AuthContext.Provider>

@@ -1,9 +1,10 @@
 const router = require("express").Router();
 const CategoryController = require("../controller/Category");
+const middlewareController = require("../middleware/middlewareController")
 
 
 
-router.get("/getAllCate", CategoryController.getAllCate);
+router.get("/getAllCate", middlewareController.verifyProduct, CategoryController.getAllCate);
 
 router.post("/createCate", CategoryController.createCatelog);
 

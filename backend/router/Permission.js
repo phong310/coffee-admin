@@ -1,8 +1,10 @@
 const router = require("express").Router();
 
 const PermissionController = require("../controller/Permission");
+const middlewareController = require("../middleware/middlewareController")
 
-router.get("/getAllPermission", PermissionController.getAllPermission);
+
+router.get("/getAllPermission", middlewareController.verifyAdmin, PermissionController.getAllPermission);
 
 router.post("/createPermission", PermissionController.createPermission);
 

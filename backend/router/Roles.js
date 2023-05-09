@@ -1,8 +1,10 @@
 const router = require("express").Router();
 
 const RoleController = require("../controller/Roles");
+const middlewareController = require("../middleware/middlewareController")
 
-router.get("/getAllRole", RoleController.getAllRole);
+
+router.get("/getAllRole", middlewareController.verifyAdmin, RoleController.getAllRole);
 
 router.post("/createOrder", RoleController.createRole);
 

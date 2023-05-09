@@ -20,16 +20,28 @@ const middlewareController = {
     },
 
 
-    // verify token ADMIN
+    // verify token & ADMIN
     verifyAdmin: (req, res, next) => {
         middlewareController.verifyToken(req, res, () => {
-            if (req.user.role.includes("ADMIN")) {
+            if (req.user.role.includes("ADMIN") || req.user.role.includes("DIRECTOR")) {
                 next()
             } else {
                 res.status(403).json("Chỉ ADMIN mới được truy cập !")
             }
         })
-    }
+    },
+
+    // Verify token & MANAGER
+    verifyProduct: (req, res, next) => {
+        middlewareController.verifyToken(req, res, () => {
+            if (req.user.role.includes("MANAGER") || req.user.role.includes("LEADER") || req.user.role.includes("ADMIN") || req.user.role.includes("DIRECTOR")) {
+                next()
+            } else {
+                res.status(403).json("không có quyền truy cập !")
+            }
+        })
+    },
+
 };
 
 module.exports = middlewareController

@@ -8,14 +8,30 @@ import { DeleteOrder } from '../../components/Order/deleteModal';
 import { DetailOrder } from '../../components/Order/detailModal';
 import { UpdateOrder } from '../../components/Order/updateModal';
 import * as XLSX from 'xlsx';
+import { useDispatch, useSelector } from 'react-redux';
+import { getAllOrder } from '../../API/apiRequest';
+import { useNavigate } from 'react-router-dom';
+// import { createAxios } from '../../Interceptor';
+// import { loginSuccess } from '../../redux/autSlice';
 
 export const Order = () => {
     const { Panel } = Collapse;
+    const navigate = useNavigate();
+    const dispatch = useDispatch()
+
+
     const [data, setData] = useState([])
     const [openDelete, setOpenDelete] = useState(false);
     const [openDetail, setOpenDetail] = useState(false);
     const [openUpdate, setOpenUpdate] = useState(false);
     const [itemOrder, setItemOrder] = useState()
+
+    // lấy thông tin store redux
+    const user = useSelector((state) => state.auth.login?.currentUser);
+    // console.log(user?.accessToken)
+    const orderList = useSelector((state) => state.orderList.orders?.allOrder)
+
+    // const axiosJWT = createAxios(user, dispatch, loginSuccess)
 
     // search
     const [nameSearch, setNameSearch] = useState("");
@@ -71,13 +87,13 @@ export const Order = () => {
     }
 
     const resest_filter = () => {
-        getAllOrder();
+        getOrder();
         setNameSearch("");
         setOrderPaySearch();
         setOrderStatusSearch();
     }
 
-    const transformedData = data.map((order) => {
+    const transformedData = data?.map((order) => {
         const orderProducts = order.order_products.map((product) => {
             const productItems = product.item.map((item) => item.name).join(", ");
             return {
@@ -106,19 +122,22 @@ export const Order = () => {
     }
 
 
-    const getAllOrder = async () => {
-        try {
-            const res = await axios.get("http://localhost:7000/order/getAllOrder");
-            setData(res.data)
-
-        } catch (e) {
-            console.log("Err:", e)
-        }
+    const getOrder = async () => {
+        getAllOrder(user?.accessToken, dispatch, navigate)
     }
 
     useEffect(() => {
-        getAllOrder()
-    }, [])
+        if (!user) {
+            navigate("/")
+        }
+        if (user?.accessToken) {
+            getOrder()
+        }
+    }, []);
+
+    useEffect(() => {
+        setData(orderList)
+    }, [orderList])
 
 
 
@@ -337,11 +356,11 @@ export const Order = () => {
                 onChange: handleChangePagination
             }} />
 
-            <DeleteOrder open={openDelete} setOpen={setOpenDelete} item={itemOrder} getAll={getAllOrder} />
+            <DeleteOrder open={openDelete} setOpen={setOpenDelete} item={itemOrder} getAll={getOrder} />
 
             <DetailOrder open={openDetail} setOpen={setOpenDetail} item={itemOrder} />
 
-            <UpdateOrder open={openUpdate} setOpen={setOpenUpdate} getAll={getAllOrder} item={itemOrder} />
+            <UpdateOrder open={openUpdate} setOpen={setOpenUpdate} getAll={getOrder} item={itemOrder} />
 
         </>
     )

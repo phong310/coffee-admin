@@ -6,9 +6,16 @@ import { AddPermission } from '../../components/Permission/addModal';
 import { DeletePermission } from '../../components/Permission/deleteModal';
 import { UpdatePermission } from '../../components/Permission/updateModal';
 import * as XLSX from 'xlsx'
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import { getAllPermission } from '../../API/apiRequest';
 
 export default function Permission() {
     const { Panel } = Collapse;
+
+    const navigate = useNavigate();
+    const dispatch = useDispatch()
+
     const [data, setData] = useState([]);
     const [dataFilter, setDataFilter] = useState([])
     const [itemPer, setItemPer] = useState()
@@ -20,6 +27,11 @@ export default function Permission() {
     const [nameDisplaySearch, setNameDisplaySearch] = useState();
     const [statuSearch, setStatuSearch] = useState()
 
+    // lấy thông tin store redux
+    const user = useSelector((state) => state.auth.login?.currentUser)
+    const listPermission = useSelector((state) => state.userList.permissions?.allPermission)
+    // console.log(listPermission);
+
     const handleNameDisplaySearch = (value) => {
         setNameDisplaySearch(value)
     }
@@ -27,6 +39,26 @@ export default function Permission() {
     const handleStatusSearch = (value) => {
         setStatuSearch(value)
     }
+
+
+    const getDataPermission = () => {
+        getAllPermission(user?.accessToken, dispatch, navigate)
+    };
+
+    useEffect(() => {
+        if (!user) {
+            navigate("/");
+        }
+        if (user?.accessToken) {
+            getDataPermission()
+        }
+    }, [])
+
+    useEffect(() => {
+        setData(listPermission)
+        setDataFilter(listPermission)
+    }, [listPermission])
+
 
     const handleSearch = async () => {
         try {
@@ -37,20 +69,6 @@ export default function Permission() {
         }
     }
 
-    const getDataPermission = async () => {
-        try {
-            const res = await axios.get("http://localhost:7000/permission/getAllPermission");
-            setData(res.data);
-            setDataFilter(res.data)
-
-        } catch (e) {
-            console.log("Err:", e)
-        }
-    };
-
-    useEffect(() => {
-        getDataPermission()
-    }, [])
 
     // Xuất file Excel
     const exportToExcel = (data) => {
@@ -159,7 +177,7 @@ export default function Permission() {
                                     value={nameDisplaySearch}
                                     onChange={handleNameDisplaySearch}
                                 >
-                                    {data.map((item) =>
+                                    {data?.map((item) =>
                                         <Select.Option key={item._id} value={item.per_name_display}>{item.per_name_display}</Select.Option>
                                     )}
                                 </Select>
@@ -189,7 +207,7 @@ export default function Permission() {
             </Col>
             <Col className='col_wrapp_title' style={{ padding: "30px 0px 10px 0px" }}>
                 <Row justify="space-between">
-                    <h2>Danh sách các quyền <Tag color="#4096ff">{dataFilter.length}</Tag></h2>
+                    <h2>Danh sách các quyền <Tag color="#4096ff">{dataFilter?.length}</Tag></h2>
                     <Row>
                         <Button type="primary" icon={<ExportOutlined />} style={{ marginRight: "10px" }} onClick={() => exportToExcel(dataFilter)}>
                             Xuất file Excel

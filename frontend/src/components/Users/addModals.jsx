@@ -322,7 +322,7 @@ const AddModal = ({ data, setData, getAll, roleFilter, permission }) => {
                                 ]}
                             >
                                 <Select placeholder="Nhóm quyền" onChange={handleRole}>
-                                    {roleFilter.map((item) =>
+                                    {roleFilter?.map((item) =>
                                         <Select.Option key={item._id} value={item.role_name}>{item.role_name}</Select.Option>
                                     )}
                                 </Select>
@@ -357,7 +357,7 @@ const AddModal = ({ data, setData, getAll, roleFilter, permission }) => {
                                 ]}
                             >
                                 <Select mode="multiple" placeholder="Quyền" onChange={handlePermission}>
-                                    {permission.map((item) =>
+                                    {permission?.map((item) =>
                                         <Select.Option key={item._id} value={item.per_name}>{item.per_name_display}</Select.Option>
                                     )}
                                 </Select>

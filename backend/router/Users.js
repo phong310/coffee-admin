@@ -5,7 +5,7 @@ const middlewareController = require("../middleware/middlewareController")
 
 
 
-router.get("/getAllUser", middlewareController.verifyToken, UserController.getAllUser);
+router.get("/getAllUser", middlewareController.verifyAdmin, UserController.getAllUser);
 
 router.post("/createUser", UserController.createUser);
 

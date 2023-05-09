@@ -14,7 +14,9 @@ import { Snacks } from '../../pages/Snacks';
 import { Logout } from '../Logout';
 import { Order } from '../../pages/Order';
 import { Role } from '../../pages/Role';
+import { Forbidden } from '../../pages/Forbidden';
 import Permission from '../../pages/Create_Permission';
+import { useSelector } from 'react-redux';
 
 
 const { Header, Content, Footer, Sider } = Layout;
@@ -23,7 +25,9 @@ const { Title } = Typography;
 
 const MainLayout = () => {
     const [collapsed, setCollapsed] = useState(false);
-    const { user, setUser } = useContext(AuthContext)
+    // const { user, setUser } = useContext(AuthContext)
+    const user = useSelector((state) => state.auth.login?.currentUser.user)
+    // console.log(user)
     const [openLogout, setOpenLogOut] = useState(false)
     const location = useLocation();
 
@@ -49,6 +53,8 @@ const MainLayout = () => {
                 return "Thông tin người dùng";
             case "/main/order":
                 return "Quản lý đơn hàng"
+            case "/main/forbidden":
+                return "403"
             default:
                 return "Dashbroad";
         }
@@ -210,6 +216,7 @@ const MainLayout = () => {
                         <Route path="/mangerment/category" element={<Category />} />
                         <Route path="/mangerment/infor" element={<InforUser />} />
                         <Route path="/order" element={<Order />} />
+                        <Route path="/forbidden" element={<Forbidden />} />
                     </Routes>
 
                     <Logout open={openLogout} setOpen={setOpenLogOut} name={user.username} />
