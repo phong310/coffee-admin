@@ -15,6 +15,7 @@ import authReducer from "./autSlice";
 import userReducer from './userSlice';
 import orderReducer from "./orderSlice"
 import cateReducer from "./cateSlice"
+import productReducer from "./productSlice"
 
 const persistConfig = {
     key: 'root',
@@ -25,7 +26,8 @@ const rootReducer = combineReducers({
     auth: authReducer,
     userList: userReducer,
     orderList: orderReducer,
-    category: cateReducer
+    category: cateReducer,
+    product: productReducer
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer)
@@ -47,8 +49,9 @@ export let persistor = persistStore(store);
 // import authReducer from "./autSlice";
 // import userReducer from './userSlice';
 // import orderReducer from "./orderSlice"
+// import productReducer from "./productSlice"
 
 // export const store = configureStore({
-//     reducer: { auth: authReducer, userList: userReducer, orderList: orderReducer },
+//     reducer: { auth: authReducer, userList: userReducer, orderList: orderReducer, product: productReducer },
 // })
 

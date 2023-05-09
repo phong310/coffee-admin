@@ -1,7 +1,8 @@
 const router = require("express").Router();
 const SnackController = require("../controller/Snacks");
+const middlewareController = require("../middleware/middlewareController")
 
-router.get("/getAllSnack", SnackController.getAllSnack);
+router.get("/getAllSnack", middlewareController.verifyProduct, SnackController.getAllSnack);
 
 router.post("/addNewSnacks", SnackController.createSnacks);
 

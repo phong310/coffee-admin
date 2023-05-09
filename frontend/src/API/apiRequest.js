@@ -4,6 +4,7 @@ import { getUserStart, getUserFaild, getUserSuccess, getRoleStart, getRoleFaild,
 import { toast } from 'react-toastify';
 import { getOrderFaild, getOrderStart, getOrderSuccess } from "../redux/orderSlice";
 import { getCateFaild, getCateStart, getCateSuccess } from "../redux/cateSlice";
+import { getBakeryFaild, getBakeryStart, getBakerySuccess, getDrinkFaild, getDrinkStart, getDrinkSuccess, getSnackFaild, getSnackStart, getSnackSuccess } from "../redux/productSlice";
 
 
 
@@ -113,6 +114,54 @@ export const getAllCate = async (accessToken, dispatch, navigate) => {
 
     } catch (e) {
         dispatch(getCateFaild());
+        navigate("/main/forbidden");
+        toast.warning("Không có quyền truy cập !")
+    }
+}
+
+// GET ALL DRINKS
+export const getAllDrinks = async (accessToken, dispatch, navigate) => {
+    dispatch(getDrinkStart())
+    try {
+        const res = await axios.get("http://localhost:7000/drinks/getAll", {
+            headers: { token: `Bearer ${accessToken}` }
+        });
+        dispatch(getDrinkSuccess(res.data))
+
+    } catch (e) {
+        dispatch(getDrinkFaild())
+        navigate("/main/forbidden");
+        toast.warning("Không có quyền truy cập !")
+    }
+}
+
+// GET ALL BAKERYS 
+export const getAllBakerys = async (accessToken, dispatch, navigate) => {
+    dispatch(getBakeryStart())
+    try {
+        const res = await axios.get("http://localhost:7000/bakery/getAllBakery", {
+            headers: { token: `Bearer ${accessToken}` }
+        })
+        dispatch(getBakerySuccess(res.data))
+
+    } catch (e) {
+        dispatch(getBakeryFaild())
+        navigate("/main/forbidden");
+        toast.warning("Không có quyền truy cập !")
+    }
+}
+
+// GET ALL SNACKS
+export const getAllSnacks = async (accessToken, dispatch, navigate) => {
+    dispatch(getSnackStart());
+    try {
+        const res = await axios.get("http://localhost:7000/snack/getAllSnack", {
+            headers: { token: `Bearer ${accessToken}` }
+        });
+        dispatch(getSnackSuccess(res.data))
+
+    } catch (e) {
+        dispatch(getSnackFaild());
         navigate("/main/forbidden");
         toast.warning("Không có quyền truy cập !")
     }

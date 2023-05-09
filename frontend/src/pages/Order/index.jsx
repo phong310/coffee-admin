@@ -28,8 +28,11 @@ export const Order = () => {
 
     // lấy thông tin store redux
     const user = useSelector((state) => state.auth.login?.currentUser);
-    // console.log(user?.accessToken)
     const orderList = useSelector((state) => state.orderList.orders?.allOrder)
+
+    // check Role
+    const Role = user?.user.role.includes("MANAGER")
+    const Staff = user?.user.role.includes("STAFF")
 
     // const axiosJWT = createAxios(user, dispatch, loginSuccess)
 
@@ -262,14 +265,14 @@ export const Order = () => {
             key: 'action',
             render: (_, record) => (
                 <Space size="middle">
-                    <Tooltip placement="top" title="Chi tiết">
-                        <EyeTwoTone twoToneColor="#531dab" onClick={() => handleDetailOrder(record)} />
+                    <Tooltip placement="top" title="Chi tiết" >
+                        {Role || Staff ? "" : <EyeTwoTone twoToneColor="#531dab" onClick={() => handleDetailOrder(record)} />}
                     </Tooltip>
-                    <Tooltip placement="top" title="Sửa" onClick={() => handleUpdateOrder(record)} >
-                        <EditTwoTone />
+                    <Tooltip placement="top" title="Sửa">
+                        {Role || Staff ? "" : <EditTwoTone onClick={() => handleUpdateOrder(record)} />}
                     </Tooltip>
                     <Tooltip placement="top" title="Xóa">
-                        <DeleteTwoTone twoToneColor="#f5222d" onClick={() => handleDeleteOrder(record)} />
+                        {Role || Staff ? "" : <DeleteTwoTone twoToneColor="#f5222d" onClick={() => handleDeleteOrder(record)} />}
                     </Tooltip>
                 </Space>
             ),
@@ -337,9 +340,10 @@ export const Order = () => {
                 <Row justify="space-between">
                     <h2>Danh sách đơn đặt hàng <Tag color="#4096ff">{data.length}</Tag></h2>
                     <Row>
-                        <Button type="primary" icon={<ExportOutlined />} style={{ marginRight: "10px" }} onClick={() => exportToExcel(transformedData)} >
+                        {Staff ? "" : <Button type="primary" icon={<ExportOutlined />} style={{ marginRight: "10px" }} onClick={() => exportToExcel(transformedData)} >
                             Xuất file Excel
-                        </Button>
+                        </Button>}
+
                         {/* <Button type="primary" icon={<PlusOutlined />} >
                             Thêm mới
                         </Button> */}

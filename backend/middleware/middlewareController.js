@@ -34,13 +34,27 @@ const middlewareController = {
     // Verify token & MANAGER
     verifyProduct: (req, res, next) => {
         middlewareController.verifyToken(req, res, () => {
-            if (req.user.role.includes("MANAGER") || req.user.role.includes("LEADER") || req.user.role.includes("ADMIN") || req.user.role.includes("DIRECTOR")) {
+            if (req.user.role.includes("MANAGER") || req.user.role.includes("LEADER")
+                || req.user.role.includes("ADMIN") || req.user.role.includes("DIRECTOR") || req.user.role.includes("STAFF")) {
                 next()
             } else {
                 res.status(403).json("không có quyền truy cập !")
             }
         })
     },
+
+    // verify token & LEADER
+    verifyCate: (req, res, next) => {
+        middlewareController.verifyToken(req, res, () => {
+            if (req.user.role.includes("LEADER") || req.user.role.includes("MANAGER")
+                || req.user.role.includes("ADMIN")
+                || req.user.role.includes("DIRECTOR")) {
+                next()
+            } else {
+                res.status(403).json("không có quyền truy cập !")
+            }
+        })
+    }
 
 };
 

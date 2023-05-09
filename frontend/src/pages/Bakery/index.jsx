@@ -7,9 +7,16 @@ import UpdateModal from '../../components/Bakerys/updateModal';
 import Money from '../../components/Money';
 import axios from "axios";
 import * as XLSX from 'xlsx';
+import { useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { getAllBakerys } from '../../API/apiRequest';
 
 export const Bakery = () => {
     const { Panel } = Collapse;
+    const navigate = useNavigate();
+    const dispatch = useDispatch()
+
+
     const [data, setData] = useState([])
     const [openAdd, setOpenAdd] = useState(false)
     const [openDelete, setOpenDelete] = useState(false)
@@ -18,6 +25,14 @@ export const Bakery = () => {
 
     // Kích hoạt effect 
     const [trigger, setTrigger] = useState(false)
+
+    // lấy thông tin store redux
+    const user = useSelector((state) => state.auth.login?.currentUser)
+    const bakeryList = useSelector((state) => state.product.bakeryList?.allBakery)
+
+    // Role check
+    const staff = user?.user.role.includes("STAFF");
+    const manager = user?.user.role.includes("MANAGER")
 
     // Tìm kiếm
     const [titleSearch, setTitleSearch] = useState("");
@@ -37,19 +52,9 @@ export const Bakery = () => {
         });
     };
 
-    const getAllBakery = async () => {
-        try {
-            const res = await axios.get("http://localhost:7000/bakery/getAllBakery")
-            setData(res.data)
-
-        } catch (e) {
-            console.log("Err", e)
-        }
+    const getAllBakery = () => {
+        getAllBakerys(user?.accessToken, dispatch, navigate)
     }
-
-    useEffect(() => {
-        getAllBakery()
-    }, [])
 
     const HandleSearch = async () => {
         try {
@@ -67,6 +72,17 @@ export const Bakery = () => {
         XLSX.utils.book_append_sheet(workbook, worksheet, 'Data');
         XLSX.writeFile(workbook, 'Sheet.xlsx');
     }
+
+    useEffect(() => {
+        if (!user) {
+            navigate("/")
+        }
+        if (user?.accessToken) {
+            getAllBakery()
+        }
+    }, [])
+
+    useEffect(() => { setData(bakeryList) }, [bakeryList])
 
 
 
@@ -145,12 +161,11 @@ export const Bakery = () => {
                     <Tooltip placement="top" title="Chi tiết">
                         <EyeTwoTone twoToneColor="#531dab" />
                     </Tooltip>
-                    <Tooltip placement="top" title="Sửa" onClick={() => handleUpdate(record)}>
-                        <EditTwoTone />
+                    <Tooltip placement="top" title="Sửa" >
+                        {staff || manager ? "" : <EditTwoTone onClick={() => { handleUpdate(record) }} />}
                     </Tooltip>
                     <Tooltip placement="top" title="Xóa">
-                        <DeleteTwoTone twoToneColor="#f5222d" onClick={() => handleDelete(record)} />
-
+                        {staff || manager ? "" : <DeleteTwoTone twoToneColor="#f5222d" onClick={() => handleDelete(record)} />}
                     </Tooltip>
                 </Space>
             ),
@@ -199,25 +214,27 @@ export const Bakery = () => {
                 </Collapse>
             </Col>
             <Col className='col_wrapp_title' style={{ padding: "30px 0px 10px 0px" }}>
-                <Row justify="space-between">
-                    <h2>Danh sách các loại bánh <Tag color="#4096ff">{data.length}</Tag></h2>
-                    <Row>
-                        <Button type="primary" icon={<ExportOutlined />} style={{ marginRight: "10px" }} onClick={() => exportToExcel(data)}>
-                            Xuất file Excel
-                        </Button>
-                        <Button type="primary" icon={<PlusOutlined />} onClick={() => setOpenAdd(true)}>
-                            Thêm mới
-                        </Button>
-                    </Row>
 
+                <Row justify="space-between">
+                    <h2>Danh sách các loại bánh <Tag color="#4096ff">{data?.length}</Tag></h2>
+                    {staff ? "" :
+                        <Row>
+                            <Button type="primary" icon={<ExportOutlined />} style={{ marginRight: "10px" }} onClick={() => exportToExcel(data)}>
+                                Xuất file Excel
+                            </Button>
+                            <Button type="primary" icon={<PlusOutlined />} onClick={() => setOpenAdd(true)}>
+                                Thêm mới
+                            </Button>
+                        </Row>}
                 </Row>
+
             </Col>
 
             {/* Table */}
             <Table className='table' columns={columns} dataSource={data} scroll={{ y: 502 }} pagination={{
                 current: pagination.current,
                 pageSize: pagination.pageSize,
-                total: data.length,
+                total: data?.length,
                 onChange: handleChangePagination
             }} />
 

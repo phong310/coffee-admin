@@ -9,12 +9,19 @@ import { DeleteDrink } from '../../components/Drinks/deleteModal'
 import { DetailDrinks } from '../../components/Drinks/detailModal'
 import UpdateModal from '../../components/Drinks/updateModal'
 import Money from '../../components/Money'
+import { useNavigate } from 'react-router-dom'
+import { useDispatch, useSelector } from 'react-redux'
+import { getAllDrinks } from '../../API/apiRequest'
 
 
 
 
 export const Drinks = () => {
     const { Panel } = Collapse;
+    const navigate = useNavigate();
+    const dispatch = useDispatch()
+
+
     const [data, setData] = useState([])
     const [open, setOpen] = useState(false);
     const [openDelete, setOpenDelete] = useState(false)
@@ -24,6 +31,14 @@ export const Drinks = () => {
 
     // Kích hoạt effect
     const [trigger, setTrigger] = useState(false)
+
+    // lấy thông tin store redux
+    const user = useSelector((state) => state.auth.login?.currentUser)
+    const drinksList = useSelector((state) => state.product.drinkList?.allDrinks)
+
+    // Role check
+    const staff = user?.user.role.includes("STAFF");
+    const manager = user?.user.role.includes("MANAGER")
 
     // Phân trang
     const [pagination, setPagination] = useState({
@@ -64,21 +79,20 @@ export const Drinks = () => {
         setStatusSearch(value)
     }
 
-
-
     const getData = async () => {
-        try {
-            const res = await axios.get("http://localhost:7000/drinks/getAll");
-            setData(res.data)
-
-        } catch (e) {
-            console.log("Err:", e)
-        }
+        getAllDrinks(user?.accessToken, dispatch, navigate)
     }
 
     useEffect(() => {
-        getData()
+        if (!user) {
+            navigate("/");
+        }
+        if (user?.accessToken) {
+            getData()
+        }
     }, []);
+
+    useEffect(() => { setData(drinksList) }, [drinksList])
 
     // Xuất file Excel
     const exportToExcel = (data) => {
@@ -157,12 +171,14 @@ export const Drinks = () => {
                 <Space size="middle">
                     <Tooltip placement="top" title="Chi tiết">
                         <EyeTwoTone twoToneColor="#531dab" onClick={() => { handleDetail(record) }} />
+
                     </Tooltip>
                     <Tooltip placement="top" title="Sửa" >
-                        <EditTwoTone onClick={() => { handleUpdate(record) }} />
+                        {staff || manager ? "" : <EditTwoTone onClick={() => { handleUpdate(record) }} />}
                     </Tooltip>
                     <Tooltip placement="top" title="Xóa">
-                        <DeleteTwoTone twoToneColor="#f5222d" onClick={() => { handleDelete(record) }} />
+                        {staff || manager ? "" : <DeleteTwoTone twoToneColor="#f5222d" onClick={() => { handleDelete(record) }} />}
+
                     </Tooltip>
                 </Space>
             ),
@@ -214,15 +230,18 @@ export const Drinks = () => {
             </Col>
             <Col className='col_wrapp_title' style={{ padding: "30px 0px 10px 0px" }}>
                 <Row justify="space-between">
-                    <h2>Danh sách đồ uống <Tag color="#4096ff">{data.length}</Tag></h2>
-                    <Row>
-                        <Button type="primary" icon={<ExportOutlined />} style={{ marginRight: "10px" }} onClick={() => exportToExcel(data)}>
-                            Xuất file Excel
-                        </Button>
-                        <Button type="primary" icon={<PlusOutlined />} onClick={() => setOpen(true)}>
-                            Thêm mới
-                        </Button>
-                    </Row>
+                    <h2>Danh sách đồ uống <Tag color="#4096ff">{data?.length}</Tag></h2>
+                    {staff ? "" :
+                        <Row>
+                            <Button type="primary" icon={<ExportOutlined />} style={{ marginRight: "10px" }} onClick={() => exportToExcel(data)}>
+                                Xuất file Excel
+                            </Button>
+                            <Button type="primary" icon={<PlusOutlined />} onClick={() => setOpen(true)}>
+                                Thêm mới
+                            </Button>
+                        </Row>
+                    }
+
 
                 </Row>
             </Col>
@@ -231,7 +250,7 @@ export const Drinks = () => {
             <Table className='table' columns={columns} dataSource={data} scroll={{ y: 502 }} pagination={{
                 current: pagination.current,
                 pageSize: pagination.pageSize,
-                total: data.length,
+                total: data?.length,
                 onChange: handleChangePagination
             }} />
 

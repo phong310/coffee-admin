@@ -4,7 +4,7 @@ const middlewareController = require("../middleware/middlewareController")
 
 
 
-router.get("/getAllCate", middlewareController.verifyProduct, CategoryController.getAllCate);
+router.get("/getAllCate", middlewareController.verifyCate, CategoryController.getAllCate);
 
 router.post("/createCate", CategoryController.createCatelog);
 

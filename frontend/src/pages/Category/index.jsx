@@ -29,6 +29,9 @@ export const Category = () => {
     const user = useSelector((state) => state.auth.login?.currentUser)
     const cateList = useSelector((state) => state.category.cateList?.allCate)
 
+    // role check
+    const Manager = user?.user.role.includes("MANAGER")
+
     const getAll = () => {
         getAllCate(user?.accessToken, dispatch, navigate)
     }
@@ -116,13 +119,14 @@ export const Category = () => {
             render: (_, record) => (
                 <Space size="middle">
                     <Tooltip placement="top" title="Chi tiết">
-                        <EyeTwoTone twoToneColor="#531dab" />
+                        {Manager ? "" : <EyeTwoTone twoToneColor="#531dab" />}
+
                     </Tooltip>
                     <Tooltip placement="top" title="Sửa" >
-                        <EditTwoTone onClick={() => handleUpdate(record)} />
+                        {Manager ? "" : <EditTwoTone onClick={() => handleUpdate(record)} />}
                     </Tooltip>
                     <Tooltip placement="top" title="Xóa">
-                        <DeleteTwoTone twoToneColor="#f5222d" onClick={() => handleDelete(record)} />
+                        {Manager ? "" : <DeleteTwoTone twoToneColor="#f5222d" onClick={() => handleDelete(record)} />}
                     </Tooltip>
                 </Space>
             ),

@@ -7,10 +7,17 @@ import { DeleteSnacks } from '../../components/Snacks/deleteModal';
 import UpdateModal from '../../components/Snacks/updateModal';
 import axios from 'axios';
 import * as XLSX from 'xlsx';
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import { getAllSnacks } from '../../API/apiRequest';
 
 
 export const Snacks = () => {
     const { Panel } = Collapse;
+    const navigate = useNavigate();
+    const dispatch = useDispatch()
+
+
     const [data, setData] = useState([])
     const [openAdd, setOpenAdd] = useState(false)
     const [openDelete, setOpenDelete] = useState(false)
@@ -19,6 +26,15 @@ export const Snacks = () => {
 
     // Kích hoạt effect
     const [trigger, setTrigger] = useState(false);
+
+
+    // lấy thông tin store redux
+    const user = useSelector((state) => state.auth.login?.currentUser)
+    const snacksList = useSelector((state) => state.product.snackList?.allSnacks)
+
+    // Role check
+    const staff = user?.user.role.includes("STAFF");
+    const manager = user?.user.role.includes("MANAGER")
 
     // Tìm kiếm
     const [titleSearch, setTitleSearch] = useState("");
@@ -39,18 +55,19 @@ export const Snacks = () => {
     };
 
     const getAllSnack = async () => {
-        try {
-            const res = await axios.get("http://localhost:7000/snack/getAllSnack");
-            setData(res.data)
-
-        } catch (e) {
-            console.log("Err", e)
-        }
+        getAllSnacks(user?.accessToken, dispatch, navigate)
     }
 
     useEffect(() => {
-        getAllSnack()
+        if (!user) {
+            navigate("/");
+        }
+        if (user?.accessToken) {
+            getAllSnack()
+        }
     }, [])
+
+    useEffect(() => { setData(snacksList) }, [snacksList])
 
     // Xuất file Excel
     const exportToExcel = (data) => {
@@ -146,10 +163,11 @@ export const Snacks = () => {
                         <EyeTwoTone twoToneColor="#531dab" />
                     </Tooltip>
                     <Tooltip placement="top" title="Sửa" >
-                        <EditTwoTone onClick={() => { handleUpdate(record) }} />
+                        {staff || manager ? "" : <EditTwoTone onClick={() => { handleUpdate(record) }} />}
+
                     </Tooltip>
                     <Tooltip placement="top" title="Xóa">
-                        <DeleteTwoTone twoToneColor="#f5222d" onClick={() => { handleDelete(record) }} />
+                        {staff || manager ? "" : <DeleteTwoTone twoToneColor="#f5222d" onClick={() => { handleDelete(record) }} />}
                     </Tooltip>
                 </Space>
             ),
@@ -201,16 +219,16 @@ export const Snacks = () => {
             </Col>
             <Col className='col_wrapp_title' style={{ padding: "30px 0px 10px 0px" }}>
                 <Row justify="space-between">
-                    <h2>Danh sách đồ uống <Tag color="#4096ff">{data.length}</Tag></h2>
-                    <Row>
-                        <Button type="primary" icon={<ExportOutlined />} style={{ marginRight: "10px" }} onClick={() => exportToExcel(data)}>
-                            Xuất file Excel
-                        </Button>
-                        <Button type="primary" icon={<PlusOutlined />} onClick={() => setOpenAdd(true)}>
-                            Thêm mới
-                        </Button>
-                    </Row>
-
+                    <h2>Danh sách đồ uống <Tag color="#4096ff">{data?.length}</Tag></h2>
+                    {staff ? "" :
+                        <Row>
+                            <Button type="primary" icon={<ExportOutlined />} style={{ marginRight: "10px" }} onClick={() => exportToExcel(data)}>
+                                Xuất file Excel
+                            </Button>
+                            <Button type="primary" icon={<PlusOutlined />} onClick={() => setOpenAdd(true)}>
+                                Thêm mới
+                            </Button>
+                        </Row>}
                 </Row>
             </Col>
 
@@ -218,7 +236,7 @@ export const Snacks = () => {
             <Table className='table' columns={columns} dataSource={data} scroll={{ y: 502 }} pagination={{
                 current: pagination.current,
                 pageSize: pagination.pageSize,
-                total: data.length,
+                total: data?.length,
                 onChange: handleChangePagination
             }} />
 

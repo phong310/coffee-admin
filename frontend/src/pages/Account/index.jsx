@@ -43,8 +43,8 @@ export const Account = () => {
     const listUser = useSelector((state) => state.userList.users?.allUsers)
     const listRole = useSelector((state) => state.userList.roles?.allRoles)
     const listPermission = useSelector((state) => state.userList.permissions?.allPermission)
-    // console.log("ROLE:", listRole)
-    // console.log("PER:", listPermission)
+
+
 
     const getDataUser = () => {
         getAllUser(user?.accessToken, dispatch, navigate)
