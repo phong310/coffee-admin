@@ -1,29 +1,32 @@
-import React, { useContext, useEffect, useState } from 'react'
-import { Card, Image, Col, Row, Divider, Button, Tag } from 'antd';
 import { EditTwoTone } from '@ant-design/icons';
-import AuthContext from '../../context/Auth';
+import { Button, Card, Col, Divider, Image, Row, Tag } from 'antd';
+import moment from "moment";
+import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import { getAllUser } from '../../API/apiRequest';
 import { EditInfor } from '../../components/Infor/editModal';
-import moment from "moment"
-import axios from 'axios';
 export const InforUser = () => {
 
-    const { user, setUser } = useContext(AuthContext);
+    const dispatch = useDispatch();
+    const navigate = useNavigate()
+    const [user, setUser] = useState([]);
     const [openUpdate, setOpenUpdate] = useState(false)
 
-    const getAllUser = async () => {
-        try {
-            const res = await axios.get("http://localhost:7000/user/getAllUser");
-            setUser(res.data.find((item) => {
-                if (item._id === user._id) {
-                    return user
-                }
-            }))
-        } catch (e) {
-            console.log("Err:", e)
-        }
+    // lấy thông tin store redux
+    const users = useSelector((state) => state.auth.login?.currentUser);
+
+    const getAllUsers = async () => {
+        getAllUser(users?.accessToken, dispatch, navigate)
+        setUser(users.user)
     }
 
-    useEffect(() => { getAllUser() }, [])
+    useEffect(() => {
+        if (!users) {
+            navigate("/");
+        }
+        getAllUsers()
+    }, [users.user])
 
     return (
         <Card title="Thông tin người dùng" style={{ width: 700, height: 780, margin: '0 auto', top: '3%', marginBottom: '20px' }}>
@@ -34,9 +37,7 @@ export const InforUser = () => {
                         height={100}
                         style={{ objectFit: "cover", borderRadius: '50%' }}
                         src={user.avatar}
-
                     />
-
                 </Col>
             </Row>
             <Row style={{ justifyContent: "center" }}>
@@ -72,7 +73,7 @@ export const InforUser = () => {
                 </Row>
                 <Row style={{ justifyContent: "space-between", }}>
                     <span>Nhóm quyền: </span>
-                    {user.role.map((item) => <Tag key={item._id} color={item === 'DIRECTOR' || item === 'ADMIN' ? '#f5222d' : (item === 'MANAGER' ? '#d3adf7' : '#87e8de')}>{item}</Tag>)}
+                    <Tag color={user.role === 'DIRECTOR' || user.role === 'ADMIN' ? '#f5222d' : (user.role === 'MANAGER' ? '#d3adf7' : '#87e8de')}>{user.role}</Tag>
                     <Divider />
                 </Row>
                 <Row style={{ justifyContent: "space-between", }}>
@@ -85,7 +86,7 @@ export const InforUser = () => {
             </Col>
 
             {/* Chỉnh sửa */}
-            <EditInfor open={openUpdate} setOpen={setOpenUpdate} getAll={getAllUser} />
+            <EditInfor open={openUpdate} setOpen={setOpenUpdate} getAll={getAllUsers} users={users} />
 
         </Card>
     )

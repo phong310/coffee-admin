@@ -338,7 +338,7 @@ export const Order = () => {
 
             <Col className='col_wrapp_title' style={{ padding: "30px 0px 10px 0px" }}>
                 <Row justify="space-between">
-                    <h2>Danh sách đơn đặt hàng <Tag color="#4096ff">{data.length}</Tag></h2>
+                    <h2>Danh sách đơn đặt hàng <Tag color="#4096ff">{data?.length}</Tag></h2>
                     <Row>
                         {Staff ? "" : <Button type="primary" icon={<ExportOutlined />} style={{ marginRight: "10px" }} onClick={() => exportToExcel(transformedData)} >
                             Xuất file Excel

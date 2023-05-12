@@ -2,15 +2,11 @@ import { LoadingOutlined, MailOutlined, PlusOutlined, UserOutlined } from '@ant-
 import { Col, DatePicker, Form, Input, Modal, Row, Select, Upload, message } from 'antd';
 import axios from 'axios';
 import moment from "moment";
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
-import AuthContext from '../../context/Auth';
-import Cookies from 'js-cookie';
 
 
 const { Option } = Select;
-
-
 
 const beforeUpload = (file) => {
     const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png';
@@ -25,7 +21,8 @@ const beforeUpload = (file) => {
 };
 
 
-export const EditInfor = ({ open, setOpen, getAll }) => {
+export const EditInfor = ({ open, setOpen, getAll, users }) => {
+
     const [loading, setLoading] = useState(false);
     const [avatarUrl, setAvatarUrl] = useState()
     const [username, setUsername] = useState("");
@@ -36,13 +33,7 @@ export const EditInfor = ({ open, setOpen, getAll }) => {
     const [birthday, setBirthday] = useState("");
     const [sex, setSex] = useState("");
 
-    const { user, setUser } = useContext(AuthContext)
-
-
-
     const [form] = Form.useForm()
-
-
 
     const handleChange = (info) => {
         // console.log(info)
@@ -76,25 +67,25 @@ export const EditInfor = ({ open, setOpen, getAll }) => {
 
     useEffect(() => {
         form.setFieldsValue({
-            username: user.username,
-            email: user.email,
-            phone: user.phone,
-            role: user.role,
-            status: user.status,
-            avatar: user.avatar,
-            birthday: moment(user.birthday),
-            sex: user.sex
+            username: users.user.username,
+            email: users.user.email,
+            phone: users.user.phone,
+            role: users.user.role,
+            status: users.user.status,
+            avatar: users.user.avatar,
+            birthday: moment(users.user.birthday),
+            sex: users.user.sex
         })
-        setUsername(user.username);
-        setEmail(user.email);
-        setPhoneNumber(user.phone);
-        setRole(user.role);
-        setStatus(user.status)
-        setAvatarUrl(user.avatar)
-        setBirthday(moment(user.birthday));
-        setSex(user.sex)
+        setUsername(users.user.username);
+        setEmail(users.user.email);
+        setPhoneNumber(users.user.phone);
+        setRole(users.user.role);
+        setStatus(users.user.status)
+        setAvatarUrl(users.user.avatar)
+        setBirthday(moment(users.user.birthday));
+        setSex(users.user.sex)
 
-    }, [user, form])
+    }, [users, form])
 
 
     const handleRole = (value) => {
@@ -125,7 +116,7 @@ export const EditInfor = ({ open, setOpen, getAll }) => {
                 birthday: birthday,
                 status: status,
             }
-            const response2 = await axios.put(`http://localhost:7000/user/update/${user?._id}`, newEdit);
+            await axios.put(`http://localhost:7000/user/update/${users.user._id}`, newEdit);
             setOpen(false);
             toast.success("Cập nhật tài khoản thành công");
             getAll()
