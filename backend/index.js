@@ -4,6 +4,7 @@ const mongoose = require("mongoose")
 const bodyParser = require('body-parser')
 const cookieParser = require("cookie-parser")
 const dotenv = require('dotenv')
+const News = require("./router/News")
 const Drinks = require("./router/Drinks")
 const Bakery = require("./router/Bakerys")
 const Snack = require("./router/Snacks")
@@ -40,6 +41,8 @@ app.use("/bakery", Bakery)
 app.use("/user", User)
 
 app.use("/category", Category)
+
+app.use("/news", News)
 
 app.use("/order", Order)
 
