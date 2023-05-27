@@ -1,4 +1,4 @@
-import { ApartmentOutlined, AppstoreOutlined, BellOutlined, CarryOutOutlined, CoffeeOutlined, DashboardOutlined, DollarOutlined, FileSearchOutlined, FireOutlined, HeartOutlined, MenuOutlined, NodeExpandOutlined, SettingOutlined, UserOutlined, UsergroupDeleteOutlined } from '@ant-design/icons';
+import { ApartmentOutlined, AppstoreOutlined, BellOutlined, CarryOutOutlined, CoffeeOutlined, DashboardOutlined, DollarOutlined, FileSearchOutlined, FireOutlined, HeartOutlined, MenuOutlined, NodeExpandOutlined, ProfileOutlined, SettingOutlined, UserOutlined, UsergroupDeleteOutlined } from '@ant-design/icons';
 import { Avatar, Col, Dropdown, Layout, Menu, Row, Typography, theme } from 'antd';
 import SubMenu from 'antd/es/menu/SubMenu';
 import React, { useContext, useState } from 'react';
@@ -55,7 +55,7 @@ const MainLayout = () => {
             case "/main/order":
                 return "Quản lý đơn hàng"
             case "/main/news":
-                return "Quản lý tin tức"
+                return "Quản lý thông tin sản phẩm"
             case "/main/forbidden":
                 return "403"
             default:
@@ -134,21 +134,24 @@ const MainLayout = () => {
                         <Link to="/main/mangerment/category">Danh mục bán hàng</Link>
                     </Menu.Item>
                     <Menu.Item key="7" icon={<FileSearchOutlined />}>
-                        <Link to="/main/news">Quản lý tin tức</Link>
+                        <Link to="/main/news">Thông tin sản phẩm</Link>
+                    </Menu.Item>
+                    <Menu.Item key="8" icon={<ProfileOutlined />}>
+                        <Link to="/main/home">Quản lý tin tức</Link>
                     </Menu.Item>
                     <SubMenu key="sub3" icon={<UserOutlined />} title="Quản lý tài khoản">
-                        <Menu.Item key="8" icon={<UserOutlined />}>
+                        <Menu.Item key="9" icon={<UserOutlined />}>
                             <Link to="/main/mangerment/account">Tài khoản</Link>
                         </Menu.Item>
-                        <Menu.Item key="9" icon={<UsergroupDeleteOutlined />}>
+                        <Menu.Item key="10" icon={<UsergroupDeleteOutlined />}>
                             <Link to="/main/mangerment/role">Nhóm quyền</Link>
                         </Menu.Item>
-                        <Menu.Item key="10" icon={<SettingOutlined />}>
+                        <Menu.Item key="11" icon={<SettingOutlined />}>
                             <Link to="/main/mangerment/permission">Tạo quyền</Link>
                         </Menu.Item>
                     </SubMenu>
 
-                    <Menu.Item key="11" icon={<CarryOutOutlined />}>
+                    <Menu.Item key="12" icon={<CarryOutOutlined />}>
                         <Link to="/main/home">Thống kê</Link>
                     </Menu.Item>
                 </Menu>
