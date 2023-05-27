@@ -16,6 +16,7 @@ import userReducer from './userSlice';
 import orderReducer from "./orderSlice"
 import cateReducer from "./cateSlice"
 import productReducer from "./productSlice"
+import newsReducer from "./newsSlice"
 
 const persistConfig = {
     key: 'root',
@@ -27,7 +28,8 @@ const rootReducer = combineReducers({
     userList: userReducer,
     orderList: orderReducer,
     category: cateReducer,
-    product: productReducer
+    product: productReducer,
+    newsList: newsReducer
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer)

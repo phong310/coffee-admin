@@ -14,6 +14,7 @@ import Login from './pages/Login';
 import { Order } from './pages/Order';
 import { Role } from './pages/Role';
 import { Snacks } from './pages/Snacks';
+import Newss from './pages/Newss';
 
 function App() {
   // const [user, setUser] = useState(false);
@@ -33,6 +34,7 @@ function App() {
           <Route path="/main/mangerment/permission" element={<Permission />} />
           <Route path="/main/mangerment/category" element={<Category />} />
           <Route path="/main/mangerment/infor" element={<InforUser />} />
+          <Route path="/main/news" element={<Newss />} />
           <Route path="/main/order" element={<Order />} />
           <Route path="/main/forbidden" element={<Forbidden />} />
         </Route>

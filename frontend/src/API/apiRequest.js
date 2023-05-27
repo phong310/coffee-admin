@@ -5,6 +5,7 @@ import { toast } from 'react-toastify';
 import { getOrderFaild, getOrderStart, getOrderSuccess } from "../redux/orderSlice";
 import { getCateFaild, getCateStart, getCateSuccess } from "../redux/cateSlice";
 import { getBakeryFaild, getBakeryStart, getBakerySuccess, getDrinkFaild, getDrinkStart, getDrinkSuccess, getSnackFaild, getSnackStart, getSnackSuccess } from "../redux/productSlice";
+import { getNewsStart, getNewsSuccess, getNewsFaild } from "../redux/newsSlice";
 
 
 
@@ -162,6 +163,20 @@ export const getAllSnacks = async (accessToken, dispatch, navigate) => {
 
     } catch (e) {
         dispatch(getSnackFaild());
+        navigate("/main/forbidden");
+        toast.warning("Không có quyền truy cập !")
+    }
+}
+
+// GET ALL NEWS
+export const getAllNews = async (dispatch, navigate) => {
+    dispatch(getNewsStart());
+    try {
+        const res = await axios.get("http://localhost:7000/news/getAllNews");
+        dispatch(getNewsSuccess(res.data))
+
+    } catch (e) {
+        dispatch(getNewsFaild());
         navigate("/main/forbidden");
         toast.warning("Không có quyền truy cập !")
     }

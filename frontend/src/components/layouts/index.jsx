@@ -17,6 +17,7 @@ import { Role } from '../../pages/Role';
 import { Forbidden } from '../../pages/Forbidden';
 import Permission from '../../pages/Create_Permission';
 import { useSelector } from 'react-redux';
+import Newss from '../../pages/Newss';
 
 
 const { Header, Content, Footer, Sider } = Layout;
@@ -53,6 +54,8 @@ const MainLayout = () => {
                 return "Thông tin người dùng";
             case "/main/order":
                 return "Quản lý đơn hàng"
+            case "/main/news":
+                return "Quản lý tin tức"
             case "/main/forbidden":
                 return "403"
             default:
@@ -131,7 +134,7 @@ const MainLayout = () => {
                         <Link to="/main/mangerment/category">Danh mục bán hàng</Link>
                     </Menu.Item>
                     <Menu.Item key="7" icon={<FileSearchOutlined />}>
-                        <Link to="/main/home">Quản lý tin tức</Link>
+                        <Link to="/main/news">Quản lý tin tức</Link>
                     </Menu.Item>
                     <SubMenu key="sub3" icon={<UserOutlined />} title="Quản lý tài khoản">
                         <Menu.Item key="8" icon={<UserOutlined />}>
@@ -216,6 +219,7 @@ const MainLayout = () => {
                         <Route path="/mangerment/category" element={<Category />} />
                         <Route path="/mangerment/infor" element={<InforUser />} />
                         <Route path="/order" element={<Order />} />
+                        <Route path="/news" element={<Newss />} />
                         <Route path="/forbidden" element={<Forbidden />} />
                     </Routes>
 
