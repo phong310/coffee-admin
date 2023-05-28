@@ -12,7 +12,7 @@ const NewsController = {
         }
     },
 
-    // Add news
+    // Add infor sp
     createNews: async (req, res) => {
         try {
             const newNews = {
@@ -30,7 +30,39 @@ const NewsController = {
             res.status(500).json({ Err: e })
 
         }
-    }
+    },
+
+    // Delete infor sp
+    deleteNews: async (req, res) => {
+        try {
+            const NewsId = req.params.id
+            const itemDelete = await newsModel.findByIdAndRemove(NewsId);
+            res.status(200).json(itemDelete);
+
+        } catch (e) {
+            res.status(500).json({ Err: e })
+        }
+    },
+
+    // update infor sp
+    updateNewInfo: async (req, res) => {
+        try {
+            const NewsId = req.params.id;
+            const updatedNewInfor = {
+                titleNews: req.body.titleNews,
+                imgNews: req.body.imgNews,
+                contentNews: req.body.contentNews,
+                statusNews: req.body.statusNews
+            };
+            const query = { _id: NewsId };
+            const options = { new: true };
+            const result = await newsModel.findOneAndUpdate(query, updatedNewInfor, options);
+            res.status(200).json(result);
+        } catch (e) {
+            res.status(500).json({ err: e });
+        }
+    },
+
 }
 
 module.exports = NewsController
