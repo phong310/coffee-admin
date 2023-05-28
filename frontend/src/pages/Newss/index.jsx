@@ -7,6 +7,8 @@ import { getAllNews } from '../../API/apiRequest';
 import AddModal from '../../components/Newss/addModal';
 import { DeleteNewInfor } from '../../components/Newss/deleteModal';
 import UpdateModal from '../../components/Newss/updateModal';
+import axios from 'axios';
+import * as XLSX from 'xlsx'
 
 
 export default function Newss() {
@@ -21,6 +23,10 @@ export default function Newss() {
     const [dataTea, setDataTea] = useState([])
     const [dataCoffee, setDataCoffee] = useState([])
 
+    // search
+    const [titleSearch, setTitleSearch] = useState();
+    const [statuSearch, setStatusSearch] = useState();
+
     // Kích hoạt effect
     const [trigger, setTrigger] = useState(false)
 
@@ -28,12 +34,55 @@ export default function Newss() {
     const user = useSelector((state) => state.auth.login?.currentUser)
     const NewsList = useSelector((state) => state.newsList.news?.allNews)
 
-
-
-
-
     const getData = async () => {
         getAllNews(dispatch, navigate)
+    }
+
+    const HandleSearch = async () => {
+        try {
+            const res = await axios.get(`http://localhost:7000/news/search?titleNews=${titleSearch || ''}&statusNews=${statuSearch || ''}`)
+            setData(res.data)
+            const searchTea = res.data.filter((item) => {
+                if (item.titleNews === "TEA") {
+                    return item
+                }
+            })
+            setDataTea(searchTea)
+
+            const searchCoffee = res.data.filter((item) => {
+                if (item.titleNews === "CAFE") {
+                    return item
+                }
+            })
+            setDataCoffee(searchCoffee)
+
+        } catch (e) {
+            console.log("Err search: ", e)
+        }
+    }
+
+    const resest_filter = () => {
+        setTitleSearch();
+        setStatusSearch();
+        getData()
+    }
+
+
+    // Xuất file Excel
+    const exportToExcel = (data) => {
+        const worksheet = XLSX.utils.json_to_sheet(data);
+        const workbook = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(workbook, worksheet, 'Data');
+        XLSX.writeFile(workbook, 'Sheet.xlsx');
+    }
+
+    const handleSearchTitle = (value) => {
+        setTitleSearch(value)
+    }
+
+    const handleSearchStatus = (value) => {
+        setStatusSearch(value)
+
     }
 
     const handleDelete = (record) => {
@@ -159,14 +208,25 @@ export default function Newss() {
             <Col className='col_wrapp'>
                 <Collapse>
                     <Panel header="Tìm kiếm" key="1">
-                        <Row >
-                            <Col span={7} className="input">
-                                <Input placeholder="Tên sản phẩm" />
+                        <Row>
+                            <Col className="input">
+                                <Select
+                                    className='select'
+                                    placeholder="Loại sản phẩm"
+                                    value={titleSearch}
+                                    onChange={handleSearchTitle}
+
+                                >
+                                    <Select.Option value="CAFE">Hạt cà phê</Select.Option>
+                                    <Select.Option value="TEA">Lá trà</Select.Option>
+                                </Select>
                             </Col>
-                            <Col span={7}>
+                            <Col>
                                 <Select
                                     className='select'
                                     placeholder="Trạng thái"
+                                    value={statuSearch}
+                                    onChange={handleSearchStatus}
 
                                 >
                                     <Select.Option value="active">Kích hoạt</Select.Option>
@@ -177,17 +237,18 @@ export default function Newss() {
 
                         {/* search */}
                         <Row justify="end">
-                            <Button type="primary" ghost className='btn' >Tìm kiếm</Button>
-                            <Button danger >Reset bộ lọc</Button>
+                            <Button type="primary" ghost className='btn' onClick={HandleSearch}>Tìm kiếm</Button>
+                            <Button danger onClick={resest_filter}>Reset bộ lọc</Button>
                         </Row>
                     </Panel>
                 </Collapse>
             </Col>
+
             <Col className='col_wrapp_title' style={{ padding: "30px 0px 10px 0px" }}>
                 <Row justify="space-between">
                     <h2>Danh sách nguyên liệu sản phẩm <Tag color="#4096ff">{data.length}</Tag></h2>
                     <Row>
-                        <Button type="primary" icon={<ExportOutlined />} style={{ marginRight: "10px" }} >
+                        <Button type="primary" icon={<ExportOutlined />} style={{ marginRight: "10px" }} onClick={() => exportToExcel(data)} >
                             Xuất file Excel
                         </Button>
                         <Button type="primary" icon={<PlusOutlined />} onClick={() => setOpenAdd(true)}>
@@ -220,7 +281,7 @@ export default function Newss() {
                             </span>
                         ),
                         key: "2",
-                        children: <Table className='table' columns={colums} dataSource={dataTea} scroll={{ y: 502 }} />,
+                        children: <Table className='table' columns={colums} dataSource={dataTea} scroll={{ y: 440 }} />,
                     }
                 ]}
             />

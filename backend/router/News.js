@@ -9,4 +9,6 @@ router.delete("/:id", NewsController.deleteNews)
 
 router.put("/update/:id", NewsController.updateNewInfo)
 
+router.get("/search", NewsController.searchInfor)
+
 module.exports = router

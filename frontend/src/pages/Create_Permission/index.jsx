@@ -170,7 +170,7 @@ export default function Permission() {
                 <Collapse>
                     <Panel header="Tìm kiếm" key="1">
                         <Row>
-                            <Col span={3}>
+                            <Col>
                                 <Select
                                     className='select'
                                     placeholder="Tên quyền hiển thị"
@@ -182,7 +182,7 @@ export default function Permission() {
                                     )}
                                 </Select>
                             </Col>
-                            <Col span={5} style={{ marginLeft: '310px' }}>
+                            <Col style={{ marginLeft: '15px' }}>
                                 <Select
                                     className='select'
                                     placeholder="Trạng thái"

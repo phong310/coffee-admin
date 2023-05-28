@@ -170,7 +170,7 @@ export const Role = () => {
                 <Collapse>
                     <Panel header="Tìm kiếm" key="1">
                         <Row>
-                            <Col span={3}>
+                            <Col >
                                 <Select
                                     className='select'
                                     placeholder="Nhóm quyền"
@@ -182,7 +182,7 @@ export const Role = () => {
                                     )}
                                 </Select>
                             </Col>
-                            <Col span={5} style={{ marginLeft: '320px' }}>
+                            <Col style={{ marginLeft: '15px' }}>
                                 <Select
                                     className='select'
                                     placeholder="Trạng thái"

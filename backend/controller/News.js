@@ -63,6 +63,26 @@ const NewsController = {
         }
     },
 
+    // search info sp
+    searchInfor: async (req, res) => {
+        try {
+            const title = req.query.titleNews;
+            const status = req.query.statusNews;
+            let query = {};
+            if (title && status) {
+                query = { titleNews: new RegExp(title, "i"), statusNews: status };
+            } else if (title) {
+                query = { titleNews: new RegExp(title, "i") };
+            } else if (status) {
+                query = { statusNews: status };
+            }
+            const Infor = await newsModel.find(query);
+            res.status(200).json(Infor);
+        } catch (e) {
+            res.status(500).json({ err: e });
+        }
+    }
+
 }
 
 module.exports = NewsController

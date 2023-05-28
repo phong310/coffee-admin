@@ -35,7 +35,7 @@ const AddModal = ({ data, setData, getAll }) => {
 
     const handleStatus = (value) => {
         setStatus(value)
-        console.log(value)
+        // console.log(value)
     }
 
 

@@ -315,7 +315,7 @@ export const Order = () => {
                             <Col span={5} className="input">
                                 <Select
                                     className='select'
-                                    style={{ width: 400, marginLeft: 60 }}
+                                    style={{ width: 400, marginLeft: 10 }}
                                     placeholder="Trạng thái đơn"
                                     value={orderStatusSearch}
                                     onChange={handleSearchStatus}
