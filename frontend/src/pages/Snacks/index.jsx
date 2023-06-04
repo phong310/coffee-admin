@@ -30,7 +30,7 @@ export const Snacks = () => {
 
     // lấy thông tin store redux
     const user = useSelector((state) => state.auth.login?.currentUser)
-    const snacksList = useSelector((state) => state.product.snackList?.allSnacks)
+    const snacksList = useSelector((state) => state.snack.snackList?.allSnacks)
 
     // Role check
     const staff = user?.user.role.includes("STAFF");

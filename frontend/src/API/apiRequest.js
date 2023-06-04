@@ -4,7 +4,9 @@ import { getUserStart, getUserFaild, getUserSuccess, getRoleStart, getRoleFaild,
 import { toast } from 'react-toastify';
 import { getOrderFaild, getOrderStart, getOrderSuccess } from "../redux/orderSlice";
 import { getCateFaild, getCateStart, getCateSuccess } from "../redux/cateSlice";
-import { getBakeryFaild, getBakeryStart, getBakerySuccess, getDrinkFaild, getDrinkStart, getDrinkSuccess, getSnackFaild, getSnackStart, getSnackSuccess } from "../redux/productSlice";
+import { getDrinkFaild, getDrinkStart, getDrinkSuccess } from "../redux/productSlice";
+import { getSnackStart, getSnackSuccess, getSnackFaild, } from "../redux/snackSlice"
+import { getBakeryStart, getBakerySuccess, getBakeryFaild } from "../redux/bakerySlice"
 import { getNewsStart, getNewsSuccess, getNewsFaild } from "../redux/newsSlice";
 
 

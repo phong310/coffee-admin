@@ -243,7 +243,7 @@ export const Account = () => {
                                     )}
                                 </Select>
                             </Col>
-                            <Col style={{ marginLeft: "140px" }}>
+                            <Col style={{ marginLeft: "180px" }}>
                                 <Select
                                     className='select'
                                     placeholder="Trạng thái"

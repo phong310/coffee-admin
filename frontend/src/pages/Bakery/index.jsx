@@ -28,7 +28,7 @@ export const Bakery = () => {
 
     // lấy thông tin store redux
     const user = useSelector((state) => state.auth.login?.currentUser)
-    const bakeryList = useSelector((state) => state.product.bakeryList?.allBakery)
+    const bakeryList = useSelector((state) => state.bakery.bakeryList?.allBakery)
 
     // Role check
     const staff = user?.user.role.includes("STAFF");
